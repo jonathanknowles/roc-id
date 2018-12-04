@@ -1,0 +1,33 @@
+name:                roc-id
+version:             0.1.0.0
+license:             BSD3
+author:              "Jonathan Knowles"
+copyright:           "Jonathan Knowles"
+github:              "jonathanknowles/roc-id"
+maintainer:          "mail@jonathanknowles.net"
+
+extra-source-files:
+- README.md
+
+description: Please see the README on GitHub at <https://github.com/jonathanknowles/roc-id#readme>
+
+dependencies:
+- Only
+- base >= 4.7 && < 5
+- text
+- vector-sized
+
+library:
+  source-dirs: source/library
+
+tests:
+  roc-id-test:
+    main:                Spec.hs
+    source-dirs:         source/test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - roc-id
+
