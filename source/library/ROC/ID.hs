@@ -84,7 +84,7 @@ instance Encodable Serial 7 where
 -- Validation:
 
 calculateChecksum :: Identity -> Digit
-calculateChecksum Identity {..} = toEnum $ 10 - (sum `mod` 10)
+calculateChecksum Identity {..} = toEnum $ negate sum `mod` 10
   where
     sum = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
         + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
