@@ -97,10 +97,10 @@ data ParseError
 parseIdentity :: Text -> Either ParseError Identity
 parseIdentity t = do
     v <-              guard InvalidLength   (parseRaw                     t)
-    c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
     i <- Identity <$> guard InvalidGender   (parseGender   $ readGender   v)
                   <*> guard InvalidLocation (parseLocation $ readLocation v)
                   <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
+    c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
     if c == calculateChecksum i then pure i else Left InvalidChecksum
   where
     readSerial   = V.slice (Proxy :: Proxy 2)
