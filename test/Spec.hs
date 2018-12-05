@@ -6,6 +6,7 @@ module Main where
 
 import ROC.ID.Internal
 
+import Data.Char (intToDigit)
 import Test.Hspec
 import Test.QuickCheck
 import Test.QuickCheck.Arbitrary.Generic
@@ -36,8 +37,37 @@ instance Arbitrary Serial where
 main :: IO ()
 main = hspec $
 
-  describe "parseIdentity" $
+  describe "parseIdentity" $ do
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: Identity) ->
         parseIdentity (T.pack $ show i) `shouldBe` Right i
+
+    it "does not parse identification numbers that are too short" $
+      property $ \(i :: Identity) (Positive n) ->
+        parseIdentity (T.pack $ drop n $ show i) `shouldBe` Left InvalidLength
+
+    it "does not parse identification numbers that are too long" $
+      property $ \(i :: Identity) (NonEmpty s) ->
+        parseIdentity (T.pack $ show i <> s) `shouldBe` Left InvalidLength
+
+    it "does not parse identification numbers with invalid gender codes" $
+      property $ \(i :: Identity) (c :: Int) -> do
+        let invalidGenderCode = intToDigit $ ((c `mod` 8) + 3) `mod` 10
+        let invalidIdentity = T.pack $
+              take 1 (show i) <> [invalidGenderCode] <> drop 2 (show i)
+        parseIdentity invalidIdentity `shouldBe` Left InvalidGender
+
+    it "does not parse identification numbers with invalid location codes" $
+      property $ \(i :: Identity) (c :: Int) -> do
+        let invalidLocationCode = intToDigit $ c `mod` 10
+        let invalidIdentity = T.pack $ invalidLocationCode : drop 1 (show i)
+        parseIdentity invalidIdentity `shouldBe` Left InvalidLocation
+
+    it "does not parse identification numbers with invalid checksums" $
+      property $ \(i :: Identity) (c :: Int) -> do
+        let invalidChecksum = intToDigit $
+              ((c `mod` 9) + fromEnum (calculateChecksum i) + 1) `mod` 10
+        let invalidIdentity = T.pack $ take 9 (show i) <> [invalidChecksum]
+        parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
+
