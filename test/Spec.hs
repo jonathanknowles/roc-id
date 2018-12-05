@@ -44,12 +44,15 @@ main = hspec $
         parseIdentity (T.pack $ show i) `shouldBe` Right i
 
     it "does not parse identification numbers that are too short" $
-      property $ \(i :: Identity) (Positive n) ->
-        parseIdentity (T.pack $ drop n $ show i) `shouldBe` Left InvalidLength
+      property $ \(i :: Identity) n -> do
+        let newLength = n `mod` 10
+        let invalidIdentity = T.pack $ take newLength $ show i
+        parseIdentity invalidIdentity `shouldBe` Left InvalidLength
 
     it "does not parse identification numbers that are too long" $
-      property $ \(i :: Identity) (NonEmpty s) ->
-        parseIdentity (T.pack $ show i <> s) `shouldBe` Left InvalidLength
+      property $ \(i :: Identity) (NonEmpty s) -> do
+        let invalidIdentity = T.pack $ show i <> s
+        parseIdentity invalidIdentity `shouldBe` Left InvalidLength
 
     it "does not parse identification numbers with invalid gender codes" $
       property $ \(i :: Identity) (c :: Int) -> do
