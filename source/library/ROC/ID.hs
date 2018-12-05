@@ -8,6 +8,7 @@ module ROC.ID
 
 --  * Printing
     , Language (..)
+    , genderText
     , locationText
 
 --  * Parsing
