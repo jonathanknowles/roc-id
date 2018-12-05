@@ -103,7 +103,7 @@ data ParseError
   | InvalidLocation
   | InvalidSerial
   | InvalidChecksum
-  deriving Show
+  deriving (Eq, Show)
 
 parseIdentity :: Text -> Either ParseError Identity
 parseIdentity t = do

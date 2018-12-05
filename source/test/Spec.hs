@@ -1,3 +1,5 @@
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Main where
 
 import ROC.ID
@@ -7,6 +9,7 @@ import Test.QuickCheck
 import Test.QuickCheck.Arbitrary.Generic
 
 import qualified Data.Vector.Sized as V
+import qualified Data.Text         as T
 
 instance Arbitrary Digit where
   arbitrary = genericArbitrary
@@ -29,4 +32,10 @@ instance Arbitrary Serial where
   shrink (Serial v) = Serial <$> traverse shrink v
 
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = hspec $
+
+  describe "parseIdentity" $
+
+    it "successfully parses valid identification numbers" $
+      property $ \(i :: Identity) ->
+        parseIdentity (T.pack $ show i) `shouldBe` Right i
