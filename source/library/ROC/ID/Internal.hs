@@ -140,28 +140,28 @@ instance Show Digit where show = show . fromEnum
 
 data Language = English | Chinese
 
-genderText :: Language -> Gender -> Text
-genderText = \case
-  English -> genderTextEnglish
-  Chinese -> genderTextChinese
+printGender :: Language -> Gender -> Text
+printGender = \case
+  English -> printGenderEnglish
+  Chinese -> printGenderChinese
 
-genderTextEnglish :: Gender -> Text
-genderTextEnglish = \case
+printGenderEnglish :: Gender -> Text
+printGenderEnglish = \case
   Male   -> "Male"
   Female -> "Female"
 
-genderTextChinese :: Gender -> Text
-genderTextChinese = \case
+printGenderChinese :: Gender -> Text
+printGenderChinese = \case
   Male   -> "男性"
   Female -> "女性"
 
-locationText :: Language -> Location -> Text
-locationText = \case
-  English -> locationTextEnglish
-  Chinese -> locationTextChinese
+printLocation :: Language -> Location -> Text
+printLocation = \case
+  English -> printLocationEnglish
+  Chinese -> printLocationChinese
 
-locationTextChinese :: Location -> Text
-locationTextChinese = \case
+printLocationChinese :: Location -> Text
+printLocationChinese = \case
   A -> "臺北市"
   B -> "臺中市"
   C -> "基隆市"
@@ -189,8 +189,8 @@ locationTextChinese = \case
   Y -> "陽明山管理局"
   Z -> "連江縣"
 
-locationTextEnglish :: Location -> Text
-locationTextEnglish = \case
+printLocationEnglish :: Location -> Text
+printLocationEnglish = \case
   A -> "Taipei City"
   B -> "Taichung City"
   C -> "Keelung City"
