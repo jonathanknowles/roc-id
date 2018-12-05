@@ -2,7 +2,7 @@
 
 module Main where
 
-import ROC.ID
+import ROC.ID.Internal
 
 import Test.Hspec
 import Test.QuickCheck
