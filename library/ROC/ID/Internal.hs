@@ -21,6 +21,9 @@ import qualified Data.Vector.Sized as V
 
 -- Types:
 
+-- | Represents a valid ROC national identification number.
+--   By construction, invalid values are not representable.
+--
 data Identity = Identity
   { idGender   :: Gender
   , idLocation :: Location
