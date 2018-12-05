@@ -20,12 +20,12 @@ dependencies:
 ghc-options: -Wall
 
 library:
-  source-dirs: source/library
+  source-dirs: library
 
 tests:
   roc-id-test:
     main:                Spec.hs
-    source-dirs:         source/test
+    source-dirs:         test
     ghc-options:
     - -threaded
     - -rtsopts
