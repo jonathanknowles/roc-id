@@ -8,7 +8,7 @@ module ROC.ID
 
 --  * Printing
     , Language (..)
-    , locationName
+    , locationText
 
 --  * Parsing
     , ParseError (..)

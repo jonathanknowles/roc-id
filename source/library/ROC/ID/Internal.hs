@@ -140,13 +140,13 @@ instance Show Digit where show = show . fromEnum
 
 data Language = English | Chinese
 
-locationName :: Language -> Location -> Text
-locationName = \case
-  English -> locationNameEnglish
-  Chinese -> locationNameChinese
+locationText :: Language -> Location -> Text
+locationText = \case
+  English -> locationTextEnglish
+  Chinese -> locationTextChinese
 
-locationNameChinese :: Location -> Text
-locationNameChinese = \case
+locationTextChinese :: Location -> Text
+locationTextChinese = \case
   A -> "臺北市"
   B -> "臺中市"
   C -> "基隆市"
@@ -174,8 +174,8 @@ locationNameChinese = \case
   Y -> "陽明山管理局"
   Z -> "連江縣"
 
-locationNameEnglish :: Location -> Text
-locationNameEnglish = \case
+locationTextEnglish :: Location -> Text
+locationTextEnglish = \case
   A -> "Taipei City"
   B -> "Taichung City"
   C -> "Keelung City"
