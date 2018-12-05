@@ -29,5 +29,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - QuickCheck
+    - generic-arbitrary
+    - hspec
     - roc-id
-

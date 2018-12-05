@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds              #-}
+{-# LANGUAGE DeriveGeneric          #-}
 {-# LANGUAGE FlexibleInstances      #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE LambdaCase             #-}
@@ -7,10 +8,12 @@
 {-# LANGUAGE ScopedTypeVariables    #-}
 
 module ROC.ID
-  ( Gender (..)
+  ( Digit (..)
+  , Gender (..)
   , Identity (..)
   , Language (..)
   , Location (..)
+  , Serial (..)
   , locationName
   , ParseError (..)
   , parseIdentity
@@ -21,6 +24,7 @@ import Data.Proxy (Proxy (..))
 import Data.Text (Text)
 import Data.Tuple.Only (Only (..))
 import Data.Vector.Sized (Vector)
+import GHC.Generics (Generic)
 import GHC.TypeNats (KnownNat (..))
 
 import qualified Data.Text         as T
@@ -32,21 +36,21 @@ data Identity = Identity
   { idGender   :: Gender
   , idLocation :: Location
   , idSerial   :: Serial
-  } deriving (Eq, Ord)
+  } deriving (Eq, Generic, Ord)
 
 data Gender = Male | Female
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
 
 data Location
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
-  deriving (Eq, Ord, Read, Show)
+  deriving (Eq, Generic, Ord, Read, Show)
 
 newtype Serial = Serial (Vector 7 Digit)
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Generic, Ord, Show)
 
 data Digit = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
-  deriving (Bounded, Enum, Eq, Ord)
+  deriving (Bounded, Enum, Eq, Generic, Ord)
 
 -- Encoding:
 
