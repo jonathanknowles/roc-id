@@ -15,7 +15,6 @@ import Data.Text (Text)
 import Data.Tuple.Only (Only (..))
 import Data.Vector.Sized (Vector)
 import GHC.Generics (Generic)
-import GHC.TypeNats (KnownNat (..))
 
 import qualified Data.Text         as T
 import qualified Data.Vector.Sized as V
