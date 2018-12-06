@@ -2,8 +2,8 @@ module ROC.ID
     (
 --  * Types
       Identity (..)
-    , Location (..)
     , Gender (..)
+    , Location (..)
     , Serial
 
 --  * Printing
