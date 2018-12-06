@@ -22,7 +22,7 @@ import qualified Data.Vector.Sized as V
 
 -- Types:
 
--- | Represents a valid 10-digit ROC national identification number
+-- | Represents a __valid__ 10-digit ROC national identification number
 -- (中華民國身份證號碼) of the form __@A123456789@__.
 --
 -- By construction, invalid values are __not representable__ by this type.
@@ -47,7 +47,7 @@ data Gender = Male | Female
 
 -- | A location, as encoded within an 'Identity'.
 --
--- To generate the name of a location, see 'printLocation'.
+-- To generate the name of a location, use the 'printLocation' function.
 --
 data Location
   = A | B | C | D | E | F | G | H | I | J | K | L | M
