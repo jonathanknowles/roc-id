@@ -1,21 +1,21 @@
 module ROC.ID
     (
---  * Types
+ -- * Types
       Identity (..)
     , Gender (..)
-    , Location (..)
+    , Location
     , Serial
 
---  * Printing
+ -- * Parsing
+    , ParseError (..)
+    , parseIdentity
+
+ -- * Printing
     , Language (..)
     , printGender
     , printLocation
 
---  * Parsing
-    , ParseError (..)
-    , parseIdentity
-
---  * Randomization
+ -- * Randomization
     , randomIdentity
     , randomGender
     , randomLocation

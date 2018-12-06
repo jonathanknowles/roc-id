@@ -22,23 +22,40 @@ import qualified Data.Vector.Sized as V
 
 -- Types:
 
--- | Represents a valid ROC national identification number.
---   By construction, invalid values are not representable.
+-- | Represents a valid 10-digit ROC national identification number
+-- (中華民國身份證號碼) of the form __@A123456789@__.
+--
+-- By construction, invalid values are __not representable__ by this type.
+--
+-- An identification number encodes a person's 'Gender', the 'Location' in
+-- which they first registered for an identification card, and a unique 'Serial'
+-- number.
 --
 data Identity = Identity
   { idGender   :: Gender
+  -- ^ The gender of the person to whom this ID number belongs.
   , idLocation :: Location
+  -- ^ The location in which the person first registered for an ID card.
   , idSerial   :: Serial
+  -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
+-- | A person's gender, as encoded within an 'Identity'.
+--
 data Gender = Male | Female
   deriving (Bounded, Enum, Eq, Generic, Ord, Show)
 
+-- | A location, as encoded within an 'Identity'.
+--
+-- To generate the name of a location, see 'printLocation'.
+--
 data Location
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
   deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
 
+-- | A 7-digit serial number that is unique for a given 'Gender' and 'Location'.
+--
 newtype Serial = Serial (Vector 7 Digit)
   deriving (Eq, Generic, Ord, Show)
 
@@ -76,17 +93,25 @@ instance Encodable Serial 7 where
 
 -- Randomization:
 
+-- | Generate a random 'Identity'.
+--
 randomIdentity :: MonadRandom m => m Identity
 randomIdentity = Identity <$> randomGender
                           <*> randomLocation
                           <*> randomSerial
 
+-- | Generate a random 'Gender'.
+--
 randomGender :: MonadRandom m => m Gender
 randomGender = randomBoundedEnum
 
+-- | Generate a random 'Location'.
+--
 randomLocation :: MonadRandom m => m Location
 randomLocation = randomBoundedEnum
 
+-- | Generate a random 'Serial' number.
+--
 randomSerial :: MonadRandom m => m Serial
 randomSerial = Serial <$> V.replicateM randomBoundedEnum
 
@@ -106,14 +131,8 @@ calculateChecksum Identity {..} = toEnum $ negate total `mod` 10
 
 -- Parsing:
 
-data ParseError
-  = InvalidLength
-  | InvalidGender
-  | InvalidLocation
-  | InvalidSerial
-  | InvalidChecksum
-  deriving (Eq, Show)
-
+-- | Attempt to parse an 'Identity' using the specified 'Text' as input.
+--
 parseIdentity :: Text -> Either ParseError Identity
 parseIdentity t = do
     v <-              guard InvalidLength   (parseRaw                     t)
@@ -127,6 +146,22 @@ parseIdentity t = do
     readLocation = flip V.index 0
     readGender   = flip V.index 1
     readChecksum = flip V.index 9
+
+-- | An error produced when parsing an 'Identity' with the 'parseIdentity'
+--   function.
+--
+data ParseError
+  = InvalidLength
+    -- ^ The input was either too short or too long.
+  | InvalidGender
+    -- ^ The gender portion of the input was invalid.
+  | InvalidLocation
+    -- ^ The location portion of the input included non-alphabetic characters.
+  | InvalidSerial
+    -- ^ The serial number portion of the input included non-numeric characters.
+  | InvalidChecksum
+    -- ^ The computed checksum did not match the checksum portion of the input.
+  deriving (Eq, Show)
 
 parseRaw :: Text -> Maybe (Vector 10 Char)
 parseRaw  = V.fromList . T.unpack
@@ -157,8 +192,12 @@ instance Show Identity where
 
 instance Show Digit where show = show . fromEnum
 
+-- | A language into which values can be localized when pretty printing.
+--
 data Language = English | Chinese
 
+-- | Pretty-print the specified 'Gender'.
+--
 printGender :: Language -> Gender -> Text
 printGender = \case
   English -> printGenderEnglish
@@ -174,6 +213,7 @@ printGenderChinese = \case
   Male   -> "男性"
   Female -> "女性"
 
+-- | Pretty-print the specified 'Location'.
 printLocation :: Language -> Location -> Text
 printLocation = \case
   English -> printLocationEnglish
