@@ -14,6 +14,13 @@ module ROC.ID
 --  * Parsing
     , ParseError (..)
     , parseIdentity
+
+--  * Randomization
+    , randomIdentity
+    , randomGender
+    , randomLocation
+    , randomSerial
+
     ) where
 
 import ROC.ID.Internal

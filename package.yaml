@@ -12,6 +12,7 @@ extra-source-files:
 description: Please see the README on GitHub at <https://github.com/jonathanknowles/roc-id#readme>
 
 dependencies:
+- MonadRandom
 - Only
 - base >= 4.7 && < 5
 - text

@@ -9,6 +9,7 @@
 
 module ROC.ID.Internal where
 
+import Control.Monad.Random.Class (MonadRandom (..))
 import Data.Maybe (listToMaybe)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text)
@@ -31,12 +32,12 @@ data Identity = Identity
   } deriving (Eq, Generic, Ord)
 
 data Gender = Male | Female
-  deriving (Eq, Generic, Ord, Show)
+  deriving (Bounded, Enum, Eq, Generic, Ord, Show)
 
 data Location
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
-  deriving (Eq, Generic, Ord, Read, Show)
+  deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
 
 newtype Serial = Serial (Vector 7 Digit)
   deriving (Eq, Generic, Ord, Show)
@@ -72,6 +73,22 @@ instance Encodable Location 2 where
 
 instance Encodable Serial 7 where
   encode (Serial c) = c
+
+-- Randomization:
+
+randomIdentity :: MonadRandom m => m Identity
+randomIdentity = Identity <$> randomGender
+                          <*> randomLocation
+                          <*> randomSerial
+
+randomGender :: MonadRandom m => m Gender
+randomGender = randomBoundedEnum
+
+randomLocation :: MonadRandom m => m Location
+randomLocation = randomBoundedEnum
+
+randomSerial :: MonadRandom m => m Serial
+randomSerial = Serial <$> V.replicateM randomBoundedEnum
 
 -- Validation:
 
@@ -233,4 +250,8 @@ maybeToEnum i
   | i < fromEnum (minBound :: a) = Nothing
   | i > fromEnum (maxBound :: a) = Nothing
   | otherwise                    = pure $ toEnum i
+
+randomBoundedEnum :: forall a m . MonadRandom m => Bounded a => Enum a => m a
+randomBoundedEnum =
+  toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
 
