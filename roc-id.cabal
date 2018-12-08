@@ -1,8 +1,7 @@
 name:           roc-id
 version:        0.1.0.0
-synopsis:       Haskell implementation of the ROC National Identification Number
-                standard.
-description:    Haskell implementation of the ROC National Identification Number
+synopsis:       Implementation of the ROC National ID Number standard.
+description:    Implementation of the ROC National Identification Number
                 (中華民國身分證號碼) standard.
 category:       Identification
 homepage:       https://github.com/jonathanknowles/roc-id#readme
