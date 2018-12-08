@@ -21,6 +21,7 @@ dependencies:
 ghc-options: -Wall
 
 library:
+  other-modules: ROC.ID.Utilities
   source-dirs: library
 
 tests:
