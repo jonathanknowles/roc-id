@@ -7,8 +7,9 @@
 {-# LANGUAGE RecordWildCards        #-}
 {-# LANGUAGE ScopedTypeVariables    #-}
 
-module ROC.ID.Internal
+module ROC.ID.Identity
   ( Identity (..)
+  , calculateChecksum
   , parseIdentity
   , ParseError (..)
   , randomIdentity
@@ -57,7 +58,7 @@ instance Show Identity where
     <> foldMap show (toDigits idSerial)
     <> show (calculateChecksum i)
 
--- | Calculate the checksum digit for the specified 'Identity'.
+-- | Calculate the checksum of the specified 'Identity'.
 --
 calculateChecksum :: Identity -> Digit
 calculateChecksum Identity {..} = toEnum $ negate total `mod` 10

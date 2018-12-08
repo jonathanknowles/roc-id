@@ -25,7 +25,7 @@ module ROC.ID
     ) where
 
 import ROC.ID.Gender
-import ROC.ID.Internal
+import ROC.ID.Identity
 import ROC.ID.Language
 import ROC.ID.Location
 import ROC.ID.Serial

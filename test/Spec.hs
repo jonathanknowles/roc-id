@@ -6,7 +6,7 @@ module Main where
 
 import ROC.ID.Digit
 import ROC.ID.Gender
-import ROC.ID.Internal
+import ROC.ID.Identity
 import ROC.ID.Location
 import ROC.ID.Serial
 
