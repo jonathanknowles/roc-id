@@ -7,7 +7,7 @@
 {-# LANGUAGE RecordWildCards        #-}
 {-# LANGUAGE ScopedTypeVariables    #-}
 
-module ROC.ID.Identity
+module ROC.ID
   ( Identity (..)
   , identityChecksum
   , parseIdentity

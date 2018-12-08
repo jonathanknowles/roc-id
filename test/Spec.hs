@@ -4,9 +4,9 @@
 
 module Main where
 
+import ROC.ID
 import ROC.ID.Digit
 import ROC.ID.Gender
-import ROC.ID.Identity
 import ROC.ID.Location
 import ROC.ID.Serial
 
@@ -74,7 +74,7 @@ main = hspec $
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidChecksum = intToDigit $
-              ((c `mod` 9) + fromEnum (calculateChecksum i) + 1) `mod` 10
+              ((c `mod` 9) + fromEnum (identityChecksum i) + 1) `mod` 10
         let invalidIdentity = T.pack $ take 9 (show i) <> [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
 
