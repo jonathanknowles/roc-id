@@ -9,6 +9,7 @@ module ROC.ID
  -- * Parsing
     , ParseError (..)
     , parseIdentity
+    , parseLocation
 
  -- * Printing
     , Language (..)

@@ -47,7 +47,9 @@ data Gender = Male | Female
 
 -- | A location, as encoded within an 'Identity'.
 --
--- To generate the name of a location, use the 'printLocation' function.
+-- To construct a 'Location', use the 'parseLocation' function.
+--
+-- To generate the name of a 'Location', use the 'printLocation' function.
 --
 data Location
   = A | B | C | D | E | F | G | H | I | J | K | L | M
@@ -131,22 +133,6 @@ calculateChecksum Identity {..} = toEnum $ negate total `mod` 10
 
 -- Parsing:
 
--- | Attempt to parse an 'Identity' using the specified 'Text' as input.
---
-parseIdentity :: Text -> Either ParseError Identity
-parseIdentity t = do
-    v <-              guard InvalidLength   (parseRaw                     t)
-    i <- Identity <$> guard InvalidGender   (parseGender   $ readGender   v)
-                  <*> guard InvalidLocation (parseLocation $ readLocation v)
-                  <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
-    c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
-    if c == calculateChecksum i then pure i else Left InvalidChecksum
-  where
-    readSerial   = V.slice (Proxy :: Proxy 2)
-    readLocation = flip V.index 0
-    readGender   = flip V.index 1
-    readChecksum = flip V.index 9
-
 -- | An error produced when parsing an 'Identity' with the 'parseIdentity'
 --   function.
 --
@@ -163,6 +149,22 @@ data ParseError
     -- ^ The computed checksum did not match the checksum portion of the input.
   deriving (Eq, Show)
 
+-- | Attempt to parse an 'Identity' using the specified 'Text' as input.
+--
+parseIdentity :: Text -> Either ParseError Identity
+parseIdentity t = do
+    v <-              guard InvalidLength   (parseRaw                     t)
+    i <- Identity <$> guard InvalidGender   (parseGender   $ readGender   v)
+                  <*> guard InvalidLocation (parseLocation $ readLocation v)
+                  <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
+    c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
+    if c == calculateChecksum i then pure i else Left InvalidChecksum
+  where
+    readSerial   = V.slice (Proxy :: Proxy 2)
+    readLocation = flip V.index 0
+    readGender   = flip V.index 1
+    readChecksum = flip V.index 9
+
 parseRaw :: Text -> Maybe (Vector 10 Char)
 parseRaw  = V.fromList . T.unpack
 
@@ -175,6 +177,11 @@ parseGender = \case
   '2' -> pure Female
   _   -> Nothing
 
+-- | Parse the specified uppercase alphabetic character as a 'Location'.
+--
+-- Returns 'Nothing' if the specified character is not an uppercase alphabetic
+-- character.
+--
 parseLocation :: Char -> Maybe Location
 parseLocation c = maybeRead [c]
 
