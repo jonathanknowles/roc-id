@@ -19,6 +19,8 @@ import qualified Data.Vector.Sized as V
 --
 -- A serial number is unique for a gender and location.
 --
+-- To generate a random 'Serial' number, use the 'randomSerial' function.
+--
 newtype Serial = Serial (Vector 7 Digit)
   deriving (Eq, Generic, Ord, Show)
 
