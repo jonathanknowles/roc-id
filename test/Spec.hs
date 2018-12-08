@@ -4,7 +4,11 @@
 
 module Main where
 
+import ROC.ID.Digit
+import ROC.ID.Gender
 import ROC.ID.Internal
+import ROC.ID.Location
+import ROC.ID.Serial
 
 import Data.Char (intToDigit)
 import Test.Hspec

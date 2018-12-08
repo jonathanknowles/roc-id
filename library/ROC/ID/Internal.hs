@@ -10,12 +10,17 @@
 module ROC.ID.Internal where
 
 import Control.Monad.Random.Class (MonadRandom (..))
-import Data.Maybe (listToMaybe)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text)
 import Data.Tuple.Only (Only (..))
 import Data.Vector.Sized (Vector)
 import GHC.Generics (Generic)
+
+import ROC.ID.Digit
+import ROC.ID.Gender
+import ROC.ID.Location
+import ROC.ID.Serial
+import ROC.ID.Utilities
 
 import qualified Data.Text         as T
 import qualified Data.Vector.Sized as V
@@ -39,30 +44,6 @@ data Identity = Identity
   , idSerial   :: Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
-
--- | A person's gender, as encoded within an 'Identity'.
---
-data Gender = Male | Female
-  deriving (Bounded, Enum, Eq, Generic, Ord, Show)
-
--- | A location, as encoded within an 'Identity'.
---
--- To construct a 'Location', use the 'parseLocation' function.
---
--- To generate the name of a 'Location', use the 'printLocation' function.
---
-data Location
-  = A | B | C | D | E | F | G | H | I | J | K | L | M
-  | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
-  deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
-
--- | A 7-digit serial number that is unique for a given 'Gender' and 'Location'.
---
-newtype Serial = Serial (Vector 7 Digit)
-  deriving (Eq, Generic, Ord, Show)
-
-data Digit = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
-  deriving (Bounded, Enum, Eq, Generic, Ord)
 
 -- Encoding:
 
@@ -101,21 +82,6 @@ randomIdentity :: MonadRandom m => m Identity
 randomIdentity = Identity <$> randomGender
                           <*> randomLocation
                           <*> randomSerial
-
--- | Generate a random 'Gender'.
---
-randomGender :: MonadRandom m => m Gender
-randomGender = randomBoundedEnum
-
--- | Generate a random 'Location'.
---
-randomLocation :: MonadRandom m => m Location
-randomLocation = randomBoundedEnum
-
--- | Generate a random 'Serial' number.
---
-randomSerial :: MonadRandom m => m Serial
-randomSerial = Serial <$> V.replicateM randomBoundedEnum
 
 -- Validation:
 
@@ -168,22 +134,11 @@ parseIdentity t = do
 parseRaw :: Text -> Maybe (Vector 10 Char)
 parseRaw  = V.fromList . T.unpack
 
-parseDigit :: Char -> Maybe Digit
-parseDigit c = maybeRead [c] >>= maybeToEnum
-
 parseGender :: Char -> Maybe Gender
 parseGender = \case
   '1' -> pure Male
   '2' -> pure Female
   _   -> Nothing
-
--- | Parse the specified uppercase alphabetic character as a 'Location'.
---
--- Returns 'Nothing' if the specified character is not an uppercase alphabetic
--- character.
---
-parseLocation :: Char -> Maybe Location
-parseLocation c = maybeRead [c]
 
 parseSerial :: Vector 7 Char -> Maybe Serial
 parseSerial a = Serial <$> traverse parseDigit a
@@ -196,109 +151,4 @@ instance Show Identity where
     <> foldMap show (encode idGender)
     <> foldMap show (encode idSerial)
     <> show (calculateChecksum i)
-
-instance Show Digit where show = show . fromEnum
-
--- | A language into which values can be localized when pretty printing.
---
-data Language = English | Chinese
-
--- | Pretty-print the specified 'Gender'.
---
-printGender :: Language -> Gender -> Text
-printGender = \case
-  English -> printGenderEnglish
-  Chinese -> printGenderChinese
-
-printGenderEnglish :: Gender -> Text
-printGenderEnglish = \case
-  Male   -> "Male"
-  Female -> "Female"
-
-printGenderChinese :: Gender -> Text
-printGenderChinese = \case
-  Male   -> "男性"
-  Female -> "女性"
-
--- | Pretty-print the specified 'Location'.
-printLocation :: Language -> Location -> Text
-printLocation = \case
-  English -> printLocationEnglish
-  Chinese -> printLocationChinese
-
-printLocationChinese :: Location -> Text
-printLocationChinese = \case
-  A -> "臺北市"
-  B -> "臺中市"
-  C -> "基隆市"
-  D -> "臺南市"
-  E -> "高雄市"
-  F -> "新北市"
-  G -> "宜蘭縣"
-  H -> "桃園市"
-  I -> "嘉義市"
-  J -> "新竹縣"
-  K -> "苗栗縣"
-  L -> "臺中縣"
-  M -> "南投縣"
-  N -> "彰化縣"
-  O -> "新竹市"
-  P -> "雲林縣"
-  Q -> "嘉義縣"
-  R -> "臺南縣"
-  S -> "高雄縣"
-  T -> "屏東縣"
-  U -> "花蓮縣"
-  V -> "臺東縣"
-  W -> "金門縣"
-  X -> "澎湖縣"
-  Y -> "陽明山管理局"
-  Z -> "連江縣"
-
-printLocationEnglish :: Location -> Text
-printLocationEnglish = \case
-  A -> "Taipei City"
-  B -> "Taichung City"
-  C -> "Keelung City"
-  D -> "Tainan City"
-  E -> "Kaohsiung City"
-  F -> "New Taipei City"
-  G -> "Yilan County"
-  H -> "Taoyuan City"
-  I -> "Chiayi City"
-  J -> "Hsinchu County"
-  K -> "Miaoli County"
-  L -> "Taichung County"
-  M -> "Nantou County"
-  N -> "Changhua County"
-  O -> "Hsinchu City"
-  P -> "Yunlin County"
-  Q -> "Chiayi County"
-  R -> "Pingtung County"
-  S -> "Kaohsiung County"
-  T -> "Pingtung County"
-  U -> "Hualien County"
-  V -> "Taitung County"
-  W -> "Kinmen County"
-  X -> "Penghu County"
-  Y -> "Yangmingshan Management Bureau"
-  Z -> "Lienchiang County"
-
--- Utilities:
-
-guard :: x -> Maybe y -> Either x y
-guard x = maybe (Left x) Right
-
-maybeRead :: Read a => String -> Maybe a
-maybeRead = fmap fst . listToMaybe . reads
-
-maybeToEnum :: forall a . Bounded a => Enum a => Int -> Maybe a
-maybeToEnum i
-  | i < fromEnum (minBound :: a) = Nothing
-  | i > fromEnum (maxBound :: a) = Nothing
-  | otherwise                    = pure $ toEnum i
-
-randomBoundedEnum :: forall a m . MonadRandom m => Bounded a => Enum a => m a
-randomBoundedEnum =
-  toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
 
