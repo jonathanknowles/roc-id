@@ -7,7 +7,12 @@
 {-# LANGUAGE RecordWildCards        #-}
 {-# LANGUAGE ScopedTypeVariables    #-}
 
-module ROC.ID.Internal where
+module ROC.ID.Internal
+  ( Identity (..)
+  , parseIdentity
+  , ParseError (..)
+  , randomIdentity
+  ) where
 
 import Control.Monad.Random.Class (MonadRandom (..))
 import Data.Proxy (Proxy (..))
@@ -45,18 +50,37 @@ data Identity = Identity
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
--- Encoding:
+instance Show Identity where
+  show i@Identity {..} = ""
+    <> show idLocation
+    <> foldMap show (toDigits idGender)
+    <> foldMap show (toDigits idSerial)
+    <> show (calculateChecksum i)
 
-class Encodable t n | t -> n where
-  encode :: t -> Vector n Digit
+-- | Calculate the checksum digit for the specified 'Identity'.
+--
+calculateChecksum :: Identity -> Digit
+calculateChecksum Identity {..} = toEnum $ negate total `mod` 10
+  where
+    total = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
+          + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
+    g = index idGender
+    p = index idLocation
+    s = index idSerial
+    index x = fromEnum . V.index e
+      where
+        e = toDigits x
 
-instance Encodable Gender 1 where
-  encode = V.fromTuple . Only . \case
+class ToDigits t n | t -> n where
+  toDigits :: t -> Vector n Digit
+
+instance ToDigits Gender 1 where
+  toDigits = V.fromTuple . Only . \case
     Male   -> D1
     Female -> D2
 
-instance Encodable Location 2 where
-  encode = V.fromTuple . \case
+instance ToDigits Location 2 where
+  toDigits = V.fromTuple . \case
     A -> (D1, D0); N -> (D2, D2)
     B -> (D1, D1); O -> (D3, D5)
     C -> (D1, D2); P -> (D2, D3)
@@ -71,49 +95,8 @@ instance Encodable Location 2 where
     L -> (D2, D0); Y -> (D3, D1)
     M -> (D2, D1); Z -> (D3, D3)
 
-instance Encodable Serial 7 where
-  encode (Serial c) = c
-
--- Randomization:
-
--- | Generate a random 'Identity'.
---
-randomIdentity :: MonadRandom m => m Identity
-randomIdentity = Identity <$> randomGender
-                          <*> randomLocation
-                          <*> randomSerial
-
--- Validation:
-
-calculateChecksum :: Identity -> Digit
-calculateChecksum Identity {..} = toEnum $ negate total `mod` 10
-  where
-    total = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
-          + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
-    g = index idGender
-    p = index idLocation
-    s = index idSerial
-    index x = fromEnum . V.index e
-      where
-        e = encode x
-
--- Parsing:
-
--- | An error produced when parsing an 'Identity' with the 'parseIdentity'
---   function.
---
-data ParseError
-  = InvalidLength
-    -- ^ The input was either too short or too long.
-  | InvalidGender
-    -- ^ The gender portion of the input was invalid.
-  | InvalidLocation
-    -- ^ The location portion of the input included non-alphabetic characters.
-  | InvalidSerial
-    -- ^ The serial number portion of the input included non-numeric characters.
-  | InvalidChecksum
-    -- ^ The computed checksum did not match the checksum portion of the input.
-  deriving (Eq, Show)
+instance ToDigits Serial 7 where
+  toDigits (Serial c) = c
 
 -- | Attempt to parse an 'Identity' using the specified 'Text' as input.
 --
@@ -131,6 +114,22 @@ parseIdentity t = do
     readGender   = flip V.index 1
     readChecksum = flip V.index 9
 
+-- | An error produced when parsing an 'Identity' with the 'parseIdentity'
+--   function.
+--
+data ParseError
+  = InvalidLength
+    -- ^ The input was either too short or too long.
+  | InvalidGender
+    -- ^ The gender portion of the input was invalid.
+  | InvalidLocation
+    -- ^ The location portion of the input included non-alphabetic characters.
+  | InvalidSerial
+    -- ^ The serial number portion of the input included non-numeric characters.
+  | InvalidChecksum
+    -- ^ The computed checksum did not match the checksum portion of the input.
+  deriving (Eq, Show)
+
 parseRaw :: Text -> Maybe (Vector 10 Char)
 parseRaw  = V.fromList . T.unpack
 
@@ -143,12 +142,10 @@ parseGender = \case
 parseSerial :: Vector 7 Char -> Maybe Serial
 parseSerial a = Serial <$> traverse parseDigit a
 
--- Presentation:
-
-instance Show Identity where
-  show i@Identity {..} = ""
-    <> show idLocation
-    <> foldMap show (encode idGender)
-    <> foldMap show (encode idSerial)
-    <> show (calculateChecksum i)
+-- | Generate a random 'Identity'.
+--
+randomIdentity :: MonadRandom m => m Identity
+randomIdentity = Identity <$> randomGender
+                          <*> randomLocation
+                          <*> randomSerial
 
