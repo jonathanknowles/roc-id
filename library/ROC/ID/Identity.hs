@@ -9,7 +9,7 @@
 
 module ROC.ID.Identity
   ( Identity (..)
-  , calculateChecksum
+  , identityChecksum
   , parseIdentity
   , ParseError (..)
   , randomIdentity
@@ -43,31 +43,31 @@ import qualified Data.Vector.Sized as V
 -- number.
 --
 data Identity = Identity
-  { idGender   :: Gender
+  { identityGender   :: Gender
   -- ^ The gender of the person to whom this ID number belongs.
-  , idLocation :: Location
+  , identityLocation :: Location
   -- ^ The location in which the person first registered for an ID card.
-  , idSerial   :: Serial
+  , identitySerial   :: Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
 instance Show Identity where
   show i@Identity {..} = ""
-    <> show idLocation
-    <> foldMap show (toDigits idGender)
-    <> foldMap show (toDigits idSerial)
-    <> show (calculateChecksum i)
+    <> show identityLocation
+    <> foldMap show (toDigits identityGender)
+    <> foldMap show (toDigits identitySerial)
+    <> show (identityChecksum i)
 
 -- | Calculate the checksum of the specified 'Identity'.
 --
-calculateChecksum :: Identity -> Digit
-calculateChecksum Identity {..} = toEnum $ negate total `mod` 10
+identityChecksum :: Identity -> Digit
+identityChecksum Identity {..} = toEnum $ negate total `mod` 10
   where
     total = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
           + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
-    g = index idGender
-    p = index idLocation
-    s = index idSerial
+    g = index identityGender
+    p = index identityLocation
+    s = index identitySerial
     index x = fromEnum . V.index e
       where
         e = toDigits x
@@ -101,6 +101,8 @@ instance ToDigits Serial 7 where
 
 -- | Attempt to parse an 'Identity' using the specified 'Text' as input.
 --
+-- The input must be of the form __@A123456789@__.
+--
 parseIdentity :: Text -> Either ParseError Identity
 parseIdentity t = do
     v <-              guard InvalidLength   (parseRaw                     t)
@@ -108,7 +110,7 @@ parseIdentity t = do
                   <*> guard InvalidLocation (parseLocation $ readLocation v)
                   <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
     c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
-    if c == calculateChecksum i then pure i else Left InvalidChecksum
+    if c == identityChecksum i then pure i else Left InvalidChecksum
   where
     readSerial   = V.slice (Proxy :: Proxy 2)
     readLocation = flip V.index 0
