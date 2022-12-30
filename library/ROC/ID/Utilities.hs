@@ -1,9 +1,11 @@
-{-# LANGUAGE ScopedTypeVariables    #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module ROC.ID.Utilities where
 
-import Control.Monad.Random.Class (MonadRandom (..))
-import Data.Maybe (listToMaybe)
+import Control.Monad.Random.Class
+    ( MonadRandom (..) )
+import Data.Maybe
+    ( listToMaybe )
 
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right

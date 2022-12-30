@@ -1,5 +1,5 @@
-{-# LANGUAGE DeriveGeneric     #-}
-{-# LANGUAGE LambdaCase        #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module ROC.ID.Gender
@@ -8,9 +8,12 @@ module ROC.ID.Gender
   , randomGender
   ) where
 
-import Control.Monad.Random.Class (MonadRandom (..))
-import Data.Text (Text)
-import GHC.Generics (Generic)
+import Control.Monad.Random.Class
+    ( MonadRandom (..) )
+import Data.Text
+    ( Text )
+import GHC.Generics
+    ( Generic )
 
 import ROC.ID.Language
 import ROC.ID.Utilities

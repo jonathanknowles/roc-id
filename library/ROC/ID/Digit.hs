@@ -5,7 +5,8 @@ module ROC.ID.Digit
   , parseDigit
   ) where
 
-import GHC.Generics (Generic)
+import GHC.Generics
+    ( Generic )
 
 import ROC.ID.Utilities
 
