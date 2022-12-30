@@ -22,4 +22,3 @@ maybeToEnum i
 randomBoundedEnum :: forall a m . MonadRandom m => Bounded a => Enum a => m a
 randomBoundedEnum =
   toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
-
