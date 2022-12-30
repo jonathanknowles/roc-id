@@ -1,6 +1,6 @@
 cabal-version:  3.0
 name:           roc-id
-version:        0.1.0.0
+version:        0.2.0.0
 synopsis:       Implementation of the ROC National ID standard.
 category:       Identification
 homepage:       https://github.com/jonathanknowles/roc-id#readme
