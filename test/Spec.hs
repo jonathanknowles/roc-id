@@ -13,25 +13,24 @@ import ROC.ID.Serial
 import Data.Char (intToDigit)
 import Test.Hspec
 import Test.QuickCheck
-import Test.QuickCheck.Arbitrary.Generic
 
 import qualified Data.Vector.Sized as V
 import qualified Data.Text         as T
 
 instance Arbitrary Digit where
-  arbitrary = genericArbitrary
+  arbitrary = arbitraryBoundedEnum
   shrink = genericShrink
 
 instance Arbitrary Gender where
-  arbitrary = genericArbitrary
+  arbitrary = arbitraryBoundedEnum
   shrink = genericShrink
 
 instance Arbitrary Identity where
-  arbitrary = genericArbitrary
+  arbitrary = applyArbitrary3 Identity
   shrink = genericShrink
 
 instance Arbitrary Location where
-  arbitrary = genericArbitrary
+  arbitrary = arbitraryBoundedEnum
   shrink = genericShrink
 
 instance Arbitrary Serial where

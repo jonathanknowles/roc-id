@@ -1,5 +1,6 @@
+cabal-version:  3.0
 name:           roc-id
-version:        0.1.0.0
+version:        0.2.0.0
 synopsis:       Implementation of the ROC National ID standard.
 category:       Identification
 homepage:       https://github.com/jonathanknowles/roc-id#readme
@@ -7,10 +8,9 @@ bug-reports:    https://github.com/jonathanknowles/roc-id/issues
 author:         Jonathan Knowles
 maintainer:     mail@jonathanknowles.net
 copyright:      Jonathan Knowles
-license:        BSD3
+license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
-cabal-version:  >= 1.10
 
 description:
   This package provides an implementation of the ROC National Identification
@@ -26,14 +26,35 @@ description:
   * https://zh.wikipedia.org/wiki/中華民國國民身分證
   * https://en.wikipedia.org/wiki/National_Identification_Card_(Republic_of_China)
 
-extra-source-files:
+extra-doc-files:
   README.md
+
+common dependency-base
+    build-depends:base                      >= 4.7          && < 5
+common dependency-hspec
+    build-depends:hspec                     >= 2.5.5        && < 2.11
+common dependency-MonadRandom
+    build-depends:MonadRandom               >= 0.5.1.1      && < 0.7
+common dependency-Only
+    build-depends:Only                      >= 0.1          && < 0.2
+common dependency-QuickCheck
+    build-depends:QuickCheck                >= 2.11.3       && < 2.15
+common dependency-text
+    build-depends:text                      >= 1.2.3.1      && < 2.1
+common dependency-vector-sized
+    build-depends:vector-sized              >= 1.0.4.0      && < 1.6
 
 source-repository head
   type: git
   location: https://github.com/jonathanknowles/roc-id
 
 library
+  import:
+    , dependency-base
+    , dependency-MonadRandom
+    , dependency-Only
+    , dependency-text
+    , dependency-vector-sized
   exposed-modules:
       ROC.ID
       ROC.ID.Digit
@@ -46,30 +67,22 @@ library
   hs-source-dirs:
       library
   ghc-options: -Wall
-  build-depends:
-      MonadRandom
-    , Only
-    , base >=4.7 && <5
-    , text
-    , vector-sized
   default-language: Haskell2010
 
 test-suite roc-id-test
+  import:
+    , dependency-base
+    , dependency-hspec
+    , dependency-MonadRandom
+    , dependency-Only
+    , dependency-QuickCheck
+    , dependency-text
+    , dependency-vector-sized
   type: exitcode-stdio-1.0
   main-is: Spec.hs
-  other-modules:
-      Paths_roc_id
   hs-source-dirs:
       test
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      MonadRandom
-    , Only
-    , QuickCheck
-    , base >=4.7 && <5
-    , generic-arbitrary
-    , hspec
     , roc-id
-    , text
-    , vector-sized
   default-language: Haskell2010
