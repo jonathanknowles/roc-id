@@ -47,9 +47,9 @@ library
       library
   ghc-options: -Wall
   build-depends:
-      MonadRandom
-    , Only
     , base >=4.7 && <5
+    , MonadRandom
+    , Only
     , text
     , vector-sized
   default-language: Haskell2010
@@ -63,11 +63,11 @@ test-suite roc-id-test
       test
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      MonadRandom
-    , Only
-    , QuickCheck
     , base >=4.7 && <5
     , hspec
+    , MonadRandom
+    , Only
+    , QuickCheck
     , roc-id
     , text
     , vector-sized
