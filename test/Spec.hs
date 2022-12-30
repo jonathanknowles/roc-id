@@ -19,11 +19,11 @@ import qualified Data.Vector.Sized as V
 import qualified Data.Text         as T
 
 instance Arbitrary Digit where
-  arbitrary = genericArbitrary
+  arbitrary = arbitraryBoundedEnum
   shrink = genericShrink
 
 instance Arbitrary Gender where
-  arbitrary = genericArbitrary
+  arbitrary = arbitraryBoundedEnum
   shrink = genericShrink
 
 instance Arbitrary Identity where
@@ -31,7 +31,7 @@ instance Arbitrary Identity where
   shrink = genericShrink
 
 instance Arbitrary Location where
-  arbitrary = genericArbitrary
+  arbitrary = arbitraryBoundedEnum
   shrink = genericShrink
 
 instance Arbitrary Serial where
