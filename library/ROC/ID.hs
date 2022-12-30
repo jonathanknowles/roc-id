@@ -1,11 +1,11 @@
-{-# LANGUAGE DataKinds              #-}
-{-# LANGUAGE DeriveGeneric          #-}
-{-# LANGUAGE FlexibleInstances      #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
-{-# LANGUAGE LambdaCase             #-}
-{-# LANGUAGE OverloadedStrings      #-}
-{-# LANGUAGE RecordWildCards        #-}
-{-# LANGUAGE ScopedTypeVariables    #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module ROC.ID
   ( Identity (..)
@@ -15,12 +15,18 @@ module ROC.ID
   , randomIdentity
   ) where
 
-import Control.Monad.Random.Class (MonadRandom (..))
-import Data.Proxy (Proxy (..))
-import Data.Text (Text)
-import Data.Tuple.Only (Only (..))
-import Data.Vector.Sized (Vector)
-import GHC.Generics (Generic)
+import Control.Monad.Random.Class
+    ( MonadRandom (..) )
+import Data.Proxy
+    ( Proxy (..) )
+import Data.Text
+    ( Text )
+import Data.Tuple.Only
+    ( Only (..) )
+import Data.Vector.Sized
+    ( Vector )
+import GHC.Generics
+    ( Generic )
 
 import ROC.ID.Digit
 import ROC.ID.Gender
@@ -28,7 +34,7 @@ import ROC.ID.Location
 import ROC.ID.Serial
 import ROC.ID.Utilities
 
-import qualified Data.Text         as T
+import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
 
 -- Types:

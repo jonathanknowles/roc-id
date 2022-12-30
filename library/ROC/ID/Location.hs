@@ -1,5 +1,5 @@
-{-# LANGUAGE DeriveGeneric     #-}
-{-# LANGUAGE LambdaCase        #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module ROC.ID.Location
@@ -9,10 +9,14 @@ module ROC.ID.Location
   , randomLocation
   ) where
 
-import Control.Monad.Random.Class (MonadRandom (..))
-import Data.Text (Text)
-import GHC.Generics (Generic)
-import ROC.ID.Language (Language (..))
+import Control.Monad.Random.Class
+    ( MonadRandom (..) )
+import Data.Text
+    ( Text )
+import GHC.Generics
+    ( Generic )
+import ROC.ID.Language
+    ( Language (..) )
 import ROC.ID.Utilities
 
 -- | A location, encodable within an ROC identification number.

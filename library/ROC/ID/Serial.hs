@@ -1,4 +1,4 @@
-{-# LANGUAGE DataKinds     #-}
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 
 module ROC.ID.Serial
@@ -6,9 +6,12 @@ module ROC.ID.Serial
   , randomSerial
   ) where
 
-import Control.Monad.Random.Class (MonadRandom (..))
-import Data.Vector.Sized (Vector)
-import GHC.Generics (Generic)
+import Control.Monad.Random.Class
+    ( MonadRandom (..) )
+import Data.Vector.Sized
+    ( Vector )
+import GHC.Generics
+    ( Generic )
 
 import ROC.ID.Digit
 import ROC.ID.Utilities

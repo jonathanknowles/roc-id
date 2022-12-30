@@ -10,12 +10,21 @@ import ROC.ID.Gender
 import ROC.ID.Location
 import ROC.ID.Serial
 
-import Data.Char (intToDigit)
+import Data.Char
+    ( intToDigit )
 import Test.Hspec
+    ( describe, hspec, it, shouldBe )
 import Test.QuickCheck
+    ( Arbitrary (..)
+    , NonEmptyList (..)
+    , applyArbitrary3
+    , arbitraryBoundedEnum
+    , genericShrink
+    , property
+    )
 
+import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
-import qualified Data.Text         as T
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
