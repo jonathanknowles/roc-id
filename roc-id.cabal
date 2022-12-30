@@ -27,6 +27,7 @@ description:
   * https://en.wikipedia.org/wiki/National_Identification_Card_(Republic_of_China)
 
 extra-doc-files:
+  CHANGELOG.md
   README.md
 
 common dependency-base
