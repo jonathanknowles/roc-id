@@ -25,31 +25,19 @@ jobs:
           - macOS-latest
           - windows-latest
         cabal:
-          - 3.8.1.0
+          - 3.10.2.0
         ghc:
           - 8.10.7
           - 9.0.2
-          - 9.2.5
-          - 9.4.4
+          - 9.2.8
+          - 9.4.8
+          - 9.6.4
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Environment (Permission)
-        # https://github.com/actions/runner-images/issues/7061
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo chown -R "runner" $GHCUP_INSTALL_BASE_PREFIX/.ghcup
-
-      - name: Environment (Purge)
-        # The version of `ghc` that comes pre-installed on runner images does
-        # not have documentation for core libraries. This makes it impossible
-        # to build documentation with working hyperlinks to those libraries. To
-        # solve this problem, we purge the existing installation, which enables
-        # the next build step to install ghc from scratch, with documentation.
-        run: ghcup nuke || true
-
-      - name: Environment (Installation)
-        uses: haskell/actions/setup@v2
+      - name: Environment
+        uses: haskell-actions/setup@v2
         id: setup-haskell-cabal
         with:
           ghc-version: ${{ matrix.ghc }}
@@ -71,7 +59,7 @@ jobs:
           --builddir=${{ env.cabal-build-dir }}
 
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           hash: ${{ hashFiles('cabal.project.freeze') }}
         with:
@@ -100,6 +88,12 @@ jobs:
           cabal test all
           --builddir=${{ env.cabal-build-dir }}
 
+      - name: Benchmark
+        run: >
+          cabal bench all
+          --builddir=${{ env.cabal-build-dir }}
+          || true
+
       - name: Documentation (Generation)
         run: >
           cabal haddock
@@ -113,7 +107,7 @@ jobs:
         if: |
             github.ref == 'refs/heads/main'
             && matrix.os == 'ubuntu-latest'
-            && matrix.ghc == '9.4.4'
+            && matrix.ghc == '9.6.4'
         run: >
           mv ${{ env.cabal-build-dir }}/build/*/*/*/doc/html/* gh-pages
 
@@ -123,7 +117,7 @@ jobs:
         if: |
             github.ref == 'refs/heads/main'
             && matrix.os == 'ubuntu-latest'
-            && matrix.ghc == '9.4.4'
+            && matrix.ghc == '9.6.4'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
