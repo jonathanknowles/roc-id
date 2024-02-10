@@ -1,6 +1,6 @@
 cabal-version:  3.0
 name:           roc-id
-version:        0.2.0.0
+version:        0.2.0.1
 synopsis:       Implementation of the ROC (Taiwan) National ID standard.
 category:       Identification
 homepage:       https://github.com/jonathanknowles/roc-id#readme
@@ -31,9 +31,9 @@ extra-doc-files:
   README.md
 
 common dependency-base
-    build-depends:base                      >= 4.7          && < 5
+    build-depends:base                      >= 4.7          && < 4.20
 common dependency-hspec
-    build-depends:hspec                     >= 2.5.5        && < 2.11
+    build-depends:hspec                     >= 2.5.5        && < 2.12
 common dependency-MonadRandom
     build-depends:MonadRandom               >= 0.5.1.1      && < 0.7
 common dependency-Only
@@ -41,9 +41,9 @@ common dependency-Only
 common dependency-QuickCheck
     build-depends:QuickCheck                >= 2.11.3       && < 2.15
 common dependency-text
-    build-depends:text                      >= 1.2.3.1      && < 2.1
+    build-depends:text                      >= 1.2.3.1      && < 2.2
 common dependency-vector-sized
-    build-depends:vector-sized              >= 1.0.4.0      && < 1.6
+    build-depends:vector-sized              >= 1.0.4.0      && < 1.7
 
 source-repository head
   type: git
