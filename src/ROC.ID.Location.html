@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679088815"><span id="local-6989586621679088816"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679088820"><span id="local-6989586621679088821"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
 </span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE LambdaCase #-}</span><span>
 </span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
 </span><span id="line-4"></span><span>
@@ -54,14 +54,14 @@
 </span><span id="line-54"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="X"><span class="annot"><a href="ROC.ID.Location.html#X"><span class="hs-identifier hs-var">X</span></a></span></span><span> </span><span class="annot"><span class="hs-comment">-- ^ &#28558;&#28246;&#32291; Penghu County</span></span><span>
 </span><span id="line-55"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="Y"><span class="annot"><a href="ROC.ID.Location.html#Y"><span class="hs-identifier hs-var">Y</span></a></span></span><span> </span><span class="annot"><span class="hs-comment">-- ^ &#38525;&#26126;&#23665; Yangmingshan</span></span><span>
 </span><span id="line-56"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="Z"><span class="annot"><a href="ROC.ID.Location.html#Z"><span class="hs-identifier hs-var">Z</span></a></span></span><span> </span><span class="annot"><span class="hs-comment">-- ^ &#36899;&#27743;&#32291; Lienchiang County</span></span><span>
-</span><span id="line-57"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679088902"><span id="local-6989586621679088904"><span class="annot"><span class="annottext">Location
+</span><span id="line-57"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679088907"><span id="local-6989586621679088909"><span class="annot"><span class="annottext">Location
 Location -&gt; Location -&gt; Bounded Location
 forall a. a -&gt; a -&gt; Bounded a
 $cminBound :: Location
 minBound :: Location
 $cmaxBound :: Location
 maxBound :: Location
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088908"><span id="local-6989586621679088916"><span id="local-6989586621679088922"><span id="local-6989586621679088936"><span id="local-6989586621679088938"><span id="local-6989586621679088942"><span id="local-6989586621679088946"><span id="local-6989586621679088950"><span class="annot"><span class="annottext">Int -&gt; Location
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088913"><span id="local-6989586621679088921"><span id="local-6989586621679088927"><span id="local-6989586621679088941"><span id="local-6989586621679088943"><span id="local-6989586621679088947"><span id="local-6989586621679088951"><span id="local-6989586621679088955"><span class="annot"><span class="annottext">Int -&gt; Location
 Location -&gt; Int
 Location -&gt; [Location]
 Location -&gt; Location
@@ -102,7 +102,7 @@ $cenumFromTo :: Location -&gt; Location -&gt; [Location]
 enumFromTo :: Location -&gt; Location -&gt; [Location]
 $cenumFromThenTo :: Location -&gt; Location -&gt; Location -&gt; [Location]
 enumFromThenTo :: Location -&gt; Location -&gt; Location -&gt; [Location]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088954"><span id="local-6989586621679088956"><span class="annot"><span class="annottext">Location -&gt; Location -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088959"><span id="local-6989586621679088961"><span class="annot"><span class="annottext">Location -&gt; Location -&gt; Bool
 (Location -&gt; Location -&gt; Bool)
 -&gt; (Location -&gt; Location -&gt; Bool) -&gt; Eq Location
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -110,7 +110,7 @@ $c== :: Location -&gt; Location -&gt; Bool
 == :: Location -&gt; Location -&gt; Bool
 $c/= :: Location -&gt; Location -&gt; Bool
 /= :: Location -&gt; Location -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088961"><span id="local-6989586621679088963"><span class="annot"><span class="annottext">(forall x. Location -&gt; Rep Location x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088966"><span id="local-6989586621679088968"><span class="annot"><span class="annottext">(forall x. Location -&gt; Rep Location x)
 -&gt; (forall x. Rep Location x -&gt; Location) -&gt; Generic Location
 forall x. Rep Location x -&gt; Location
 forall x. Location -&gt; Rep Location x
@@ -120,7 +120,7 @@ $cfrom :: forall x. Location -&gt; Rep Location x
 from :: forall x. Location -&gt; Rep Location x
 $cto :: forall x. Rep Location x -&gt; Location
 to :: forall x. Rep Location x -&gt; Location
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088969"><span id="local-6989586621679088971"><span id="local-6989586621679088973"><span id="local-6989586621679088977"><span id="local-6989586621679088980"><span id="local-6989586621679088983"><span id="local-6989586621679088986"><span class="annot"><span class="annottext">Eq Location
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088974"><span id="local-6989586621679088976"><span id="local-6989586621679088978"><span id="local-6989586621679088982"><span id="local-6989586621679088985"><span id="local-6989586621679088988"><span id="local-6989586621679088991"><span class="annot"><span class="annottext">Eq Location
 Eq Location =&gt;
 (Location -&gt; Location -&gt; Ordering)
 -&gt; (Location -&gt; Location -&gt; Bool)
@@ -157,7 +157,7 @@ $cmax :: Location -&gt; Location -&gt; Location
 max :: Location -&gt; Location -&gt; Location
 $cmin :: Location -&gt; Location -&gt; Location
 min :: Location -&gt; Location -&gt; Location
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088990"><span id="local-6989586621679088993"><span id="local-6989586621679088996"><span id="local-6989586621679089025"><span class="annot"><span class="annottext">ReadPrec [Location]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679088995"><span id="local-6989586621679088998"><span id="local-6989586621679089001"><span id="local-6989586621679089030"><span class="annot"><span class="annottext">ReadPrec [Location]
 ReadPrec Location
 Int -&gt; ReadS Location
 ReadS [Location]
@@ -177,7 +177,7 @@ $creadPrec :: ReadPrec Location
 readPrec :: ReadPrec Location
 $creadListPrec :: ReadPrec [Location]
 readListPrec :: ReadPrec [Location]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Read</span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089029"><span id="local-6989586621679089031"><span id="local-6989586621679089035"><span class="annot"><span class="annottext">Int -&gt; Location -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Read</span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089034"><span id="local-6989586621679089036"><span id="local-6989586621679089040"><span class="annot"><span class="annottext">Int -&gt; Location -&gt; ShowS
 [Location] -&gt; ShowS
 Location -&gt; [Char]
 (Int -&gt; Location -&gt; ShowS)
@@ -199,11 +199,11 @@ showList :: [Location] -&gt; ShowS
 </span><span id="line-63"></span><span class="hs-comment">--</span><span>
 </span><span id="line-64"></span><span class="annot"><a href="ROC.ID.Location.html#parseLocation"><span class="hs-identifier hs-type">parseLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span>
 </span><span id="line-65"></span><span id="parseLocation"><span class="annot"><span class="annottext">parseLocation :: Char -&gt; Maybe Location
-</span><a href="ROC.ID.Location.html#parseLocation"><span class="hs-identifier hs-var hs-var">parseLocation</span></a></span></span><span> </span><span id="local-6989586621679089038"><span class="annot"><span class="annottext">Char
-</span><a href="#local-6989586621679089038"><span class="hs-identifier hs-var">c</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; Maybe Location
+</span><a href="ROC.ID.Location.html#parseLocation"><span class="hs-identifier hs-var hs-var">parseLocation</span></a></span></span><span> </span><span id="local-6989586621679089043"><span class="annot"><span class="annottext">Char
+</span><a href="#local-6989586621679089043"><span class="hs-identifier hs-var">c</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">[Char] -&gt; Maybe Location
 forall a. Read a =&gt; [Char] -&gt; Maybe a
 </span><a href="ROC.ID.Utilities.html#maybeRead"><span class="hs-identifier hs-var">maybeRead</span></a></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Char
-</span><a href="#local-6989586621679089038"><span class="hs-identifier hs-var">c</span></a></span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679089043"><span class="hs-identifier hs-var">c</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-66"></span><span>
 </span><span id="line-67"></span><span class="annot"><span class="hs-comment">-- | Pretty-print the specified 'Location'.</span></span><span>
 </span><span id="line-68"></span><span class="annot"><a href="ROC.ID.Location.html#printLocation"><span class="hs-identifier hs-type">printLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier hs-type">Language</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
@@ -382,7 +382,7 @@ forall a. Read a =&gt; [Char] -&gt; Maybe a
 </span><span id="line-130"></span><span>
 </span><span id="line-131"></span><span class="hs-comment">-- | Generate a random 'Location'.</span><span>
 </span><span id="line-132"></span><span class="hs-comment">--</span><span>
-</span><span id="line-133"></span><span id="local-6989586621679088810"><span class="annot"><a href="ROC.ID.Location.html#randomLocation"><span class="hs-identifier hs-type">randomLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679088810"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679088810"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span><span>
+</span><span id="line-133"></span><span id="local-6989586621679088815"><span class="annot"><a href="ROC.ID.Location.html#randomLocation"><span class="hs-identifier hs-type">randomLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679088815"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679088815"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span><span>
 </span><span id="line-134"></span><span id="randomLocation"><span class="annot"><span class="annottext">randomLocation :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Location
 </span><a href="ROC.ID.Location.html#randomLocation"><span class="hs-identifier hs-var hs-var">randomLocation</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m Location
 forall a (m :: * -&gt; *). (MonadRandom m, Bounded a, Enum a) =&gt; m a
