@@ -1,6 +1,6 @@
 cabal-version:  3.0
 name:           roc-id
-version:        0.2.0.1
+version:        0.2.0.2
 synopsis:       Implementation of the ROC (Taiwan) National ID standard.
 category:       Identification
 homepage:       https://github.com/jonathanknowles/roc-id#readme
