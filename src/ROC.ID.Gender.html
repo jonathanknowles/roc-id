@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679089933"><span id="local-6989586621679089934"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679089060"><span id="local-6989586621679089061"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
 </span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE LambdaCase #-}</span><span>
 </span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
 </span><span id="line-4"></span><span>
-</span><span id="line-5"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">ROC.ID.Gender</span><span>
+</span><span id="line-5"></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html"><span class="hs-identifier">ROC.ID.Gender</span></a></span><span>
 </span><span id="line-6"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier">Gender</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
 </span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#printGender"><span class="hs-identifier">printGender</span></a></span><span>
 </span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#randomGender"><span class="hs-identifier">randomGender</span></a></span><span>
@@ -21,14 +21,14 @@
 </span><span id="line-21"></span><span class="hs-comment">-- | A person's gender, encodable within an ROC identification number.</span><span>
 </span><span id="line-22"></span><span class="hs-comment">--</span><span>
 </span><span id="line-23"></span><span class="hs-keyword">data</span><span> </span><span id="Gender"><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-var">Gender</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Male"><span class="annot"><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Female"><span class="annot"><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span></span><span>
-</span><span id="line-24"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679089945"><span id="local-6989586621679089947"><span class="annot"><span class="annottext">Gender
+</span><span id="line-24"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679089072"><span id="local-6989586621679089074"><span class="annot"><span class="annottext">Gender
 Gender -&gt; Gender -&gt; Bounded Gender
 forall a. a -&gt; a -&gt; Bounded a
 $cminBound :: Gender
 minBound :: Gender
 $cmaxBound :: Gender
 maxBound :: Gender
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089951"><span id="local-6989586621679089959"><span id="local-6989586621679089965"><span id="local-6989586621679089979"><span id="local-6989586621679089981"><span id="local-6989586621679089985"><span id="local-6989586621679089989"><span id="local-6989586621679089993"><span class="annot"><span class="annottext">Int -&gt; Gender
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089080"><span id="local-6989586621679089090"><span id="local-6989586621679089097"><span id="local-6989586621679089111"><span id="local-6989586621679089114"><span id="local-6989586621679089119"><span id="local-6989586621679089125"><span id="local-6989586621679089129"><span class="annot"><span class="annottext">Int -&gt; Gender
 Gender -&gt; Int
 Gender -&gt; [Gender]
 Gender -&gt; Gender
@@ -69,7 +69,7 @@ $cenumFromTo :: Gender -&gt; Gender -&gt; [Gender]
 enumFromTo :: Gender -&gt; Gender -&gt; [Gender]
 $cenumFromThenTo :: Gender -&gt; Gender -&gt; Gender -&gt; [Gender]
 enumFromThenTo :: Gender -&gt; Gender -&gt; Gender -&gt; [Gender]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089997"><span id="local-6989586621679089999"><span class="annot"><span class="annottext">Gender -&gt; Gender -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089137"><span id="local-6989586621679089141"><span class="annot"><span class="annottext">Gender -&gt; Gender -&gt; Bool
 (Gender -&gt; Gender -&gt; Bool)
 -&gt; (Gender -&gt; Gender -&gt; Bool) -&gt; Eq Gender
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -77,7 +77,7 @@ $c== :: Gender -&gt; Gender -&gt; Bool
 == :: Gender -&gt; Gender -&gt; Bool
 $c/= :: Gender -&gt; Gender -&gt; Bool
 /= :: Gender -&gt; Gender -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679090004"><span id="local-6989586621679090006"><span class="annot"><span class="annottext">(forall x. Gender -&gt; Rep Gender x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089146"><span id="local-6989586621679089148"><span class="annot"><span class="annottext">(forall x. Gender -&gt; Rep Gender x)
 -&gt; (forall x. Rep Gender x -&gt; Gender) -&gt; Generic Gender
 forall x. Rep Gender x -&gt; Gender
 forall x. Gender -&gt; Rep Gender x
@@ -87,7 +87,7 @@ $cfrom :: forall x. Gender -&gt; Rep Gender x
 from :: forall x. Gender -&gt; Rep Gender x
 $cto :: forall x. Rep Gender x -&gt; Gender
 to :: forall x. Rep Gender x -&gt; Gender
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679090012"><span id="local-6989586621679090014"><span id="local-6989586621679090016"><span id="local-6989586621679090020"><span id="local-6989586621679090023"><span id="local-6989586621679090026"><span id="local-6989586621679090029"><span class="annot"><span class="annottext">Eq Gender
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089156"><span id="local-6989586621679089158"><span id="local-6989586621679089160"><span id="local-6989586621679089164"><span id="local-6989586621679089167"><span id="local-6989586621679089170"><span id="local-6989586621679089173"><span class="annot"><span class="annottext">Eq Gender
 Eq Gender =&gt;
 (Gender -&gt; Gender -&gt; Ordering)
 -&gt; (Gender -&gt; Gender -&gt; Bool)
@@ -124,19 +124,22 @@ $cmax :: Gender -&gt; Gender -&gt; Gender
 max :: Gender -&gt; Gender -&gt; Gender
 $cmin :: Gender -&gt; Gender -&gt; Gender
 min :: Gender -&gt; Gender -&gt; Gender
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679090033"><span id="local-6989586621679090035"><span id="local-6989586621679090039"><span class="annot"><span class="annottext">Int -&gt; Gender -&gt; ShowS
-[Gender] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679089181"><span id="local-6989586621679089183"><span id="local-6989586621679089187"><span class="annot"><span class="annottext">Int -&gt; Gender -&gt; [Char] -&gt; [Char]
+[Gender] -&gt; [Char] -&gt; [Char]
 Gender -&gt; [Char]
-(Int -&gt; Gender -&gt; ShowS)
--&gt; (Gender -&gt; [Char]) -&gt; ([Gender] -&gt; ShowS) -&gt; Show Gender
+(Int -&gt; Gender -&gt; [Char] -&gt; [Char])
+-&gt; (Gender -&gt; [Char])
+-&gt; ([Gender] -&gt; [Char] -&gt; [Char])
+-&gt; Show Gender
 forall a.
-(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; [Char]) -&gt; ([a] -&gt; ShowS) -&gt; Show a
-$cshowsPrec :: Int -&gt; Gender -&gt; ShowS
-showsPrec :: Int -&gt; Gender -&gt; ShowS
+(Int -&gt; a -&gt; [Char] -&gt; [Char])
+-&gt; (a -&gt; [Char]) -&gt; ([a] -&gt; [Char] -&gt; [Char]) -&gt; Show a
+$cshowsPrec :: Int -&gt; Gender -&gt; [Char] -&gt; [Char]
+showsPrec :: Int -&gt; Gender -&gt; [Char] -&gt; [Char]
 $cshow :: Gender -&gt; [Char]
 show :: Gender -&gt; [Char]
-$cshowList :: [Gender] -&gt; ShowS
-showList :: [Gender] -&gt; ShowS
+$cshowList :: [Gender] -&gt; [Char] -&gt; [Char]
+showList :: [Gender] -&gt; [Char] -&gt; [Char]
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-25"></span><span>
 </span><span id="line-26"></span><span class="hs-comment">-- | Pretty-print the specified 'Gender'.</span><span>
@@ -173,7 +176,7 @@ showList :: [Gender] -&gt; ShowS
 </span><span id="line-42"></span><span>
 </span><span id="line-43"></span><span class="hs-comment">-- | Generate a random 'Gender'.</span><span>
 </span><span id="line-44"></span><span class="hs-comment">--</span><span>
-</span><span id="line-45"></span><span id="local-6989586621679089928"><span class="annot"><a href="ROC.ID.Gender.html#randomGender"><span class="hs-identifier hs-type">randomGender</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679089928"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679089928"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span></span><span>
+</span><span id="line-45"></span><span id="local-6989586621679089055"><span class="annot"><a href="ROC.ID.Gender.html#randomGender"><span class="hs-identifier hs-type">randomGender</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679089055"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679089055"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span></span><span>
 </span><span id="line-46"></span><span id="randomGender"><span class="annot"><span class="annottext">randomGender :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Gender
 </span><a href="ROC.ID.Gender.html#randomGender"><span class="hs-identifier hs-var hs-var">randomGender</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m Gender
 forall a (m :: * -&gt; *). (MonadRandom m, Bounded a, Enum a) =&gt; m a
