@@ -26,7 +26,7 @@
 </span><span id="line-26"></span><span class="hs-comment">-- To generate a random 'Serial' number, use the 'randomSerial' function.</span><span>
 </span><span id="line-27"></span><span class="hs-comment">--</span><span>
 </span><span id="line-28"></span><span class="hs-keyword">newtype</span><span> </span><span id="Serial"><span class="annot"><a href="ROC.ID.Serial.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Serial"><span class="annot"><a href="ROC.ID.Serial.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Vector</span></span><span> </span><span class="annot"><span class="hs-number">7</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-29"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679092335"><span id="local-6989586621679092341"><span class="annot"><span class="annottext">Serial -&gt; Serial -&gt; Bool
+</span><span id="line-29"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679092323"><span id="local-6989586621679092329"><span class="annot"><span class="annottext">Serial -&gt; Serial -&gt; Bool
 (Serial -&gt; Serial -&gt; Bool)
 -&gt; (Serial -&gt; Serial -&gt; Bool) -&gt; Eq Serial
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -34,7 +34,7 @@ $c== :: Serial -&gt; Serial -&gt; Bool
 == :: Serial -&gt; Serial -&gt; Bool
 $c/= :: Serial -&gt; Serial -&gt; Bool
 /= :: Serial -&gt; Serial -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679092353"><span id="local-6989586621679092355"><span class="annot"><span class="annottext">(forall x. Serial -&gt; Rep Serial x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679092341"><span id="local-6989586621679092343"><span class="annot"><span class="annottext">(forall x. Serial -&gt; Rep Serial x)
 -&gt; (forall x. Rep Serial x -&gt; Serial) -&gt; Generic Serial
 forall x. Rep Serial x -&gt; Serial
 forall x. Serial -&gt; Rep Serial x
@@ -44,7 +44,7 @@ $cfrom :: forall x. Serial -&gt; Rep Serial x
 from :: forall x. Serial -&gt; Rep Serial x
 $cto :: forall x. Rep Serial x -&gt; Serial
 to :: forall x. Rep Serial x -&gt; Serial
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679092363"><span id="local-6989586621679092369"><span id="local-6989586621679092374"><span id="local-6989586621679092379"><span id="local-6989586621679092384"><span id="local-6989586621679092389"><span id="local-6989586621679092394"><span class="annot"><span class="annottext">Eq Serial
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679092351"><span id="local-6989586621679092357"><span id="local-6989586621679092362"><span id="local-6989586621679092367"><span id="local-6989586621679092372"><span id="local-6989586621679092377"><span id="local-6989586621679092382"><span class="annot"><span class="annottext">Eq Serial
 Eq Serial =&gt;
 (Serial -&gt; Serial -&gt; Ordering)
 -&gt; (Serial -&gt; Serial -&gt; Bool)
@@ -81,7 +81,7 @@ $cmax :: Serial -&gt; Serial -&gt; Serial
 max :: Serial -&gt; Serial -&gt; Serial
 $cmin :: Serial -&gt; Serial -&gt; Serial
 min :: Serial -&gt; Serial -&gt; Serial
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679092416"><span id="local-6989586621679092423"><span id="local-6989586621679092427"><span class="annot"><span class="annottext">Int -&gt; Serial -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679092404"><span id="local-6989586621679092411"><span id="local-6989586621679092415"><span class="annot"><span class="annottext">Int -&gt; Serial -&gt; ShowS
 [Serial] -&gt; ShowS
 Serial -&gt; String
 (Int -&gt; Serial -&gt; ShowS)
@@ -98,7 +98,7 @@ showList :: [Serial] -&gt; ShowS
 </span><span id="line-30"></span><span>
 </span><span id="line-31"></span><span class="hs-comment">-- | Generate a random 'Serial' number.</span><span>
 </span><span id="line-32"></span><span class="hs-comment">--</span><span>
-</span><span id="line-33"></span><span id="local-6989586621679092317"><span class="annot"><a href="ROC.ID.Serial.html#randomSerial"><span class="hs-identifier hs-type">randomSerial</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679092317"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679092317"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Serial.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span><span>
+</span><span id="line-33"></span><span id="local-6989586621679092305"><span class="annot"><a href="ROC.ID.Serial.html#randomSerial"><span class="hs-identifier hs-type">randomSerial</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679092305"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679092305"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Serial.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span><span>
 </span><span id="line-34"></span><span id="randomSerial"><span class="annot"><span class="annottext">randomSerial :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Serial
 </span><a href="ROC.ID.Serial.html#randomSerial"><span class="hs-identifier hs-var hs-var">randomSerial</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit -&gt; Serial
 </span><a href="ROC.ID.Serial.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span><span> </span><span class="annot"><span class="annottext">(Vector 7 Digit -&gt; Serial) -&gt; m (Vector 7 Digit) -&gt; m Serial
