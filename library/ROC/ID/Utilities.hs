@@ -4,14 +4,9 @@ module ROC.ID.Utilities where
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
-import Data.Maybe
-  ( listToMaybe )
 
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right
-
-maybeRead :: Read a => String -> Maybe a
-maybeRead = fmap fst . listToMaybe . reads
 
 maybeToEnum :: forall a . Bounded a => Enum a => Int -> Maybe a
 maybeToEnum i
