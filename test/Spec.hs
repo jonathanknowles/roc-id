@@ -25,6 +25,7 @@ import Test.QuickCheck
   , arbitraryBoundedEnum
   , genericShrink
   , property
+  , shrinkBoundedEnum
   )
 
 import qualified Data.Text as T
@@ -32,11 +33,11 @@ import qualified Data.Vector.Sized as V
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
-  shrink = genericShrink
+  shrink = shrinkBoundedEnum
 
 instance Arbitrary Gender where
   arbitrary = arbitraryBoundedEnum
-  shrink = genericShrink
+  shrink = shrinkBoundedEnum
 
 instance Arbitrary Identity where
   arbitrary = applyArbitrary3 Identity
@@ -44,7 +45,7 @@ instance Arbitrary Identity where
 
 instance Arbitrary Location where
   arbitrary = arbitraryBoundedEnum
-  shrink = genericShrink
+  shrink = shrinkBoundedEnum
 
 instance Arbitrary Serial where
   arbitrary = Serial . V.fromTuple <$> arbitrary
