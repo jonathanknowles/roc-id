@@ -8,7 +8,7 @@ module ROC.ID.Digit
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
-  ( maybeToEnum )
+  ( maybeBoundedEnum )
 import Text.Read
   ( readMaybe )
 
@@ -21,4 +21,4 @@ data Digit
 instance Show Digit where show = show . fromEnum
 
 parseDigit :: Char -> Maybe Digit
-parseDigit c = readMaybe [c] >>= maybeToEnum
+parseDigit c = readMaybe [c] >>= maybeBoundedEnum

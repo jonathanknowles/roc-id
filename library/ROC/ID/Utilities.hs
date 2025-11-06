@@ -8,8 +8,8 @@ import Control.Monad.Random.Class
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right
 
-maybeToEnum :: forall a . Bounded a => Enum a => Int -> Maybe a
-maybeToEnum i
+maybeBoundedEnum :: forall a . Bounded a => Enum a => Int -> Maybe a
+maybeBoundedEnum i
   | i < fromEnum (minBound :: a) = Nothing
   | i > fromEnum (maxBound :: a) = Nothing
   | otherwise                    = pure $ toEnum i
