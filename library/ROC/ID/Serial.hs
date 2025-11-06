@@ -7,14 +7,15 @@ module ROC.ID.Serial
   ) where
 
 import Control.Monad.Random.Class
-    ( MonadRandom (..) )
+  ( MonadRandom (..) )
 import Data.Vector.Sized
-    ( Vector )
+  ( Vector )
 import GHC.Generics
-    ( Generic )
-
+  ( Generic )
 import ROC.ID.Digit
+  ( Digit )
 import ROC.ID.Utilities
+  ( randomBoundedEnum )
 
 import qualified Data.Vector.Sized as V
 

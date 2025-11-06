@@ -16,23 +16,27 @@ module ROC.ID
   ) where
 
 import Control.Monad.Random.Class
-    ( MonadRandom (..) )
+  ( MonadRandom (..) )
 import Data.Proxy
-    ( Proxy (..) )
+  ( Proxy (..) )
 import Data.Text
-    ( Text )
+  ( Text )
 import Data.Tuple.Only
-    ( Only (..) )
+  ( Only (..) )
 import Data.Vector.Sized
-    ( Vector )
+  ( Vector )
 import GHC.Generics
-    ( Generic )
-
+  ( Generic )
 import ROC.ID.Digit
+  ( Digit (..), parseDigit )
 import ROC.ID.Gender
+  ( Gender (..), randomGender )
 import ROC.ID.Location
+  ( Location (..), parseLocation, randomLocation )
 import ROC.ID.Serial
+  ( Serial (Serial), randomSerial )
 import ROC.ID.Utilities
+  ( guard )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
