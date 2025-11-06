@@ -1,6 +1,6 @@
-{-# OPTIONS_GHC -fno-warn-orphans #-}
-
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+{- HLINT ignore "Redundant bracket" -}
 
 module Main where
 
@@ -23,8 +23,9 @@ import Test.QuickCheck
   , NonEmptyList (..)
   , applyArbitrary3
   , arbitraryBoundedEnum
-  , genericShrink
   , property
+  , shrinkBoundedEnum
+  , shrinkMap
   )
 
 import qualified Data.Text as T
@@ -32,19 +33,22 @@ import qualified Data.Vector.Sized as V
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
-  shrink = genericShrink
+  shrink = shrinkBoundedEnum
 
 instance Arbitrary Gender where
   arbitrary = arbitraryBoundedEnum
-  shrink = genericShrink
+  shrink = shrinkBoundedEnum
 
 instance Arbitrary Identity where
   arbitrary = applyArbitrary3 Identity
-  shrink = genericShrink
+  shrink = shrinkMap unTuple toTuple
+    where
+      toTuple (Identity g l s) = (g, l, s)
+      unTuple (g, l, s) = (Identity g l s)
 
 instance Arbitrary Location where
   arbitrary = arbitraryBoundedEnum
-  shrink = genericShrink
+  shrink = shrinkBoundedEnum
 
 instance Arbitrary Serial where
   arbitrary = Serial . V.fromTuple <$> arbitrary
