@@ -9,14 +9,15 @@ module ROC.ID.Gender
   ) where
 
 import Control.Monad.Random.Class
-    ( MonadRandom (..) )
+  ( MonadRandom (..) )
 import Data.Text
-    ( Text )
+  ( Text )
 import GHC.Generics
-    ( Generic )
-
+  ( Generic )
 import ROC.ID.Language
+  ( Language (..) )
 import ROC.ID.Utilities
+  ( randomBoundedEnum )
 
 -- | A person's gender, encodable within an ROC identification number.
 --
@@ -44,4 +45,3 @@ printGenderChinese = \case
 --
 randomGender :: MonadRandom m => m Gender
 randomGender = randomBoundedEnum
-

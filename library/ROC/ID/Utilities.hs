@@ -3,9 +3,9 @@
 module ROC.ID.Utilities where
 
 import Control.Monad.Random.Class
-    ( MonadRandom (..) )
+  ( MonadRandom (..) )
 import Data.Maybe
-    ( listToMaybe )
+  ( listToMaybe )
 
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right

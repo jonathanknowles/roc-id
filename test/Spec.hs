@@ -4,24 +4,28 @@
 
 module Main where
 
-import ROC.ID
-import ROC.ID.Digit
-import ROC.ID.Gender
-import ROC.ID.Location
-import ROC.ID.Serial
-
 import Data.Char
-    ( intToDigit )
+  ( intToDigit )
+import ROC.ID
+  ( Identity (Identity), ParseError (..), identityChecksum, parseIdentity )
+import ROC.ID.Digit
+  ( Digit )
+import ROC.ID.Gender
+  ( Gender )
+import ROC.ID.Location
+  ( Location )
+import ROC.ID.Serial
+  ( Serial (..) )
 import Test.Hspec
-    ( describe, hspec, it, shouldBe )
+  ( describe, hspec, it, shouldBe )
 import Test.QuickCheck
-    ( Arbitrary (..)
-    , NonEmptyList (..)
-    , applyArbitrary3
-    , arbitraryBoundedEnum
-    , genericShrink
-    , property
-    )
+  ( Arbitrary (..)
+  , NonEmptyList (..)
+  , applyArbitrary3
+  , arbitraryBoundedEnum
+  , genericShrink
+  , property
+  )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
@@ -85,4 +89,3 @@ main = hspec $
               ((c `mod` 9) + fromEnum (identityChecksum i) + 1) `mod` 10
         let invalidIdentity = T.pack $ take 9 (show i) <> [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
-

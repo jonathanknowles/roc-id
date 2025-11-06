@@ -16,23 +16,27 @@ module ROC.ID
   ) where
 
 import Control.Monad.Random.Class
-    ( MonadRandom (..) )
+  ( MonadRandom (..) )
 import Data.Proxy
-    ( Proxy (..) )
+  ( Proxy (..) )
 import Data.Text
-    ( Text )
+  ( Text )
 import Data.Tuple.Only
-    ( Only (..) )
+  ( Only (..) )
 import Data.Vector.Sized
-    ( Vector )
+  ( Vector )
 import GHC.Generics
-    ( Generic )
-
+  ( Generic )
 import ROC.ID.Digit
+  ( Digit (..), parseDigit )
 import ROC.ID.Gender
+  ( Gender (..), randomGender )
 import ROC.ID.Location
+  ( Location (..), parseLocation, randomLocation )
 import ROC.ID.Serial
+  ( Serial (Serial), randomSerial )
 import ROC.ID.Utilities
+  ( guard )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
@@ -49,11 +53,11 @@ import qualified Data.Vector.Sized as V
 -- number.
 --
 data Identity = Identity
-  { identityGender   :: Gender
+  { identityGender :: Gender
   -- ^ The gender of the person to whom this ID number belongs.
   , identityLocation :: Location
   -- ^ The location in which the person first registered for an ID card.
-  , identitySerial   :: Serial
+  , identitySerial :: Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
@@ -69,8 +73,9 @@ instance Show Identity where
 identityChecksum :: Identity -> Digit
 identityChecksum Identity {..} = toEnum $ negate total `mod` 10
   where
-    total = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
-          + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
+    total
+      = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
+      + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
     g = index identityGender
     p = index identityLocation
     s = index identitySerial
@@ -154,7 +159,8 @@ parseSerial a = Serial <$> traverse parseDigit a
 -- | Generate a random 'Identity'.
 --
 randomIdentity :: MonadRandom m => m Identity
-randomIdentity = Identity <$> randomGender
-                          <*> randomLocation
-                          <*> randomSerial
-
+randomIdentity =
+  Identity
+    <$> randomGender
+    <*> randomLocation
+    <*> randomSerial

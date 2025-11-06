@@ -10,14 +10,15 @@ module ROC.ID.Location
   ) where
 
 import Control.Monad.Random.Class
-    ( MonadRandom (..) )
+  ( MonadRandom (..) )
 import Data.Text
-    ( Text )
+  ( Text )
 import GHC.Generics
-    ( Generic )
+  ( Generic )
 import ROC.ID.Language
-    ( Language (..) )
+  ( Language (..) )
 import ROC.ID.Utilities
+  ( maybeRead, randomBoundedEnum )
 
 -- | A location, encodable within an ROC identification number.
 --
@@ -132,4 +133,3 @@ printLocationEnglish = \case
 --
 randomLocation :: MonadRandom m => m Location
 randomLocation = randomBoundedEnum
-
