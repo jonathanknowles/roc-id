@@ -157,4 +157,3 @@ randomIdentity :: MonadRandom m => m Identity
 randomIdentity = Identity <$> randomGender
                           <*> randomLocation
                           <*> randomSerial
-

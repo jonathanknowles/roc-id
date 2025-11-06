@@ -44,4 +44,3 @@ printGenderChinese = \case
 --
 randomGender :: MonadRandom m => m Gender
 randomGender = randomBoundedEnum
-

@@ -85,4 +85,3 @@ main = hspec $
               ((c `mod` 9) + fromEnum (identityChecksum i) + 1) `mod` 10
         let invalidIdentity = T.pack $ take 9 (show i) <> [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
-

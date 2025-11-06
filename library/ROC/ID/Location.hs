@@ -132,4 +132,3 @@ printLocationEnglish = \case
 --
 randomLocation :: MonadRandom m => m Location
 randomLocation = randomBoundedEnum
-

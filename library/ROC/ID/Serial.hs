@@ -31,4 +31,3 @@ newtype Serial = Serial (Vector 7 Digit)
 --
 randomSerial :: MonadRandom m => m Serial
 randomSerial = Serial <$> V.replicateM randomBoundedEnum
-

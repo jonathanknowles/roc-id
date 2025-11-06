@@ -20,4 +20,3 @@ instance Show Digit where show = show . fromEnum
 
 parseDigit :: Char -> Maybe Digit
 parseDigit c = maybeRead [c] >>= maybeToEnum
-
