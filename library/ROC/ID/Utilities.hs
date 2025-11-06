@@ -14,6 +14,6 @@ maybeBoundedEnum i
   | i > fromEnum (maxBound :: a) = Nothing
   | otherwise                    = pure $ toEnum i
 
-randomBoundedEnum :: forall a m. (MonadRandom m, Bounded a, Enum a) => m a
+randomBoundedEnum :: forall m a. (MonadRandom m, Bounded a, Enum a) => m a
 randomBoundedEnum =
   toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
