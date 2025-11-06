@@ -8,7 +8,9 @@ module ROC.ID.Digit
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
-  ( maybeRead, maybeToEnum )
+  ( maybeBoundedEnum )
+import Text.Read
+  ( readMaybe )
 
 -- | Represents a single decimal digit in the range 0 to 9.
 --
@@ -19,4 +21,4 @@ data Digit
 instance Show Digit where show = show . fromEnum
 
 parseDigit :: Char -> Maybe Digit
-parseDigit c = maybeRead [c] >>= maybeToEnum
+parseDigit c = readMaybe [c] >>= maybeBoundedEnum

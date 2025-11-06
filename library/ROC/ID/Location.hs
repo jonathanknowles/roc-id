@@ -18,7 +18,9 @@ import GHC.Generics
 import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Utilities
-  ( maybeRead, randomBoundedEnum )
+  ( randomBoundedEnum )
+import Text.Read
+  ( readMaybe )
 
 -- | A location, encodable within an ROC identification number.
 --
@@ -63,7 +65,7 @@ data Location
 -- character.
 --
 parseLocation :: Char -> Maybe Location
-parseLocation c = maybeRead [c]
+parseLocation c = readMaybe [c]
 
 -- | Pretty-print the specified 'Location'.
 printLocation :: Language -> Location -> Text
