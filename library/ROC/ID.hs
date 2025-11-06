@@ -51,11 +51,11 @@ import qualified Data.Vector.Sized as V
 -- number.
 --
 data Identity = Identity
-  { identityGender :: Gender
+  { identityGender :: !Gender
   -- ^ The gender of the person to whom this ID number belongs.
-  , identityLocation :: Location
+  , identityLocation :: !Location
   -- ^ The location in which the person first registered for an ID card.
-  , identitySerial :: Serial
+  , identitySerial :: !Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
