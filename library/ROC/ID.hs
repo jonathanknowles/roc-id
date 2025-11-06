@@ -21,8 +21,6 @@ import Data.Proxy
   ( Proxy (..) )
 import Data.Text
   ( Text )
-import Data.Tuple.Only
-  ( Only (..) )
 import Data.Vector.Sized
   ( Vector )
 import GHC.Generics
@@ -87,7 +85,7 @@ class ToDigits t n | t -> n where
   toDigits :: t -> Vector n Digit
 
 instance ToDigits Gender 1 where
-  toDigits = V.fromTuple . Only . \case
+  toDigits = V.singleton . \case
     Male   -> D1
     Female -> D2
 
