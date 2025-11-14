@@ -29,7 +29,7 @@ import Test.QuickCheck
   , shrinkMap
   )
 import Test.QuickCheck.Classes
-  ( eqLaws, ordLaws, showLaws )
+  ( eqLaws, ordLaws, showLaws, showReadLaws )
 import Test.QuickCheck.Classes.Hspec
   ( testLawsMany )
 
@@ -68,6 +68,7 @@ main = hspec $ do
         [ eqLaws
         , ordLaws
         , showLaws
+        , showReadLaws
         ]
 
   describe "parseIdentity" $ do

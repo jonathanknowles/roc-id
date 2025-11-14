@@ -59,6 +59,14 @@ data Identity = Identity
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
+instance Read Identity where
+  readsPrec _ s = concatMap tryParse (lex s)
+    where
+      tryParse (token, rest) =
+        case parseIdentity (T.pack token) of
+          Left _  -> []
+          Right x -> [(x, rest)]
+
 instance Show Identity where
   show i@Identity {..} = ""
     <> show identityLocation
