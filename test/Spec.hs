@@ -1,4 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {- HLINT ignore "Redundant bracket" -}
 
@@ -27,6 +28,10 @@ import Test.QuickCheck
   , shrinkBoundedEnum
   , shrinkMap
   )
+import Test.QuickCheck.Classes
+  ( eqLaws, ordLaws, showLaws )
+import Test.QuickCheck.Classes.Hspec
+  ( testLawsMany )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
@@ -55,7 +60,15 @@ instance Arbitrary Serial where
   shrink (Serial v) = Serial <$> traverse shrink v
 
 main :: IO ()
-main = hspec $
+main = hspec $ do
+
+  describe "Class laws" $ do
+
+    testLawsMany @Identity
+        [ eqLaws
+        , ordLaws
+        , showLaws
+        ]
 
   describe "parseIdentity" $ do
 
