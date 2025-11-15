@@ -4,7 +4,7 @@
 
 module ROC.ID.Gender
   ( Gender (..)
-  , printGender
+  , toText
   , generate
   ) where
 
@@ -26,18 +26,18 @@ data Gender = Male | Female
 
 -- | Pretty-print the specified 'Gender'.
 --
-printGender :: Language -> Gender -> Text
-printGender = \case
-  English -> printGenderEnglish
-  Chinese -> printGenderChinese
+toText :: Language -> Gender -> Text
+toText = \case
+  English -> toTextEnglish
+  Chinese -> toTextChinese
 
-printGenderEnglish :: Gender -> Text
-printGenderEnglish = \case
+toTextEnglish :: Gender -> Text
+toTextEnglish = \case
   Male   -> "Male"
   Female -> "Female"
 
-printGenderChinese :: Gender -> Text
-printGenderChinese = \case
+toTextChinese :: Gender -> Text
+toTextChinese = \case
   Male   -> "男性"
   Female -> "女性"
 
