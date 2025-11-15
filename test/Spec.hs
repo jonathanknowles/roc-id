@@ -114,11 +114,8 @@ main = hspec $ do
               T.take 9 (printIdentity i) <> T.pack [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
 
--- Produces a textual representation of an 'Identity' that can be parsed with
--- the 'parseIdentity' function.
+-- Produces an unquoted textual representation of an 'Identity' that can be
+-- parsed with the 'parseIdentity' function.
 --
 printIdentity :: Identity -> Text
-printIdentity i = T.pack $ showIdentityUnquoted i
-
-showIdentityUnquoted :: Identity -> String
-showIdentityUnquoted i = read $ show i
+printIdentity i = T.pack $ read $ show i
