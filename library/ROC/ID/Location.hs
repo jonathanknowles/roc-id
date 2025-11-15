@@ -4,7 +4,7 @@
 
 module ROC.ID.Location
   ( Location (..)
-  , parseLocation
+  , fromChar
   , printLocation
   , generate
   ) where
@@ -26,7 +26,7 @@ import Text.Read
 --
 -- To generate the name of a 'Location', use the 'printLocation' function.
 --
--- To parse a 'Location', use the 'parseLocation' function.
+-- To parse a 'Location', use the 'fromChar' function.
 --
 -- To generate a random 'Location', use the 'generate' function.
 --
@@ -64,8 +64,8 @@ data Location
 -- Returns 'Nothing' if the specified character is not an uppercase alphabetic
 -- character.
 --
-parseLocation :: Char -> Maybe Location
-parseLocation c = readMaybe [c]
+fromChar :: Char -> Maybe Location
+fromChar c = readMaybe [c]
 
 -- | Pretty-print the specified 'Location'.
 printLocation :: Language -> Location -> Text

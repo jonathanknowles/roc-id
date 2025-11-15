@@ -26,11 +26,11 @@ import Data.Vector.Sized
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
-  ( Digit (..), parseDigit )
+  ( Digit (..) )
 import ROC.ID.Gender
   ( Gender (..) )
 import ROC.ID.Location
-  ( Location (..), parseLocation )
+  ( Location (..) )
 import ROC.ID.Serial
   ( Serial (Serial) )
 import ROC.ID.Utilities
@@ -38,6 +38,7 @@ import ROC.ID.Utilities
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
+import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Serial as Serial
@@ -132,6 +133,9 @@ parseIdentity t = do
     c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
     if c == checksum i then pure i else Left InvalidChecksum
   where
+    parseDigit = Digit.fromChar
+    parseLocation = Location.fromChar
+
     readSerial   = V.slice (Proxy :: Proxy 2)
     readLocation = flip V.index 0
     readGender   = flip V.index 1
@@ -163,7 +167,7 @@ parseGender = \case
   _   -> Nothing
 
 parseSerial :: Vector 7 Char -> Maybe Serial
-parseSerial a = Serial <$> traverse parseDigit a
+parseSerial a = Serial <$> traverse Digit.fromChar a
 
 -- | Generate a random 'Identity'.
 --

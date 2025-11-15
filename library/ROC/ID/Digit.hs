@@ -2,7 +2,7 @@
 
 module ROC.ID.Digit
   ( Digit (..)
-  , parseDigit
+  , fromChar
   ) where
 
 import GHC.Generics
@@ -20,5 +20,5 @@ data Digit
 
 instance Show Digit where show = show . fromEnum
 
-parseDigit :: Char -> Maybe Digit
-parseDigit c = readMaybe [c] >>= maybeBoundedEnum
+fromChar :: Char -> Maybe Digit
+fromChar c = readMaybe [c] >>= maybeBoundedEnum
