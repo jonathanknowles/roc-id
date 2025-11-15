@@ -10,7 +10,7 @@ import Data.Char
 import Data.Text
   ( Text )
 import ROC.ID
-  ( Identity (Identity), ParseError (..), parseIdentity )
+  ( Identity (Identity) )
 import ROC.ID.Digit
   ( Digit )
 import ROC.ID.Gender
@@ -74,22 +74,22 @@ main = hspec $ do
         , showReadLaws
         ]
 
-  describe "parseIdentity" $ do
+  describe "ID.fromText" $ do
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: Identity) ->
-        parseIdentity (printIdentity i) `shouldBe` Right i
+        ID.fromText (printIdentity i) `shouldBe` Right i
 
     it "does not parse identification numbers that are too short" $
       property $ \(i :: Identity) n -> do
         let newLength = n `mod` 10
         let invalidIdentity = T.take newLength $ printIdentity i
-        parseIdentity invalidIdentity `shouldBe` Left InvalidLength
+        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
 
     it "does not parse identification numbers that are too long" $
       property $ \(i :: Identity) (NonEmpty s) -> do
         let invalidIdentity = printIdentity i <> T.pack s
-        parseIdentity invalidIdentity `shouldBe` Left InvalidLength
+        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
 
     it "does not parse identification numbers with invalid gender codes" $
       property $ \(i :: Identity) (c :: Int) -> do
@@ -98,14 +98,14 @@ main = hspec $ do
               T.take 1 (printIdentity i) <>
               T.pack [invalidGenderCode] <>
               T.drop 2 (printIdentity i)
-        parseIdentity invalidIdentity `shouldBe` Left InvalidGender
+        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidGender
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
         let invalidIdentity =
               T.cons invalidLocationCode $ T.drop 1 $ printIdentity i
-        parseIdentity invalidIdentity `shouldBe` Left InvalidLocation
+        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLocation
 
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do
@@ -113,10 +113,10 @@ main = hspec $ do
               ((c `mod` 9) + fromEnum (ID.checksum i) + 1) `mod` 10
         let invalidIdentity =
               T.take 9 (printIdentity i) <> T.pack [invalidChecksum]
-        parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
+        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidChecksum
 
 -- Produces an unquoted textual representation of an 'Identity' that can be
--- parsed with the 'parseIdentity' function.
+-- parsed with the 'ID.fromText' function.
 --
 printIdentity :: Identity -> Text
 printIdentity i = T.pack $ read $ show i

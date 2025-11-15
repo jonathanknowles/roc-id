@@ -10,8 +10,8 @@
 module ROC.ID
   ( Identity (..)
   , checksum
-  , parseIdentity
-  , ParseError (..)
+  , fromText
+  , FromTextError (..)
   , generate
   ) where
 
@@ -67,7 +67,7 @@ instance Read Identity where
   readsPrec _ s = do
     (token, remainder) <- lex s
     (unquotedString, "") <- reads token
-    case parseIdentity (T.pack unquotedString) of
+    case fromText (T.pack unquotedString) of
       Right i -> pure (i, remainder)
       Left _ -> []
 
@@ -124,8 +124,8 @@ instance ToDigits Serial 7 where
 --
 -- The input must be of the form __@A123456789@__.
 --
-parseIdentity :: Text -> Either ParseError Identity
-parseIdentity t = do
+fromText :: Text -> Either FromTextError Identity
+fromText t = do
     v <-              guard InvalidLength   (parseRaw                     t)
     i <- Identity <$> guard InvalidGender   (parseGender   $ readGender   v)
                   <*> guard InvalidLocation (parseLocation $ readLocation v)
@@ -141,10 +141,10 @@ parseIdentity t = do
     readGender   = flip V.index 1
     readChecksum = flip V.index 9
 
--- | An error produced when parsing an 'Identity' with the 'parseIdentity'
+-- | An error produced when parsing an 'Identity' with the 'fromText'
 --   function.
 --
-data ParseError
+data FromTextError
   = InvalidLength
     -- ^ The input was either too short or too long.
   | InvalidGender
