@@ -1,3 +1,8 @@
+# Unreleased
+
+- Updated the `Show` instance for `Identity` to produce a quoted string literal.
+- Added a corresponding `Read` instance for `Identity`.
+
 # 0.2.0.6
 
 - Revised version bounds of dependencies.
