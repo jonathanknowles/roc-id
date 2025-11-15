@@ -1,4 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {- HLINT ignore "Redundant bracket" -}
 
@@ -6,6 +7,8 @@ module Main where
 
 import Data.Char
   ( intToDigit )
+import Data.Text
+  ( Text )
 import ROC.ID
   ( Identity (Identity), ParseError (..), identityChecksum, parseIdentity )
 import ROC.ID.Digit
@@ -27,6 +30,10 @@ import Test.QuickCheck
   , shrinkBoundedEnum
   , shrinkMap
   )
+import Test.QuickCheck.Classes
+  ( eqLaws, ordLaws, showLaws, showReadLaws )
+import Test.QuickCheck.Classes.Hspec
+  ( testLawsMany )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
@@ -55,41 +62,60 @@ instance Arbitrary Serial where
   shrink (Serial v) = Serial <$> traverse shrink v
 
 main :: IO ()
-main = hspec $
+main = hspec $ do
+
+  describe "Class laws" $ do
+
+    testLawsMany @Identity
+        [ eqLaws
+        , ordLaws
+        , showLaws
+        , showReadLaws
+        ]
 
   describe "parseIdentity" $ do
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: Identity) ->
-        parseIdentity (T.pack $ show i) `shouldBe` Right i
+        parseIdentity (printIdentity i) `shouldBe` Right i
 
     it "does not parse identification numbers that are too short" $
       property $ \(i :: Identity) n -> do
         let newLength = n `mod` 10
-        let invalidIdentity = T.pack $ take newLength $ show i
+        let invalidIdentity = T.take newLength $ printIdentity i
         parseIdentity invalidIdentity `shouldBe` Left InvalidLength
 
     it "does not parse identification numbers that are too long" $
       property $ \(i :: Identity) (NonEmpty s) -> do
-        let invalidIdentity = T.pack $ show i <> s
+        let invalidIdentity = printIdentity i <> T.pack s
         parseIdentity invalidIdentity `shouldBe` Left InvalidLength
 
     it "does not parse identification numbers with invalid gender codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidGenderCode = intToDigit $ ((c `mod` 8) + 3) `mod` 10
-        let invalidIdentity = T.pack $
-              take 1 (show i) <> [invalidGenderCode] <> drop 2 (show i)
+        let invalidIdentity =
+              T.take 1 (printIdentity i) <>
+              T.pack [invalidGenderCode] <>
+              T.drop 2 (printIdentity i)
         parseIdentity invalidIdentity `shouldBe` Left InvalidGender
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
-        let invalidIdentity = T.pack $ invalidLocationCode : drop 1 (show i)
+        let invalidIdentity =
+              T.cons invalidLocationCode $ T.drop 1 $ printIdentity i
         parseIdentity invalidIdentity `shouldBe` Left InvalidLocation
 
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidChecksum = intToDigit $
               ((c `mod` 9) + fromEnum (identityChecksum i) + 1) `mod` 10
-        let invalidIdentity = T.pack $ take 9 (show i) <> [invalidChecksum]
+        let invalidIdentity =
+              T.take 9 (printIdentity i) <> T.pack [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
+
+-- Produces an unquoted textual representation of an 'Identity' that can be
+-- parsed with the 'parseIdentity' function.
+--
+printIdentity :: Identity -> Text
+printIdentity i = T.pack $ read $ show i

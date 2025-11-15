@@ -38,6 +38,8 @@ common dependency-MonadRandom
     build-depends:MonadRandom               >= 0.5.1.1      && < 0.7
 common dependency-QuickCheck
     build-depends:QuickCheck                >= 2.13.2       && < 2.18
+common dependency-quickcheck-classes
+    build-depends:quickcheck-classes        >= 0.6.5.0      && < 0.7
 common dependency-text
     build-depends:text                      >= 1.2.3.1      && < 2.2
 common dependency-vector-sized
@@ -73,10 +75,13 @@ test-suite roc-id-test
     , dependency-hspec
     , dependency-MonadRandom
     , dependency-QuickCheck
+    , dependency-quickcheck-classes
     , dependency-text
     , dependency-vector-sized
   type: exitcode-stdio-1.0
   main-is: Spec.hs
+  other-modules:
+      Test.QuickCheck.Classes.Hspec
   hs-source-dirs:
       test
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
