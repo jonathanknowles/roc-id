@@ -60,15 +60,15 @@ data Identity = Identity
   } deriving (Eq, Generic, Ord)
 
 instance Read Identity where
-  readsPrec _ s = concatMap tryParse (lex s)
-    where
-      tryParse (token, rest) =
-        case parseIdentity (T.pack token) of
-          Left _  -> []
-          Right x -> [(x, rest)]
+  readsPrec _ s = do
+    (token, remainder) <- lex s
+    (unquotedString, "") <- reads token
+    case parseIdentity (T.pack unquotedString) of
+      Right i -> pure (i, remainder)
+      Left _ -> []
 
 instance Show Identity where
-  show i@Identity {..} = ""
+  show i@Identity {..} = show $ ""
     <> show identityLocation
     <> foldMap show (toDigits identityGender)
     <> foldMap show (toDigits identitySerial)

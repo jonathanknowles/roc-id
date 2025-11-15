@@ -75,35 +75,42 @@ main = hspec $ do
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: Identity) ->
-        parseIdentity (T.pack $ show i) `shouldBe` Right i
+        parseIdentity (T.pack $ showIdentityUnquoted i) `shouldBe` Right i
 
     it "does not parse identification numbers that are too short" $
       property $ \(i :: Identity) n -> do
         let newLength = n `mod` 10
-        let invalidIdentity = T.pack $ take newLength $ show i
+        let invalidIdentity = T.pack $ take newLength $ showIdentityUnquoted i
         parseIdentity invalidIdentity `shouldBe` Left InvalidLength
 
     it "does not parse identification numbers that are too long" $
       property $ \(i :: Identity) (NonEmpty s) -> do
-        let invalidIdentity = T.pack $ show i <> s
+        let invalidIdentity = T.pack $ showIdentityUnquoted i <> s
         parseIdentity invalidIdentity `shouldBe` Left InvalidLength
 
     it "does not parse identification numbers with invalid gender codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidGenderCode = intToDigit $ ((c `mod` 8) + 3) `mod` 10
-        let invalidIdentity = T.pack $
-              take 1 (show i) <> [invalidGenderCode] <> drop 2 (show i)
+        let invalidIdentity =
+              T.pack $
+              take 1 (showIdentityUnquoted i) <> [invalidGenderCode] <>
+              drop 2 (showIdentityUnquoted i)
         parseIdentity invalidIdentity `shouldBe` Left InvalidGender
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
-        let invalidIdentity = T.pack $ invalidLocationCode : drop 1 (show i)
+        let invalidIdentity =
+              T.pack $ invalidLocationCode : drop 1 (showIdentityUnquoted i)
         parseIdentity invalidIdentity `shouldBe` Left InvalidLocation
 
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidChecksum = intToDigit $
               ((c `mod` 9) + fromEnum (identityChecksum i) + 1) `mod` 10
-        let invalidIdentity = T.pack $ take 9 (show i) <> [invalidChecksum]
+        let invalidIdentity =
+              T.pack $ take 9 (showIdentityUnquoted i) <> [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum
+
+showIdentityUnquoted :: Identity -> String
+showIdentityUnquoted i = read $ show i
