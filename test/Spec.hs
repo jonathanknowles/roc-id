@@ -10,7 +10,7 @@ import Data.Char
 import Data.Text
   ( Text )
 import ROC.ID
-  ( Identity (Identity), ParseError (..), identityChecksum, parseIdentity )
+  ( Identity (Identity), ParseError (..), parseIdentity )
 import ROC.ID.Digit
   ( Digit )
 import ROC.ID.Gender
@@ -37,6 +37,7 @@ import Test.QuickCheck.Classes.Hspec
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
+import qualified ROC.ID as ID
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
@@ -109,7 +110,7 @@ main = hspec $ do
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidChecksum = intToDigit $
-              ((c `mod` 9) + fromEnum (identityChecksum i) + 1) `mod` 10
+              ((c `mod` 9) + fromEnum (ID.checksum i) + 1) `mod` 10
         let invalidIdentity =
               T.take 9 (printIdentity i) <> T.pack [invalidChecksum]
         parseIdentity invalidIdentity `shouldBe` Left InvalidChecksum

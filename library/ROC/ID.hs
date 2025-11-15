@@ -9,7 +9,7 @@
 
 module ROC.ID
   ( Identity (..)
-  , identityChecksum
+  , checksum
   , parseIdentity
   , ParseError (..)
   , generate
@@ -75,12 +75,12 @@ instance Show Identity where
     <> show identityLocation
     <> foldMap show (toDigits identityGender)
     <> foldMap show (toDigits identitySerial)
-    <> show (identityChecksum i)
+    <> show (checksum i)
 
 -- | Calculate the checksum of the specified 'Identity'.
 --
-identityChecksum :: Identity -> Digit
-identityChecksum Identity {..} = toEnum $ negate total `mod` 10
+checksum :: Identity -> Digit
+checksum Identity {..} = toEnum $ negate total `mod` 10
   where
     total
       = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
@@ -130,7 +130,7 @@ parseIdentity t = do
                   <*> guard InvalidLocation (parseLocation $ readLocation v)
                   <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
     c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
-    if c == identityChecksum i then pure i else Left InvalidChecksum
+    if c == checksum i then pure i else Left InvalidChecksum
   where
     readSerial   = V.slice (Proxy :: Proxy 2)
     readLocation = flip V.index 0
