@@ -12,7 +12,7 @@ module ROC.ID
   , identityChecksum
   , parseIdentity
   , ParseError (..)
-  , randomIdentity
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -28,16 +28,19 @@ import GHC.Generics
 import ROC.ID.Digit
   ( Digit (..), parseDigit )
 import ROC.ID.Gender
-  ( Gender (..), randomGender )
+  ( Gender (..) )
 import ROC.ID.Location
-  ( Location (..), parseLocation, randomLocation )
+  ( Location (..), parseLocation )
 import ROC.ID.Serial
-  ( Serial (Serial), randomSerial )
+  ( Serial (Serial) )
 import ROC.ID.Utilities
   ( guard )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
+import qualified ROC.ID.Gender as Gender
+import qualified ROC.ID.Location as Location
+import qualified ROC.ID.Serial as Serial
 
 -- Types:
 
@@ -164,9 +167,9 @@ parseSerial a = Serial <$> traverse parseDigit a
 
 -- | Generate a random 'Identity'.
 --
-randomIdentity :: MonadRandom m => m Identity
-randomIdentity =
+generate :: MonadRandom m => m Identity
+generate =
   Identity
-    <$> randomGender
-    <*> randomLocation
-    <*> randomSerial
+    <$> Gender.generate
+    <*> Location.generate
+    <*> Serial.generate

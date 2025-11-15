@@ -5,7 +5,7 @@
 module ROC.ID.Gender
   ( Gender (..)
   , printGender
-  , randomGender
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -43,5 +43,5 @@ printGenderChinese = \case
 
 -- | Generate a random 'Gender'.
 --
-randomGender :: MonadRandom m => m Gender
-randomGender = randomBoundedEnum
+generate :: MonadRandom m => m Gender
+generate = randomBoundedEnum

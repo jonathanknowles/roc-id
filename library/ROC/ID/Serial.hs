@@ -3,7 +3,7 @@
 
 module ROC.ID.Serial
   ( Serial (..)
-  , randomSerial
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -23,12 +23,12 @@ import qualified Data.Vector.Sized as V
 --
 -- A serial number is unique for a gender and location.
 --
--- To generate a random 'Serial' number, use the 'randomSerial' function.
+-- To generate a random 'Serial' number, use the 'generate' function.
 --
 newtype Serial = Serial (Vector 7 Digit)
   deriving (Eq, Generic, Ord, Show)
 
 -- | Generate a random 'Serial' number.
 --
-randomSerial :: MonadRandom m => m Serial
-randomSerial = Serial <$> V.replicateM randomBoundedEnum
+generate :: MonadRandom m => m Serial
+generate = Serial <$> V.replicateM randomBoundedEnum

@@ -6,7 +6,7 @@ module ROC.ID.Location
   ( Location (..)
   , parseLocation
   , printLocation
-  , randomLocation
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -28,7 +28,7 @@ import Text.Read
 --
 -- To parse a 'Location', use the 'parseLocation' function.
 --
--- To generate a random 'Location', use the 'randomLocation' function.
+-- To generate a random 'Location', use the 'generate' function.
 --
 data Location
   = A -- ^ 臺北市 Taipei City
@@ -133,5 +133,5 @@ printLocationEnglish = \case
 
 -- | Generate a random 'Location'.
 --
-randomLocation :: MonadRandom m => m Location
-randomLocation = randomBoundedEnum
+generate :: MonadRandom m => m Location
+generate = randomBoundedEnum
