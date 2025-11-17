@@ -3,16 +3,16 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module ROC.ID
   ( Identity (..)
-  , identityChecksum
-  , parseIdentity
-  , ParseError (..)
-  , randomIdentity
+  , checksum
+  , fromText
+  , FromTextError (..)
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -26,18 +26,22 @@ import Data.Vector.Sized
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
-  ( Digit (..), parseDigit )
+  ( Digit (..) )
 import ROC.ID.Gender
-  ( Gender (..), randomGender )
+  ( Gender (..) )
 import ROC.ID.Location
-  ( Location (..), parseLocation, randomLocation )
+  ( Location (..) )
 import ROC.ID.Serial
-  ( Serial (Serial), randomSerial )
+  ( Serial (Serial) )
 import ROC.ID.Utilities
   ( guard )
 
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
+import qualified ROC.ID.Digit as Digit
+import qualified ROC.ID.Gender as Gender
+import qualified ROC.ID.Location as Location
+import qualified ROC.ID.Serial as Serial
 
 -- Types:
 
@@ -51,11 +55,11 @@ import qualified Data.Vector.Sized as V
 -- number.
 --
 data Identity = Identity
-  { identityGender :: !Gender
+  { gender :: !Gender
   -- ^ The gender of the person to whom this ID number belongs.
-  , identityLocation :: !Location
+  , location :: !Location
   -- ^ The location in which the person first registered for an ID card.
-  , identitySerial :: !Serial
+  , serial :: !Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
@@ -63,28 +67,29 @@ instance Read Identity where
   readsPrec _ s = do
     (token, remainder) <- lex s
     (unquotedString, "") <- reads token
-    case parseIdentity (T.pack unquotedString) of
+    case fromText (T.pack unquotedString) of
       Right i -> pure (i, remainder)
       Left _ -> []
 
 instance Show Identity where
-  show i@Identity {..} = show $ ""
-    <> show identityLocation
-    <> foldMap show (toDigits identityGender)
-    <> foldMap show (toDigits identitySerial)
-    <> show (identityChecksum i)
+  show i@Identity {gender, location, serial} = show $ ""
+    <> show location
+    <> foldMap show (toDigits gender)
+    <> foldMap show (toDigits serial)
+    <> show (checksum i)
 
 -- | Calculate the checksum of the specified 'Identity'.
 --
-identityChecksum :: Identity -> Digit
-identityChecksum Identity {..} = toEnum $ negate total `mod` 10
+checksum :: Identity -> Digit
+checksum Identity {gender, location, serial} =
+    toEnum $ negate total `mod` 10
   where
     total
       = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
       + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
-    g = index identityGender
-    p = index identityLocation
-    s = index identitySerial
+    g = index gender
+    p = index location
+    s = index serial
     index x = fromEnum . V.index e
       where
         e = toDigits x
@@ -120,24 +125,49 @@ instance ToDigits Serial 7 where
 --
 -- The input must be of the form __@A123456789@__.
 --
-parseIdentity :: Text -> Either ParseError Identity
-parseIdentity t = do
+fromText :: Text -> Either FromTextError Identity
+fromText t = do
     v <-              guard InvalidLength   (parseRaw                     t)
     i <- Identity <$> guard InvalidGender   (parseGender   $ readGender   v)
                   <*> guard InvalidLocation (parseLocation $ readLocation v)
                   <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
     c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
-    if c == identityChecksum i then pure i else Left InvalidChecksum
+    if c == checksum i then pure i else Left InvalidChecksum
   where
-    readSerial   = V.slice (Proxy :: Proxy 2)
+    parseDigit :: Char -> Maybe Digit
+    parseDigit = Digit.fromChar
+
+    parseGender :: Char -> Maybe Gender
+    parseGender = \case
+      '1' -> pure Male
+      '2' -> pure Female
+      _   -> Nothing
+
+    parseLocation :: Char -> Maybe Location
+    parseLocation = Location.fromChar
+
+    parseRaw :: Text -> Maybe (Vector 10 Char)
+    parseRaw = V.fromList . T.unpack
+
+    parseSerial :: Vector 7 Char -> Maybe Serial
+    parseSerial a = Serial <$> traverse Digit.fromChar a
+
+    readSerial :: Vector 10 Char -> Vector 7 Char
+    readSerial = V.slice (Proxy :: Proxy 2)
+
+    readLocation :: Vector 10 Char -> Char
     readLocation = flip V.index 0
-    readGender   = flip V.index 1
+
+    readGender :: Vector 10 Char -> Char
+    readGender = flip V.index 1
+
+    readChecksum :: Vector 10 Char -> Char
     readChecksum = flip V.index 9
 
--- | An error produced when parsing an 'Identity' with the 'parseIdentity'
+-- | An error produced when parsing an 'Identity' with the 'fromText'
 --   function.
 --
-data ParseError
+data FromTextError
   = InvalidLength
     -- ^ The input was either too short or too long.
   | InvalidGender
@@ -150,23 +180,11 @@ data ParseError
     -- ^ The computed checksum did not match the checksum portion of the input.
   deriving (Eq, Show)
 
-parseRaw :: Text -> Maybe (Vector 10 Char)
-parseRaw  = V.fromList . T.unpack
-
-parseGender :: Char -> Maybe Gender
-parseGender = \case
-  '1' -> pure Male
-  '2' -> pure Female
-  _   -> Nothing
-
-parseSerial :: Vector 7 Char -> Maybe Serial
-parseSerial a = Serial <$> traverse parseDigit a
-
 -- | Generate a random 'Identity'.
 --
-randomIdentity :: MonadRandom m => m Identity
-randomIdentity =
+generate :: MonadRandom m => m Identity
+generate =
   Identity
-    <$> randomGender
-    <*> randomLocation
-    <*> randomSerial
+    <$> Gender.generate
+    <*> Location.generate
+    <*> Serial.generate

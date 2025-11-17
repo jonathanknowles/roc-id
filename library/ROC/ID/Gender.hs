@@ -4,8 +4,8 @@
 
 module ROC.ID.Gender
   ( Gender (..)
-  , printGender
-  , randomGender
+  , toText
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -26,22 +26,22 @@ data Gender = Male | Female
 
 -- | Pretty-print the specified 'Gender'.
 --
-printGender :: Language -> Gender -> Text
-printGender = \case
-  English -> printGenderEnglish
-  Chinese -> printGenderChinese
+toText :: Language -> Gender -> Text
+toText = \case
+  English -> toTextEnglish
+  Chinese -> toTextChinese
 
-printGenderEnglish :: Gender -> Text
-printGenderEnglish = \case
+toTextEnglish :: Gender -> Text
+toTextEnglish = \case
   Male   -> "Male"
   Female -> "Female"
 
-printGenderChinese :: Gender -> Text
-printGenderChinese = \case
+toTextChinese :: Gender -> Text
+toTextChinese = \case
   Male   -> "男性"
   Female -> "女性"
 
 -- | Generate a random 'Gender'.
 --
-randomGender :: MonadRandom m => m Gender
-randomGender = randomBoundedEnum
+generate :: MonadRandom m => m Gender
+generate = randomBoundedEnum

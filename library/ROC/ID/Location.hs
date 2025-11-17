@@ -4,9 +4,9 @@
 
 module ROC.ID.Location
   ( Location (..)
-  , parseLocation
+  , fromChar
   , printLocation
-  , randomLocation
+  , generate
   ) where
 
 import Control.Monad.Random.Class
@@ -26,9 +26,9 @@ import Text.Read
 --
 -- To generate the name of a 'Location', use the 'printLocation' function.
 --
--- To parse a 'Location', use the 'parseLocation' function.
+-- To parse a 'Location', use the 'fromChar' function.
 --
--- To generate a random 'Location', use the 'randomLocation' function.
+-- To generate a random 'Location', use the 'generate' function.
 --
 data Location
   = A -- ^ 臺北市 Taipei City
@@ -64,8 +64,8 @@ data Location
 -- Returns 'Nothing' if the specified character is not an uppercase alphabetic
 -- character.
 --
-parseLocation :: Char -> Maybe Location
-parseLocation c = readMaybe [c]
+fromChar :: Char -> Maybe Location
+fromChar c = readMaybe [c]
 
 -- | Pretty-print the specified 'Location'.
 printLocation :: Language -> Location -> Text
@@ -133,5 +133,5 @@ printLocationEnglish = \case
 
 -- | Generate a random 'Location'.
 --
-randomLocation :: MonadRandom m => m Location
-randomLocation = randomBoundedEnum
+generate :: MonadRandom m => m Location
+generate = randomBoundedEnum
