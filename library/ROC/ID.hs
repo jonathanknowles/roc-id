@@ -133,12 +133,34 @@ fromText t = do
     c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
     if c == checksum i then pure i else Left InvalidChecksum
   where
+    parseDigit :: Char -> Maybe Digit
     parseDigit = Digit.fromChar
+
+    parseGender :: Char -> Maybe Gender
+    parseGender = \case
+      '1' -> pure Male
+      '2' -> pure Female
+      _   -> Nothing
+
+    parseLocation :: Char -> Maybe Location
     parseLocation = Location.fromChar
 
-    readSerial   = V.slice (Proxy :: Proxy 2)
+    parseRaw :: Text -> Maybe (Vector 10 Char)
+    parseRaw = V.fromList . T.unpack
+
+    parseSerial :: Vector 7 Char -> Maybe Serial
+    parseSerial a = Serial <$> traverse Digit.fromChar a
+
+    readSerial :: Vector 10 Char -> Vector 7 Char
+    readSerial = V.slice (Proxy :: Proxy 2)
+
+    readLocation :: Vector 10 Char -> Char
     readLocation = flip V.index 0
-    readGender   = flip V.index 1
+
+    readGender :: Vector 10 Char -> Char
+    readGender = flip V.index 1
+
+    readChecksum :: Vector 10 Char -> Char
     readChecksum = flip V.index 9
 
 -- | An error produced when parsing an 'Identity' with the 'fromText'
@@ -156,18 +178,6 @@ data FromTextError
   | InvalidChecksum
     -- ^ The computed checksum did not match the checksum portion of the input.
   deriving (Eq, Show)
-
-parseRaw :: Text -> Maybe (Vector 10 Char)
-parseRaw  = V.fromList . T.unpack
-
-parseGender :: Char -> Maybe Gender
-parseGender = \case
-  '1' -> pure Male
-  '2' -> pure Female
-  _   -> Nothing
-
-parseSerial :: Vector 7 Char -> Maybe Serial
-parseSerial a = Serial <$> traverse Digit.fromChar a
 
 -- | Generate a random 'Identity'.
 --
