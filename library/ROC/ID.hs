@@ -3,8 +3,8 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module ROC.ID
@@ -72,7 +72,7 @@ instance Read Identity where
       Left _ -> []
 
 instance Show Identity where
-  show i@Identity {..} = show $ ""
+  show i@Identity {gender, location, serial} = show $ ""
     <> show location
     <> foldMap show (toDigits gender)
     <> foldMap show (toDigits serial)
@@ -81,7 +81,8 @@ instance Show Identity where
 -- | Calculate the checksum of the specified 'Identity'.
 --
 checksum :: Identity -> Digit
-checksum Identity {..} = toEnum $ negate total `mod` 10
+checksum Identity {gender, location, serial} =
+    toEnum $ negate total `mod` 10
   where
     total
       = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
