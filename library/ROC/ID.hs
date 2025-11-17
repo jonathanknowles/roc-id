@@ -55,11 +55,11 @@ import qualified ROC.ID.Serial as Serial
 -- number.
 --
 data Identity = Identity
-  { identityGender :: !Gender
+  { gender :: !Gender
   -- ^ The gender of the person to whom this ID number belongs.
-  , identityLocation :: !Location
+  , location :: !Location
   -- ^ The location in which the person first registered for an ID card.
-  , identitySerial :: !Serial
+  , serial :: !Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
 
@@ -73,9 +73,9 @@ instance Read Identity where
 
 instance Show Identity where
   show i@Identity {..} = show $ ""
-    <> show identityLocation
-    <> foldMap show (toDigits identityGender)
-    <> foldMap show (toDigits identitySerial)
+    <> show location
+    <> foldMap show (toDigits gender)
+    <> foldMap show (toDigits serial)
     <> show (checksum i)
 
 -- | Calculate the checksum of the specified 'Identity'.
@@ -86,9 +86,9 @@ checksum Identity {..} = toEnum $ negate total `mod` 10
     total
       = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
       + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
-    g = index identityGender
-    p = index identityLocation
-    s = index identitySerial
+    g = index gender
+    p = index location
+    s = index serial
     index x = fromEnum . V.index e
       where
         e = toDigits x
