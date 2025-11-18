@@ -60,6 +60,7 @@ library
       ROC.ID.Digit
       ROC.ID.Gender
       ROC.ID.Language
+      ROC.ID.Letter
       ROC.ID.Location
       ROC.ID.Serial
   other-modules:
