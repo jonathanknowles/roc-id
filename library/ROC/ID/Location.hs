@@ -5,7 +5,7 @@
 module ROC.ID.Location
   ( Location (..)
   , fromChar
-  , printLocation
+  , toText
   , generate
   ) where
 
@@ -24,7 +24,7 @@ import Text.Read
 
 -- | A location, encodable within an ROC identification number.
 --
--- To generate the name of a 'Location', use the 'printLocation' function.
+-- To generate the name of a 'Location', use the 'toText' function.
 --
 -- To parse a 'Location', use the 'fromChar' function.
 --
@@ -68,13 +68,13 @@ fromChar :: Char -> Maybe Location
 fromChar c = readMaybe [c]
 
 -- | Pretty-print the specified 'Location'.
-printLocation :: Language -> Location -> Text
-printLocation = \case
-  English -> printLocationEnglish
-  Chinese -> printLocationChinese
+toText :: Language -> Location -> Text
+toText = \case
+  English -> toTextEnglish
+  Chinese -> toTextChinese
 
-printLocationChinese :: Location -> Text
-printLocationChinese = \case
+toTextChinese :: Location -> Text
+toTextChinese = \case
   A -> "臺北市"
   B -> "臺中市"
   C -> "基隆市"
@@ -102,8 +102,8 @@ printLocationChinese = \case
   Y -> "陽明山"
   Z -> "連江縣"
 
-printLocationEnglish :: Location -> Text
-printLocationEnglish = \case
+toTextEnglish :: Location -> Text
+toTextEnglish = \case
   A -> "Taipei City"
   B -> "Taichung City"
   C -> "Keelung City"
