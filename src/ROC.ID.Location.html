@@ -5,7 +5,7 @@
 </span><span id="line-5"></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Location.html"><span class="hs-identifier">ROC.ID.Location</span></a></span><span>
 </span><span id="line-6"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier">Location</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
 </span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#fromChar"><span class="hs-identifier">fromChar</span></a></span><span>
-</span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#printLocation"><span class="hs-identifier">printLocation</span></a></span><span>
+</span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#toText"><span class="hs-identifier">toText</span></a></span><span>
 </span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#generate"><span class="hs-identifier">generate</span></a></span><span>
 </span><span id="line-10"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
 </span><span id="line-11"></span><span>
@@ -24,7 +24,7 @@
 </span><span id="line-24"></span><span>
 </span><span id="line-25"></span><span class="hs-comment">-- | A location, encodable within an ROC identification number.</span><span>
 </span><span id="line-26"></span><span class="hs-comment">--</span><span>
-</span><span id="line-27"></span><span class="hs-comment">-- To generate the name of a 'Location', use the 'printLocation' function.</span><span>
+</span><span id="line-27"></span><span class="hs-comment">-- To generate the name of a 'Location', use the 'toText' function.</span><span>
 </span><span id="line-28"></span><span class="hs-comment">--</span><span>
 </span><span id="line-29"></span><span class="hs-comment">-- To parse a 'Location', use the 'fromChar' function.</span><span>
 </span><span id="line-30"></span><span class="hs-comment">--</span><span>
@@ -209,19 +209,19 @@ forall a. Read a =&gt; String -&gt; Maybe a
 </span><a href="#local-6989586621679091764"><span class="hs-identifier hs-var">c</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-69"></span><span>
 </span><span id="line-70"></span><span class="annot"><span class="hs-comment">-- | Pretty-print the specified 'Location'.</span></span><span>
-</span><span id="line-71"></span><span class="annot"><a href="ROC.ID.Location.html#printLocation"><span class="hs-identifier hs-type">printLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier hs-type">Language</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-72"></span><span id="printLocation"><span class="annot"><span class="annottext">printLocation :: Language -&gt; Location -&gt; Text
-</span><a href="ROC.ID.Location.html#printLocation"><span class="hs-identifier hs-var hs-var">printLocation</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
+</span><span id="line-71"></span><span class="annot"><a href="ROC.ID.Location.html#toText"><span class="hs-identifier hs-type">toText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier hs-type">Language</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-72"></span><span id="toText"><span class="annot"><span class="annottext">toText :: Language -&gt; Location -&gt; Text
+</span><a href="ROC.ID.Location.html#toText"><span class="hs-identifier hs-var hs-var">toText</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
 </span><span id="line-73"></span><span>  </span><span class="annot"><span class="annottext">Language
 </span><a href="ROC.ID.Language.html#English"><span class="hs-identifier hs-var">English</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Location -&gt; Text
-</span><a href="ROC.ID.Location.html#printLocationEnglish"><span class="hs-identifier hs-var">printLocationEnglish</span></a></span><span>
+</span><a href="ROC.ID.Location.html#toTextEnglish"><span class="hs-identifier hs-var">toTextEnglish</span></a></span><span>
 </span><span id="line-74"></span><span>  </span><span class="annot"><span class="annottext">Language
 </span><a href="ROC.ID.Language.html#Chinese"><span class="hs-identifier hs-var">Chinese</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Location -&gt; Text
-</span><a href="ROC.ID.Location.html#printLocationChinese"><span class="hs-identifier hs-var">printLocationChinese</span></a></span><span>
+</span><a href="ROC.ID.Location.html#toTextChinese"><span class="hs-identifier hs-var">toTextChinese</span></a></span><span>
 </span><span id="line-75"></span><span>
-</span><span id="line-76"></span><span class="annot"><a href="ROC.ID.Location.html#printLocationChinese"><span class="hs-identifier hs-type">printLocationChinese</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-77"></span><span id="printLocationChinese"><span class="annot"><span class="annottext">printLocationChinese :: Location -&gt; Text
-</span><a href="ROC.ID.Location.html#printLocationChinese"><span class="hs-identifier hs-var hs-var">printLocationChinese</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
+</span><span id="line-76"></span><span class="annot"><a href="ROC.ID.Location.html#toTextChinese"><span class="hs-identifier hs-type">toTextChinese</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-77"></span><span id="toTextChinese"><span class="annot"><span class="annottext">toTextChinese :: Location -&gt; Text
+</span><a href="ROC.ID.Location.html#toTextChinese"><span class="hs-identifier hs-var hs-var">toTextChinese</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
 </span><span id="line-78"></span><span>  </span><span class="annot"><span class="annottext">Location
 </span><a href="ROC.ID.Location.html#A"><span class="hs-identifier hs-var">A</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;&#33274;&#21271;&#24066;&quot;</span></span><span>
@@ -301,9 +301,9 @@ forall a. Read a =&gt; String -&gt; Maybe a
 </span><a href="ROC.ID.Location.html#Z"><span class="hs-identifier hs-var">Z</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;&#36899;&#27743;&#32291;&quot;</span></span><span>
 </span><span id="line-104"></span><span>
-</span><span id="line-105"></span><span class="annot"><a href="ROC.ID.Location.html#printLocationEnglish"><span class="hs-identifier hs-type">printLocationEnglish</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-106"></span><span id="printLocationEnglish"><span class="annot"><span class="annottext">printLocationEnglish :: Location -&gt; Text
-</span><a href="ROC.ID.Location.html#printLocationEnglish"><span class="hs-identifier hs-var hs-var">printLocationEnglish</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
+</span><span id="line-105"></span><span class="annot"><a href="ROC.ID.Location.html#toTextEnglish"><span class="hs-identifier hs-type">toTextEnglish</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-106"></span><span id="toTextEnglish"><span class="annot"><span class="annottext">toTextEnglish :: Location -&gt; Text
+</span><a href="ROC.ID.Location.html#toTextEnglish"><span class="hs-identifier hs-var hs-var">toTextEnglish</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
 </span><span id="line-107"></span><span>  </span><span class="annot"><span class="annottext">Location
 </span><a href="ROC.ID.Location.html#A"><span class="hs-identifier hs-var">A</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;Taipei City&quot;</span></span><span>
