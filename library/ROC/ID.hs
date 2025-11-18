@@ -29,8 +29,10 @@ import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Gender
   ( Gender (..) )
+import ROC.ID.Letter
+  ( Letter (..) )
 import ROC.ID.Location
-  ( Location (..) )
+  ( Location )
 import ROC.ID.Serial
   ( Serial (Serial) )
 import ROC.ID.Utilities
@@ -103,7 +105,7 @@ instance ToDigits Gender 1 where
     Female -> D2
 
 instance ToDigits Location 2 where
-  toDigits = V.fromTuple . \case
+  toDigits location = V.fromTuple $ case Location.toLetter location of
     A -> (D1, D0); N -> (D2, D2)
     B -> (D1, D1); O -> (D3, D5)
     C -> (D1, D2); P -> (D2, D3)
