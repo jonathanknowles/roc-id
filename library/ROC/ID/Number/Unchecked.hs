@@ -60,14 +60,18 @@ fromText :: Text -> Either FromTextError IdentityNumber
 fromText text = do
     v  <- guard invalidLength $ V.fromList @10 $ T.unpack text
     IdentityNumber
-      <$> guard (invalidChar ('A', 'Z') D0) (Letter.fromChar $ V.index v 0)
-      <*> guard (invalidChar ('1', '2') D1) (Digit.fromChar12 $ V.index v 1)
+      <$> guard (invalidChar letters  D0) (Letter.fromChar  $ V.index v 0)
+      <*> guard (invalidChar digits12 D1) (Digit.fromChar12 $ V.index v 1)
       <*> first
-          (invalidChar ('0', '9') . toEnum . (+ 2))
+          (invalidChar digits . toEnum . (+ 2))
           (imapMay Digit.fromChar $ V.drop @2 v)
   where
-    invalidChar (lo, hi) index =
-      InvalidChar (CharIndex index) (CharRange lo hi)
+    digits   = CharRange '0' '9'
+    digits12 = CharRange '1' '2'
+    letters  = CharRange 'A' 'Z'
+
+    invalidChar charSet index =
+      InvalidChar (CharIndex index) charSet
     invalidLength =
       InvalidLength
 
