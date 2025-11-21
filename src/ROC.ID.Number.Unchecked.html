@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE DataKinds #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE DerivingStrategies #-}</span><span>
+</span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE GeneralizedNewtypeDeriving #-}</span><span>
+</span><span id="line-4"></span><span class="hs-pragma">{-# LANGUAGE TypeApplications #-}</span><span>
+</span><span id="line-5"></span><span class="hs-pragma">{-# LANGUAGE NamedFieldPuns #-}</span><span>
+</span><span id="line-6"></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html"><span class="hs-identifier">ROC.ID.Number.Unchecked</span></a></span><span>
+</span><span id="line-8"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier">IdentityNumber</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#FromTextError"><span class="hs-identifier">FromTextError</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-10"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharIndex"><span class="hs-identifier">CharIndex</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-11"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharRange"><span class="hs-identifier">CharRange</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-12"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#fromText"><span class="hs-identifier">fromText</span></a></span><span>
+</span><span id="line-13"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#toText"><span class="hs-identifier">toText</span></a></span><span>
+</span><span id="line-14"></span><span>  </span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-16"></span><span>
+</span><span id="line-17"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Bifunctor</span></span><span>
+</span><span id="line-18"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Bifunctor</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">first</span></span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-19"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span>
+</span><span id="line-20"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Text</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-21"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Vector.Sized</span></span><span>
+</span><span id="line-22"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Vector</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-23"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.TypeLits</span></span><span>
+</span><span id="line-24"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">KnownNat</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-25"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html"><span class="hs-identifier">ROC.ID.Digit</span></a></span><span>
+</span><span id="line-26"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier">Digit</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit12"><span class="hs-identifier">Digit12</span></a></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-27"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Letter.html"><span class="hs-identifier">ROC.ID.Letter</span></a></span><span>
+</span><span id="line-28"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Letter.html#Letter"><span class="hs-identifier">Letter</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-29"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html"><span class="hs-identifier">ROC.ID.Utilities</span></a></span><span>
+</span><span id="line-30"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier">guard</span></a></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span><span>
+</span><span id="line-32"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">T</span></span><span>
+</span><span id="line-33"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="ROC.ID.Letter.html"><span class="hs-identifier">ROC.ID.Letter</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Letter</span></span><span>
+</span><span id="line-34"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html"><span class="hs-identifier">ROC.ID.Digit</span></a></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">Digit</span></span><span>
+</span><span id="line-35"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.Vector.Sized</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">V</span></span><span>
+</span><span id="line-36"></span><span>
+</span><span id="line-37"></span><span class="hs-keyword">data</span><span> </span><span id="IdentityNumber"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier hs-var">IdentityNumber</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="IdentityNumber"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier hs-var">IdentityNumber</span></a></span></span><span>
+</span><span id="line-38"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="u0"><span class="annot"><span class="annottext">IdentityNumber -&gt; Letter
+</span><a href="ROC.ID.Number.Unchecked.html#u0"><span class="hs-identifier hs-var hs-var">u0</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="ROC.ID.Letter.html#Letter"><span class="hs-identifier hs-type">Letter</span></a></span><span>
+</span><span id="line-39"></span><span>  </span><span class="hs-special">,</span><span> </span><span id="u1"><span class="annot"><span class="annottext">IdentityNumber -&gt; Digit12
+</span><a href="ROC.ID.Number.Unchecked.html#u1"><span class="hs-identifier hs-var hs-var">u1</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="ROC.ID.Digit.html#Digit12"><span class="hs-identifier hs-type">Digit12</span></a></span><span>
+</span><span id="line-40"></span><span>  </span><span class="hs-special">,</span><span> </span><span id="u2"><span class="annot"><span class="annottext">IdentityNumber -&gt; Vector 8 Digit
+</span><a href="ROC.ID.Number.Unchecked.html#u2"><span class="hs-identifier hs-var hs-var">u2</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Vector</span></span><span> </span><span class="annot"><span class="hs-number">8</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-41"></span><span>  </span><span class="hs-special">}</span><span>
+</span><span id="line-42"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679096803"><span id="local-6989586621679096812"><span class="annot"><span class="annottext">IdentityNumber -&gt; IdentityNumber -&gt; Bool
+(IdentityNumber -&gt; IdentityNumber -&gt; Bool)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; Bool) -&gt; Eq IdentityNumber
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+$c== :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+== :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+$c/= :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+/= :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679096822"><span id="local-6989586621679096831"><span id="local-6989586621679096837"><span id="local-6989586621679096841"><span id="local-6989586621679096844"><span id="local-6989586621679096847"><span id="local-6989586621679096850"><span class="annot"><span class="annottext">Eq IdentityNumber
+Eq IdentityNumber =&gt;
+(IdentityNumber -&gt; IdentityNumber -&gt; Ordering)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; Bool)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; Bool)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; Bool)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; Bool)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber)
+-&gt; (IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber)
+-&gt; Ord IdentityNumber
+IdentityNumber -&gt; IdentityNumber -&gt; Bool
+IdentityNumber -&gt; IdentityNumber -&gt; Ordering
+IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber
+forall a.
+Eq a =&gt;
+(a -&gt; a -&gt; Ordering)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; Ord a
+$ccompare :: IdentityNumber -&gt; IdentityNumber -&gt; Ordering
+compare :: IdentityNumber -&gt; IdentityNumber -&gt; Ordering
+$c&lt; :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+&lt; :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+$c&lt;= :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+&lt;= :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+$c&gt; :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+&gt; :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+$c&gt;= :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+&gt;= :: IdentityNumber -&gt; IdentityNumber -&gt; Bool
+$cmax :: IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber
+max :: IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber
+$cmin :: IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber
+min :: IdentityNumber -&gt; IdentityNumber -&gt; IdentityNumber
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679096862"><span id="local-6989586621679096873"><span id="local-6989586621679096877"><span class="annot"><span class="annottext">Int -&gt; IdentityNumber -&gt; ShowS
+[IdentityNumber] -&gt; ShowS
+IdentityNumber -&gt; String
+(Int -&gt; IdentityNumber -&gt; ShowS)
+-&gt; (IdentityNumber -&gt; String)
+-&gt; ([IdentityNumber] -&gt; ShowS)
+-&gt; Show IdentityNumber
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; IdentityNumber -&gt; ShowS
+showsPrec :: Int -&gt; IdentityNumber -&gt; ShowS
+$cshow :: IdentityNumber -&gt; String
+show :: IdentityNumber -&gt; String
+$cshowList :: [IdentityNumber] -&gt; ShowS
+showList :: [IdentityNumber] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-43"></span><span>
+</span><span id="line-44"></span><span class="hs-keyword">newtype</span><span> </span><span id="CharIndex"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharIndex"><span class="hs-identifier hs-var">CharIndex</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="CharIndex"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharIndex"><span class="hs-identifier hs-var">CharIndex</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
+</span><span id="line-45"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679096886"><span id="local-6989586621679096891"><span class="annot"><span class="annottext">CharIndex
+CharIndex -&gt; CharIndex -&gt; Bounded CharIndex
+forall a. a -&gt; a -&gt; Bounded a
+$cminBound :: CharIndex
+minBound :: CharIndex
+$cmaxBound :: CharIndex
+maxBound :: CharIndex
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679096899"><span id="local-6989586621679096903"><span id="local-6989586621679096907"><span id="local-6989586621679096911"><span id="local-6989586621679096915"><span id="local-6989586621679096919"><span id="local-6989586621679096923"><span id="local-6989586621679096927"><span class="annot"><span class="annottext">Int -&gt; CharIndex
+CharIndex -&gt; Int
+CharIndex -&gt; [CharIndex]
+CharIndex -&gt; CharIndex
+CharIndex -&gt; CharIndex -&gt; [CharIndex]
+CharIndex -&gt; CharIndex -&gt; CharIndex -&gt; [CharIndex]
+(CharIndex -&gt; CharIndex)
+-&gt; (CharIndex -&gt; CharIndex)
+-&gt; (Int -&gt; CharIndex)
+-&gt; (CharIndex -&gt; Int)
+-&gt; (CharIndex -&gt; [CharIndex])
+-&gt; (CharIndex -&gt; CharIndex -&gt; [CharIndex])
+-&gt; (CharIndex -&gt; CharIndex -&gt; [CharIndex])
+-&gt; (CharIndex -&gt; CharIndex -&gt; CharIndex -&gt; [CharIndex])
+-&gt; Enum CharIndex
+forall a.
+(a -&gt; a)
+-&gt; (a -&gt; a)
+-&gt; (Int -&gt; a)
+-&gt; (a -&gt; Int)
+-&gt; (a -&gt; [a])
+-&gt; (a -&gt; a -&gt; [a])
+-&gt; (a -&gt; a -&gt; [a])
+-&gt; (a -&gt; a -&gt; a -&gt; [a])
+-&gt; Enum a
+$csucc :: CharIndex -&gt; CharIndex
+succ :: CharIndex -&gt; CharIndex
+$cpred :: CharIndex -&gt; CharIndex
+pred :: CharIndex -&gt; CharIndex
+$ctoEnum :: Int -&gt; CharIndex
+toEnum :: Int -&gt; CharIndex
+$cfromEnum :: CharIndex -&gt; Int
+fromEnum :: CharIndex -&gt; Int
+$cenumFrom :: CharIndex -&gt; [CharIndex]
+enumFrom :: CharIndex -&gt; [CharIndex]
+$cenumFromThen :: CharIndex -&gt; CharIndex -&gt; [CharIndex]
+enumFromThen :: CharIndex -&gt; CharIndex -&gt; [CharIndex]
+$cenumFromTo :: CharIndex -&gt; CharIndex -&gt; [CharIndex]
+enumFromTo :: CharIndex -&gt; CharIndex -&gt; [CharIndex]
+$cenumFromThenTo :: CharIndex -&gt; CharIndex -&gt; CharIndex -&gt; [CharIndex]
+enumFromThenTo :: CharIndex -&gt; CharIndex -&gt; CharIndex -&gt; [CharIndex]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679096937"><span id="local-6989586621679096941"><span class="annot"><span class="annottext">CharIndex -&gt; CharIndex -&gt; Bool
+(CharIndex -&gt; CharIndex -&gt; Bool)
+-&gt; (CharIndex -&gt; CharIndex -&gt; Bool) -&gt; Eq CharIndex
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+$c== :: CharIndex -&gt; CharIndex -&gt; Bool
+== :: CharIndex -&gt; CharIndex -&gt; Bool
+$c/= :: CharIndex -&gt; CharIndex -&gt; Bool
+/= :: CharIndex -&gt; CharIndex -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679096949"><span id="local-6989586621679096953"><span id="local-6989586621679096957"><span id="local-6989586621679096961"><span id="local-6989586621679096965"><span id="local-6989586621679096969"><span id="local-6989586621679096973"><span class="annot"><span class="annottext">Eq CharIndex
+Eq CharIndex =&gt;
+(CharIndex -&gt; CharIndex -&gt; Ordering)
+-&gt; (CharIndex -&gt; CharIndex -&gt; Bool)
+-&gt; (CharIndex -&gt; CharIndex -&gt; Bool)
+-&gt; (CharIndex -&gt; CharIndex -&gt; Bool)
+-&gt; (CharIndex -&gt; CharIndex -&gt; Bool)
+-&gt; (CharIndex -&gt; CharIndex -&gt; CharIndex)
+-&gt; (CharIndex -&gt; CharIndex -&gt; CharIndex)
+-&gt; Ord CharIndex
+CharIndex -&gt; CharIndex -&gt; Bool
+CharIndex -&gt; CharIndex -&gt; Ordering
+CharIndex -&gt; CharIndex -&gt; CharIndex
+forall a.
+Eq a =&gt;
+(a -&gt; a -&gt; Ordering)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; Ord a
+$ccompare :: CharIndex -&gt; CharIndex -&gt; Ordering
+compare :: CharIndex -&gt; CharIndex -&gt; Ordering
+$c&lt; :: CharIndex -&gt; CharIndex -&gt; Bool
+&lt; :: CharIndex -&gt; CharIndex -&gt; Bool
+$c&lt;= :: CharIndex -&gt; CharIndex -&gt; Bool
+&lt;= :: CharIndex -&gt; CharIndex -&gt; Bool
+$c&gt; :: CharIndex -&gt; CharIndex -&gt; Bool
+&gt; :: CharIndex -&gt; CharIndex -&gt; Bool
+$c&gt;= :: CharIndex -&gt; CharIndex -&gt; Bool
+&gt;= :: CharIndex -&gt; CharIndex -&gt; Bool
+$cmax :: CharIndex -&gt; CharIndex -&gt; CharIndex
+max :: CharIndex -&gt; CharIndex -&gt; CharIndex
+$cmin :: CharIndex -&gt; CharIndex -&gt; CharIndex
+min :: CharIndex -&gt; CharIndex -&gt; CharIndex
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679096980"><span id="local-6989586621679096984"><span id="local-6989586621679096988"><span class="annot"><span class="annottext">Int -&gt; CharIndex -&gt; ShowS
+[CharIndex] -&gt; ShowS
+CharIndex -&gt; String
+(Int -&gt; CharIndex -&gt; ShowS)
+-&gt; (CharIndex -&gt; String)
+-&gt; ([CharIndex] -&gt; ShowS)
+-&gt; Show CharIndex
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; CharIndex -&gt; ShowS
+showsPrec :: Int -&gt; CharIndex -&gt; ShowS
+$cshow :: CharIndex -&gt; String
+show :: CharIndex -&gt; String
+$cshowList :: [CharIndex] -&gt; ShowS
+showList :: [CharIndex] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-46"></span><span>
+</span><span id="line-47"></span><span class="hs-keyword">data</span><span> </span><span id="CharRange"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharRange"><span class="hs-identifier hs-var">CharRange</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="CharRange"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharRange"><span class="hs-identifier hs-var">CharRange</span></a></span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span>
+</span><span id="line-48"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679096992"><span id="local-6989586621679096997"><span class="annot"><span class="annottext">CharRange -&gt; CharRange -&gt; Bool
+(CharRange -&gt; CharRange -&gt; Bool)
+-&gt; (CharRange -&gt; CharRange -&gt; Bool) -&gt; Eq CharRange
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+$c== :: CharRange -&gt; CharRange -&gt; Bool
+== :: CharRange -&gt; CharRange -&gt; Bool
+$c/= :: CharRange -&gt; CharRange -&gt; Bool
+/= :: CharRange -&gt; CharRange -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097003"><span id="local-6989586621679097008"><span id="local-6989586621679097012"><span id="local-6989586621679097016"><span id="local-6989586621679097019"><span id="local-6989586621679097022"><span id="local-6989586621679097025"><span class="annot"><span class="annottext">Eq CharRange
+Eq CharRange =&gt;
+(CharRange -&gt; CharRange -&gt; Ordering)
+-&gt; (CharRange -&gt; CharRange -&gt; Bool)
+-&gt; (CharRange -&gt; CharRange -&gt; Bool)
+-&gt; (CharRange -&gt; CharRange -&gt; Bool)
+-&gt; (CharRange -&gt; CharRange -&gt; Bool)
+-&gt; (CharRange -&gt; CharRange -&gt; CharRange)
+-&gt; (CharRange -&gt; CharRange -&gt; CharRange)
+-&gt; Ord CharRange
+CharRange -&gt; CharRange -&gt; Bool
+CharRange -&gt; CharRange -&gt; Ordering
+CharRange -&gt; CharRange -&gt; CharRange
+forall a.
+Eq a =&gt;
+(a -&gt; a -&gt; Ordering)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; Ord a
+$ccompare :: CharRange -&gt; CharRange -&gt; Ordering
+compare :: CharRange -&gt; CharRange -&gt; Ordering
+$c&lt; :: CharRange -&gt; CharRange -&gt; Bool
+&lt; :: CharRange -&gt; CharRange -&gt; Bool
+$c&lt;= :: CharRange -&gt; CharRange -&gt; Bool
+&lt;= :: CharRange -&gt; CharRange -&gt; Bool
+$c&gt; :: CharRange -&gt; CharRange -&gt; Bool
+&gt; :: CharRange -&gt; CharRange -&gt; Bool
+$c&gt;= :: CharRange -&gt; CharRange -&gt; Bool
+&gt;= :: CharRange -&gt; CharRange -&gt; Bool
+$cmax :: CharRange -&gt; CharRange -&gt; CharRange
+max :: CharRange -&gt; CharRange -&gt; CharRange
+$cmin :: CharRange -&gt; CharRange -&gt; CharRange
+min :: CharRange -&gt; CharRange -&gt; CharRange
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097028"><span id="local-6989586621679097034"><span id="local-6989586621679097038"><span class="annot"><span class="annottext">Int -&gt; CharRange -&gt; ShowS
+[CharRange] -&gt; ShowS
+CharRange -&gt; String
+(Int -&gt; CharRange -&gt; ShowS)
+-&gt; (CharRange -&gt; String)
+-&gt; ([CharRange] -&gt; ShowS)
+-&gt; Show CharRange
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; CharRange -&gt; ShowS
+showsPrec :: Int -&gt; CharRange -&gt; ShowS
+$cshow :: CharRange -&gt; String
+show :: CharRange -&gt; String
+$cshowList :: [CharRange] -&gt; ShowS
+showList :: [CharRange] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-49"></span><span>
+</span><span id="line-50"></span><span class="hs-keyword">data</span><span> </span><span id="FromTextError"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#FromTextError"><span class="hs-identifier hs-var">FromTextError</span></a></span></span><span>
+</span><span id="line-51"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="InvalidLength"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#InvalidLength"><span class="hs-identifier hs-var">InvalidLength</span></a></span></span><span>
+</span><span id="line-52"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidChar"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#InvalidChar"><span class="hs-identifier hs-var">InvalidChar</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharIndex"><span class="hs-identifier hs-type">CharIndex</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#CharRange"><span class="hs-identifier hs-type">CharRange</span></a></span><span>
+</span><span id="line-53"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679097043"><span id="local-6989586621679097050"><span class="annot"><span class="annottext">FromTextError -&gt; FromTextError -&gt; Bool
+(FromTextError -&gt; FromTextError -&gt; Bool)
+-&gt; (FromTextError -&gt; FromTextError -&gt; Bool) -&gt; Eq FromTextError
+forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
+$c== :: FromTextError -&gt; FromTextError -&gt; Bool
+== :: FromTextError -&gt; FromTextError -&gt; Bool
+$c/= :: FromTextError -&gt; FromTextError -&gt; Bool
+/= :: FromTextError -&gt; FromTextError -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097056"><span id="local-6989586621679097060"><span id="local-6989586621679097064"><span id="local-6989586621679097068"><span id="local-6989586621679097071"><span id="local-6989586621679097074"><span id="local-6989586621679097077"><span class="annot"><span class="annottext">Eq FromTextError
+Eq FromTextError =&gt;
+(FromTextError -&gt; FromTextError -&gt; Ordering)
+-&gt; (FromTextError -&gt; FromTextError -&gt; Bool)
+-&gt; (FromTextError -&gt; FromTextError -&gt; Bool)
+-&gt; (FromTextError -&gt; FromTextError -&gt; Bool)
+-&gt; (FromTextError -&gt; FromTextError -&gt; Bool)
+-&gt; (FromTextError -&gt; FromTextError -&gt; FromTextError)
+-&gt; (FromTextError -&gt; FromTextError -&gt; FromTextError)
+-&gt; Ord FromTextError
+FromTextError -&gt; FromTextError -&gt; Bool
+FromTextError -&gt; FromTextError -&gt; Ordering
+FromTextError -&gt; FromTextError -&gt; FromTextError
+forall a.
+Eq a =&gt;
+(a -&gt; a -&gt; Ordering)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; Bool)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; (a -&gt; a -&gt; a)
+-&gt; Ord a
+$ccompare :: FromTextError -&gt; FromTextError -&gt; Ordering
+compare :: FromTextError -&gt; FromTextError -&gt; Ordering
+$c&lt; :: FromTextError -&gt; FromTextError -&gt; Bool
+&lt; :: FromTextError -&gt; FromTextError -&gt; Bool
+$c&lt;= :: FromTextError -&gt; FromTextError -&gt; Bool
+&lt;= :: FromTextError -&gt; FromTextError -&gt; Bool
+$c&gt; :: FromTextError -&gt; FromTextError -&gt; Bool
+&gt; :: FromTextError -&gt; FromTextError -&gt; Bool
+$c&gt;= :: FromTextError -&gt; FromTextError -&gt; Bool
+&gt;= :: FromTextError -&gt; FromTextError -&gt; Bool
+$cmax :: FromTextError -&gt; FromTextError -&gt; FromTextError
+max :: FromTextError -&gt; FromTextError -&gt; FromTextError
+$cmin :: FromTextError -&gt; FromTextError -&gt; FromTextError
+min :: FromTextError -&gt; FromTextError -&gt; FromTextError
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097080"><span id="local-6989586621679097085"><span id="local-6989586621679097089"><span class="annot"><span class="annottext">Int -&gt; FromTextError -&gt; ShowS
+[FromTextError] -&gt; ShowS
+FromTextError -&gt; String
+(Int -&gt; FromTextError -&gt; ShowS)
+-&gt; (FromTextError -&gt; String)
+-&gt; ([FromTextError] -&gt; ShowS)
+-&gt; Show FromTextError
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: Int -&gt; FromTextError -&gt; ShowS
+showsPrec :: Int -&gt; FromTextError -&gt; ShowS
+$cshow :: FromTextError -&gt; String
+show :: FromTextError -&gt; String
+$cshowList :: [FromTextError] -&gt; ShowS
+showList :: [FromTextError] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-54"></span><span>
+</span><span id="line-55"></span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#fromText"><span class="hs-identifier hs-type">fromText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#FromTextError"><span class="hs-identifier hs-type">FromTextError</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span>
+</span><span id="line-56"></span><span id="fromText"><span class="annot"><span class="annottext">fromText :: Text -&gt; Either FromTextError IdentityNumber
+</span><a href="ROC.ID.Number.Unchecked.html#fromText"><span class="hs-identifier hs-var hs-var">fromText</span></a></span></span><span> </span><span id="local-6989586621679097091"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679097091"><span class="hs-identifier hs-var">text</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-57"></span><span>    </span><span id="local-6989586621679097092"><span class="annot"><a href="#local-6989586621679097092"><span class="hs-identifier hs-var">v</span></a></span></span><span>  </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">FromTextError
+-&gt; Maybe (Vector 10 Char) -&gt; Either FromTextError (Vector 10 Char)
+forall x y. x -&gt; Maybe y -&gt; Either x y
+</span><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier hs-var">guard</span></a></span><span> </span><span class="annot"><span class="annottext">FromTextError
+</span><a href="#local-6989586621679097093"><span class="hs-identifier hs-var">invalidLength</span></a></span><span> </span><span class="annot"><span class="annottext">(Maybe (Vector 10 Char) -&gt; Either FromTextError (Vector 10 Char))
+-&gt; Maybe (Vector 10 Char) -&gt; Either FromTextError (Vector 10 Char)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall (n :: Nat) a. KnownNat n =&gt; [a] -&gt; Maybe (Vector n a)
+</span><span class="hs-identifier hs-var">V.fromList</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><span class="hs-number">10</span></span><span> </span><span class="annot"><span class="annottext">(String -&gt; Maybe (Vector 10 Char))
+-&gt; String -&gt; Maybe (Vector 10 Char)
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; String
+</span><span class="hs-identifier hs-var">T.unpack</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679097091"><span class="hs-identifier hs-var">text</span></a></span><span>
+</span><span id="line-58"></span><span>    </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span>
+</span><span id="line-59"></span><span>      </span><span class="annot"><span class="hs-operator hs-type">&lt;$&gt;</span></span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier hs-type">guard</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679097097"><span class="hs-identifier hs-type">invalidChar</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-char">'A'</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-char">'Z'</span></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#D0"><span class="hs-identifier hs-type">D0</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Letter.html#fromChar"><span class="hs-identifier hs-type">Letter.fromChar</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">$</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">V.index</span></span><span> </span><span class="annot"><a href="#local-6989586621679097092"><span class="hs-identifier hs-type">v</span></a></span><span> </span><span class="annot"><span class="hs-number">0</span></span><span class="hs-special">)</span><span>
+</span><span id="line-60"></span><span>      </span><span class="annot"><span class="hs-operator hs-type">&lt;*&gt;</span></span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier hs-type">guard</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679097097"><span class="hs-identifier hs-type">invalidChar</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-char">'1'</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-char">'2'</span></span><span class="hs-special">)</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#D1"><span class="hs-identifier hs-type">D1</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Digit.html#fromChar12"><span class="hs-identifier hs-type">Digit.fromChar12</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">$</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">V.index</span></span><span> </span><span class="annot"><a href="#local-6989586621679097092"><span class="hs-identifier hs-type">v</span></a></span><span> </span><span class="annot"><span class="hs-number">1</span></span><span class="hs-special">)</span><span>
+</span><span id="line-61"></span><span>      </span><span class="annot"><span class="hs-operator hs-type">&lt;*&gt;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">first</span></span><span>
+</span><span id="line-62"></span><span>          </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679097097"><span class="hs-identifier hs-type">invalidChar</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-char">'0'</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-char">'9'</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="hs-operator hs-type">.</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">toEnum</span></span><span> </span><span class="annot"><span class="hs-operator hs-type">.</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-operator">+</span></span><span> </span><span class="annot"><span class="hs-number">2</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-63"></span><span>          </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#imapMay"><span class="hs-identifier hs-type">imapMay</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#fromChar"><span class="hs-identifier hs-type">Digit.fromChar</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">$</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">V.drop</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><span class="hs-number">2</span></span><span> </span><span class="annot"><a href="#local-6989586621679097092"><span class="hs-identifier hs-type">v</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-64"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-65"></span><span>    </span><span id="local-6989586621679097097"><span class="annot"><span class="annottext">invalidChar :: (Char, Char) -&gt; Digit -&gt; FromTextError
+</span><a href="#local-6989586621679097097"><span class="hs-identifier hs-var hs-var">invalidChar</span></a></span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679097108"><span class="annot"><span class="annottext">Char
+</span><a href="#local-6989586621679097108"><span class="hs-identifier hs-var">lo</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097109"><span class="annot"><span class="annottext">Char
+</span><a href="#local-6989586621679097109"><span class="hs-identifier hs-var">hi</span></a></span></span><span class="hs-special">)</span><span> </span><span id="local-6989586621679097110"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679097110"><span class="hs-identifier hs-var">index</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-66"></span><span>      </span><span class="annot"><span class="annottext">CharIndex -&gt; CharRange -&gt; FromTextError
+</span><a href="ROC.ID.Number.Unchecked.html#InvalidChar"><span class="hs-identifier hs-var">InvalidChar</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Digit -&gt; CharIndex
+</span><a href="ROC.ID.Number.Unchecked.html#CharIndex"><span class="hs-identifier hs-var">CharIndex</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679097110"><span class="hs-identifier hs-var">index</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Char -&gt; Char -&gt; CharRange
+</span><a href="ROC.ID.Number.Unchecked.html#CharRange"><span class="hs-identifier hs-var">CharRange</span></a></span><span> </span><span class="annot"><span class="annottext">Char
+</span><a href="#local-6989586621679097108"><span class="hs-identifier hs-var">lo</span></a></span><span> </span><span class="annot"><span class="annottext">Char
+</span><a href="#local-6989586621679097109"><span class="hs-identifier hs-var">hi</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-67"></span><span>    </span><span id="local-6989586621679097093"><span class="annot"><span class="annottext">invalidLength :: FromTextError
+</span><a href="#local-6989586621679097093"><span class="hs-identifier hs-var hs-var">invalidLength</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-68"></span><span>      </span><span class="annot"><span class="annottext">FromTextError
+</span><a href="ROC.ID.Number.Unchecked.html#InvalidLength"><span class="hs-identifier hs-var">InvalidLength</span></a></span><span>
+</span><span id="line-69"></span><span>
+</span><span id="line-70"></span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#toText"><span class="hs-identifier hs-type">toText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-71"></span><span id="toText"><span class="annot"><span class="annottext">toText :: IdentityNumber -&gt; Text
+</span><a href="ROC.ID.Number.Unchecked.html#toText"><span class="hs-identifier hs-var hs-var">toText</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.Number.Unchecked.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679097111"><span class="annot"><span class="annottext">Letter
+u0 :: IdentityNumber -&gt; Letter
+u0 :: Letter
+</span><a href="ROC.ID.Number.Unchecked.html#u0"><span class="hs-identifier hs-var hs-var">u0</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097112"><span class="annot"><span class="annottext">Digit12
+u1 :: IdentityNumber -&gt; Digit12
+u1 :: Digit12
+</span><a href="ROC.ID.Number.Unchecked.html#u1"><span class="hs-identifier hs-var hs-var">u1</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679097113"><span class="annot"><span class="annottext">Vector 8 Digit
+u2 :: IdentityNumber -&gt; Vector 8 Digit
+u2 :: Vector 8 Digit
+</span><a href="ROC.ID.Number.Unchecked.html#u2"><span class="hs-identifier hs-var hs-var">u2</span></a></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679097114"><span class="hs-identifier hs-var">t0</span></a></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Text -&gt; Text
+forall a. Semigroup a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">&lt;&gt;</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679097115"><span class="hs-identifier hs-var">t1</span></a></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Text -&gt; Text
+forall a. Semigroup a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">&lt;&gt;</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679097116"><span class="hs-identifier hs-var">t2</span></a></span><span>
+</span><span id="line-72"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-73"></span><span>    </span><span id="local-6989586621679097114"><span class="annot"><span class="annottext">t0 :: Text
+</span><a href="#local-6989586621679097114"><span class="hs-identifier hs-var hs-var">t0</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Char -&gt; Text
+</span><span class="hs-identifier hs-var">T.singleton</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Letter -&gt; Char
+</span><a href="ROC.ID.Letter.html#toChar"><span class="hs-identifier hs-var">Letter.toChar</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679097111"><span class="hs-identifier hs-var">u0</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-74"></span><span>    </span><span id="local-6989586621679097115"><span class="annot"><span class="annottext">t1 :: Text
+</span><a href="#local-6989586621679097115"><span class="hs-identifier hs-var hs-var">t1</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Char -&gt; Text
+</span><span class="hs-identifier hs-var">T.singleton</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Digit12 -&gt; Char
+</span><a href="ROC.ID.Digit.html#toChar12"><span class="hs-identifier hs-var">Digit.toChar12</span></a></span><span> </span><span class="annot"><span class="annottext">Digit12
+</span><a href="#local-6989586621679097112"><span class="hs-identifier hs-var">u1</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-75"></span><span>    </span><span id="local-6989586621679097116"><span class="annot"><span class="annottext">t2 :: Text
+</span><a href="#local-6989586621679097116"><span class="hs-identifier hs-var hs-var">t2</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">String -&gt; Text
+</span><span class="hs-identifier hs-var">T.pack</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Digit -&gt; Char
+</span><a href="ROC.ID.Digit.html#toChar"><span class="hs-identifier hs-var">Digit.toChar</span></a></span><span> </span><span class="annot"><span class="annottext">(Digit -&gt; Char) -&gt; [Digit] -&gt; String
+forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+</span><span class="hs-operator hs-var">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="annottext">Vector 8 Digit -&gt; [Digit]
+forall (n :: Nat) a. Vector n a -&gt; [a]
+</span><span class="hs-identifier hs-var">V.toList</span></span><span> </span><span class="annot"><span class="annottext">Vector 8 Digit
+</span><a href="#local-6989586621679097113"><span class="hs-identifier hs-var">u2</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-76"></span><span>
+</span><span id="line-77"></span><span id="local-6989586621679096744"><span id="local-6989586621679096745"><span id="local-6989586621679096746"><span class="annot"><a href="ROC.ID.Number.Unchecked.html#imapMay"><span class="hs-identifier hs-type">imapMay</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">KnownNat</span></span><span> </span><span class="annot"><a href="#local-6989586621679096744"><span class="hs-identifier hs-type">n</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679096745"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679096746"><span class="hs-identifier hs-type">b</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Vector</span></span><span> </span><span class="annot"><a href="#local-6989586621679096744"><span class="hs-identifier hs-type">n</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679096745"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Vector</span></span><span> </span><span class="annot"><a href="#local-6989586621679096744"><span class="hs-identifier hs-type">n</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679096746"><span class="hs-identifier hs-type">b</span></a></span><span class="hs-special">)</span></span></span></span><span>
+</span><span id="line-78"></span><span id="imapMay"><span class="annot"><span class="annottext">imapMay :: forall (n :: Nat) a b.
+KnownNat n =&gt;
+(a -&gt; Maybe b) -&gt; Vector n a -&gt; Either Int (Vector n b)
+</span><a href="ROC.ID.Number.Unchecked.html#imapMay"><span class="hs-identifier hs-var hs-var">imapMay</span></a></span></span><span> </span><span id="local-6989586621679097133"><span class="annot"><span class="annottext">a -&gt; Maybe b
+</span><a href="#local-6989586621679097133"><span class="hs-identifier hs-var">f</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Finite n -&gt; a -&gt; Either Int b)
+-&gt; Vector n a -&gt; Either Int (Vector n b)
+forall (m :: * -&gt; *) (n :: Nat) a b.
+Monad m =&gt;
+(Finite n -&gt; a -&gt; m b) -&gt; Vector n a -&gt; m (Vector n b)
+</span><span class="hs-identifier hs-var">V.imapM</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">\</span><span id="local-6989586621679097135"><span class="annot"><span class="annottext">Finite n
+</span><a href="#local-6989586621679097135"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Int -&gt; Maybe b -&gt; Either Int b
+forall x y. x -&gt; Maybe y -&gt; Either x y
+</span><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier hs-var">guard</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Finite n -&gt; Int
+forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Finite n
+</span><a href="#local-6989586621679097135"><span class="hs-identifier hs-var">i</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Maybe b -&gt; Either Int b) -&gt; (a -&gt; Maybe b) -&gt; a -&gt; Either Int b
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">a -&gt; Maybe b
+</span><a href="#local-6989586621679097133"><span class="hs-identifier hs-var">f</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-79"></span></pre></body></html>
