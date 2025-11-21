@@ -10,8 +10,10 @@
 module ROC.ID
   ( Identity (..)
   , checksum
+  , fromNumber
   , fromText
   , FromTextError (..)
+  , toNumber
   , generate
   ) where
 
@@ -26,13 +28,15 @@ import Data.Vector.Sized
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
-  ( Digit (..) )
+  ( Digit (..), Digit12 (..) )
 import ROC.ID.Gender
   ( Gender (..) )
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Location
   ( Location )
+import ROC.ID.Number
+  ( IdentityNumber (..) )
 import ROC.ID.Serial
   ( Serial (Serial) )
 import ROC.ID.Utilities
@@ -95,6 +99,26 @@ checksum Identity {gender, location, serial} =
     index x = fromEnum . V.index e
       where
         e = toDigits x
+
+fromNumber :: IdentityNumber -> Identity
+fromNumber IdentityNumber {c0, c1, c2} =
+    Identity {gender, location, serial}
+  where
+    location = Location.fromLetter c0
+    gender = case c1 of
+      D12_1 -> Male
+      D12_2 -> Female
+    serial = Serial c2
+
+toNumber :: Identity -> IdentityNumber
+toNumber Identity {gender, location, serial} =
+    IdentityNumber {c0, c1, c2}
+  where
+    c0 = Location.toLetter location
+    c1 = case gender of
+      Male   -> D12_1
+      Female -> D12_2
+    c2 = case serial of Serial s -> s
 
 class ToDigits t n | t -> n where
   toDigits :: t -> Vector n Digit
