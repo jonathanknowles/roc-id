@@ -7,16 +7,20 @@ module Main where
 
 import Data.Char
   ( intToDigit )
+import Data.List.NonEmpty
+  ( NonEmpty ((:|)) )
 import Data.Text
   ( Text )
 import ROC.ID
-  ( Identity (Identity) )
+  ( Identity (Identity), CharSet (CharSet) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Gender
   ( Gender )
 import ROC.ID.Location
   ( Location )
+import ROC.ID.Nationality
+  ( Nationality )
 import ROC.ID.Serial
   ( Serial (..) )
 import Test.Hspec
@@ -24,8 +28,10 @@ import Test.Hspec
 import Test.QuickCheck
   ( Arbitrary (..)
   , NonEmptyList (..)
-  , applyArbitrary3
+  , applyArbitrary4
   , arbitraryBoundedEnum
+  , elements
+  , forAll
   , property
   , shrinkBoundedEnum
   , shrinkMap
@@ -35,6 +41,7 @@ import Test.QuickCheck.Classes
 import Test.QuickCheck.Classes.Hspec
   ( testLawsMany )
 
+import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
 import qualified Data.Vector.Sized as V
 import qualified ROC.ID as ID
@@ -48,13 +55,17 @@ instance Arbitrary Gender where
   shrink = shrinkBoundedEnum
 
 instance Arbitrary Identity where
-  arbitrary = applyArbitrary3 Identity
+  arbitrary = applyArbitrary4 Identity
   shrink = shrinkMap unTuple toTuple
     where
-      toTuple (Identity g l s) = (g, l, s)
-      unTuple (g, l, s) = (Identity g l s)
+      toTuple (Identity g l n s) = (g, l, n, s)
+      unTuple (g, l, n, s) = (Identity g l n s)
 
 instance Arbitrary Location where
+  arbitrary = arbitraryBoundedEnum
+  shrink = shrinkBoundedEnum
+
+instance Arbitrary Nationality where
   arbitrary = arbitraryBoundedEnum
   shrink = shrinkBoundedEnum
 
@@ -91,16 +102,6 @@ main = hspec $ do
         let invalidIdentity = printIdentity i <> T.pack s
         ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
 
-    it "does not parse identification numbers with invalid gender codes" $
-      property $ \(i :: Identity) (c :: Int) -> do
-        let invalidGenderCode = intToDigit $ ((c `mod` 8) + 3) `mod` 10
-        let invalidIdentity =
-              T.take 1 (printIdentity i) <>
-              T.pack [invalidGenderCode] <>
-              T.drop 2 (printIdentity i)
-        ID.fromText invalidIdentity `shouldBe`
-          Left (ID.InvalidChar (ID.CharIndex D1) (ID.CharRange '1' '2'))
-
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
@@ -108,6 +109,19 @@ main = hspec $ do
               T.cons invalidLocationCode $ T.drop 1 $ printIdentity i
         ID.fromText invalidIdentity `shouldBe`
           Left (ID.InvalidChar (ID.CharIndex D0) (ID.CharRange 'A' 'Z'))
+
+    it "does not parse identification numbers with invalid initial digits" $
+      property $ \(i :: Identity) ->
+        forAll (elements ['0', '3', '4', '5', '6', '7']) $ \initialDigit -> do
+          let invalidIdentity =
+                T.take 1 (printIdentity i) <>
+                T.pack [initialDigit] <>
+                T.drop 2 (printIdentity i)
+          let expectedError =
+                ID.InvalidChar
+                  (ID.CharIndex D1)
+                  (CharSet $ NESet.fromList $ '1' :| ['2', '8', '9'])
+          ID.fromText invalidIdentity `shouldBe` Left expectedError
 
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do

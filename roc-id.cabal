@@ -36,6 +36,8 @@ common dependency-hspec
     build-depends:hspec                     >= 2.5.5        && < 2.12
 common dependency-MonadRandom
     build-depends:MonadRandom               >= 0.5.1.1      && < 0.7
+common dependency-nonempty-containers
+    build-depends:nonempty-containers       >= 0.3.5.0      && < 0.4
 common dependency-QuickCheck
     build-depends:QuickCheck                >= 2.13.2       && < 2.18
 common dependency-quickcheck-classes
@@ -53,6 +55,7 @@ library
   import:
     , dependency-base
     , dependency-MonadRandom
+    , dependency-nonempty-containers
     , dependency-text
     , dependency-vector-sized
   exposed-modules:
@@ -62,6 +65,7 @@ library
       ROC.ID.Language
       ROC.ID.Letter
       ROC.ID.Location
+      ROC.ID.Nationality
       ROC.ID.Number
       ROC.ID.Number.Unchecked
       ROC.ID.Serial
@@ -77,6 +81,7 @@ test-suite roc-id-test
     , dependency-base
     , dependency-hspec
     , dependency-MonadRandom
+    , dependency-nonempty-containers
     , dependency-QuickCheck
     , dependency-quickcheck-classes
     , dependency-text

@@ -7,7 +7,7 @@ module ROC.ID.Number
   ( IdentityNumber (..)
   , FromTextError (..)
   , CharIndex (..)
-  , CharRange (..)
+  , CharSet (..)
   , fromText
   , fromUnchecked
   , toText
@@ -23,11 +23,11 @@ import Data.Vector.Sized
 import Data.Text
   ( Text )
 import ROC.ID.Digit
-  ( Digit (..), Digit12 )
+  ( Digit (..), Digit1289 )
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Number.Unchecked
-  ( CharIndex (..), CharRange (..), u0, u1, u2 )
+  ( CharIndex (..), CharSet (..), u0, u1, u2 )
 import ROC.ID.Utilities
   ( guard )
 
@@ -37,7 +37,7 @@ import qualified ROC.ID.Number.Unchecked as U
 
 data IdentityNumber = IdentityNumber
   { c0 :: !Letter
-  , c1 :: !Digit12
+  , c1 :: !Digit1289
   , c2 :: !(Vector 7 Digit)
   }
   deriving (Eq, Ord, Show)
@@ -45,7 +45,7 @@ data IdentityNumber = IdentityNumber
 data FromTextError
   = InvalidLength
   | InvalidChecksum
-  | InvalidChar CharIndex CharRange
+  | InvalidChar CharIndex CharSet
   deriving (Eq, Ord, Show)
 
 fromText :: Text -> Either FromTextError IdentityNumber
@@ -80,7 +80,7 @@ checksum IdentityNumber {c0, c1, c2} =
     toEnum $ (`mod` 10) $ negate $ sum $ zipWith (*) cs vs
   where
     cs = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    vs = fromEnum <$> V.toList (as V.++ V.cons (Digit.fromDigit12 c1) c2)
+    vs = fromEnum <$> V.toList (as V.++ V.cons (Digit.fromDigit1289 c1) c2)
 
     as :: Vector 2 Digit
     as = V.fromTuple $ case c0 of
