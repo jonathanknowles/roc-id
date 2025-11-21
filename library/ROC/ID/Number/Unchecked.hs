@@ -16,6 +16,8 @@ module ROC.ID.Number.Unchecked
 
 import Data.Bifunctor
   ( Bifunctor (first) )
+import Data.Set.NonEmpty
+  ( NESet )
 import Data.Text
   ( Text )
 import Data.Vector.Sized
@@ -44,7 +46,9 @@ data IdentityNumber = IdentityNumber
 newtype CharIndex = CharIndex Digit
   deriving (Bounded, Enum, Eq, Ord, Show)
 
-data CharRange = CharRange Char Char
+data CharRange
+  = CharRange Char Char
+  | CharSet (NESet Char)
   deriving (Eq, Ord, Show)
 
 data FromTextError
