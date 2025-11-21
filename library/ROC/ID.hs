@@ -14,6 +14,7 @@ module ROC.ID
   , fromText
   , FromTextError (..)
   , toNumber
+  , toText
   , generate
   ) where
 
@@ -47,6 +48,7 @@ import qualified Data.Vector.Sized as V
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
+import qualified ROC.ID.Number as Number
 import qualified ROC.ID.Serial as Serial
 
 -- Types:
@@ -205,6 +207,9 @@ data FromTextError
   | InvalidChecksum
     -- ^ The computed checksum did not match the checksum portion of the input.
   deriving (Eq, Show)
+
+toText :: Identity -> Text
+toText = Number.toText . toNumber
 
 -- | Generate a random 'Identity'.
 --
