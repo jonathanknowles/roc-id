@@ -85,18 +85,7 @@ instance Show Identity where
 -- | Calculate the checksum of the specified 'Identity'.
 --
 checksum :: Identity -> Digit
-checksum Identity {gender, location, serial} =
-    toEnum $ negate total `mod` 10
-  where
-    total
-      = 1 * p 0 + 9 * p 1 + 8 * g 0 + 7 * s 0 + 6 * s 1
-      + 5 * s 2 + 4 * s 3 + 3 * s 4 + 2 * s 5 + 1 * s 6
-    g = index gender
-    p = index location
-    s = index serial
-    index x = fromEnum . V.index e
-      where
-        e = toDigits x
+checksum = Number.checksum . toNumber
 
 fromNumber :: IdentityNumber -> Identity
 fromNumber IdentityNumber {c0, c1, c2} =
@@ -117,33 +106,6 @@ toNumber Identity {gender, location, serial} =
       Male   -> D12_1
       Female -> D12_2
     c2 = case serial of Serial s -> s
-
-class ToDigits t n | t -> n where
-  toDigits :: t -> Vector n Digit
-
-instance ToDigits Gender 1 where
-  toDigits = V.singleton . \case
-    Male   -> D1
-    Female -> D2
-
-instance ToDigits Location 2 where
-  toDigits location = V.fromTuple $ case Location.toLetter location of
-    A -> (D1, D0); N -> (D2, D2)
-    B -> (D1, D1); O -> (D3, D5)
-    C -> (D1, D2); P -> (D2, D3)
-    D -> (D1, D3); Q -> (D2, D4)
-    E -> (D1, D4); R -> (D2, D5)
-    F -> (D1, D5); S -> (D2, D6)
-    G -> (D1, D6); T -> (D2, D7)
-    H -> (D1, D7); U -> (D2, D8)
-    I -> (D3, D4); V -> (D2, D9)
-    J -> (D1, D8); W -> (D3, D2)
-    K -> (D1, D9); X -> (D3, D0)
-    L -> (D2, D0); Y -> (D3, D1)
-    M -> (D2, D1); Z -> (D3, D3)
-
-instance ToDigits Serial 7 where
-  toDigits (Serial c) = c
 
 -- | Attempt to parse an 'Identity' using the specified 'Text' as input.
 --
