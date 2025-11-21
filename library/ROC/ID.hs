@@ -12,7 +12,7 @@ module ROC.ID
   , fromText
   , FromTextError (..)
   , CharIndex (..)
-  , CharRange (..)
+  , CharSet (..)
   , toNumber
   , toText
   , generate
@@ -31,7 +31,7 @@ import ROC.ID.Gender
 import ROC.ID.Location
   ( Location )
 import ROC.ID.Number
-  ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharRange (..) )
+  ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharSet (..) )
 import ROC.ID.Serial
   ( Serial (Serial) )
 

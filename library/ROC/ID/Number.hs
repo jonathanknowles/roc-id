@@ -7,7 +7,7 @@ module ROC.ID.Number
   ( IdentityNumber (..)
   , FromTextError (..)
   , CharIndex (..)
-  , CharRange (..)
+  , CharSet (..)
   , fromText
   , fromUnchecked
   , toText
@@ -27,7 +27,7 @@ import ROC.ID.Digit
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Number.Unchecked
-  ( CharIndex (..), CharRange (..), u0, u1, u2 )
+  ( CharIndex (..), CharSet (..), u0, u1, u2 )
 import ROC.ID.Utilities
   ( guard )
 
@@ -45,7 +45,7 @@ data IdentityNumber = IdentityNumber
 data FromTextError
   = InvalidLength
   | InvalidChecksum
-  | InvalidChar CharIndex CharRange
+  | InvalidChar CharIndex CharSet
   deriving (Eq, Ord, Show)
 
 fromText :: Text -> Either FromTextError IdentityNumber

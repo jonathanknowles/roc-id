@@ -8,7 +8,7 @@ module ROC.ID.Number.Unchecked
   ( IdentityNumber (..)
   , FromTextError (..)
   , CharIndex (..)
-  , CharRange (..)
+  , CharSet (..)
   , fromText
   , toText
   )
@@ -46,14 +46,14 @@ data IdentityNumber = IdentityNumber
 newtype CharIndex = CharIndex Digit
   deriving (Bounded, Enum, Eq, Ord, Show)
 
-data CharRange
-  = CharRange Char Char
-  | CharSet (NESet Char)
+data CharSet
+  = CharSet (NESet Char)
+  | CharRange Char Char
   deriving (Eq, Ord, Show)
 
 data FromTextError
   = InvalidLength
-  | InvalidChar CharIndex CharRange
+  | InvalidChar CharIndex CharSet
   deriving (Eq, Ord, Show)
 
 fromText :: Text -> Either FromTextError IdentityNumber
