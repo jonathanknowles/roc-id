@@ -1,8 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE FunctionalDependencies #-}
-{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -13,6 +11,8 @@ module ROC.ID
   , fromNumber
   , fromText
   , FromTextError (..)
+  , CharIndex (..)
+  , CharRange (..)
   , toNumber
   , toText
   , generate
@@ -20,32 +20,22 @@ module ROC.ID
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
-import Data.Proxy
-  ( Proxy (..) )
 import Data.Text
   ( Text )
-import Data.Vector.Sized
-  ( Vector )
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
   ( Digit (..), Digit12 (..) )
 import ROC.ID.Gender
   ( Gender (..) )
-import ROC.ID.Letter
-  ( Letter (..) )
 import ROC.ID.Location
   ( Location )
 import ROC.ID.Number
-  ( IdentityNumber (..) )
+  ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharRange (..) )
 import ROC.ID.Serial
   ( Serial (Serial) )
-import ROC.ID.Utilities
-  ( guard )
 
 import qualified Data.Text as T
-import qualified Data.Vector.Sized as V
-import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Number as Number
@@ -112,59 +102,7 @@ toNumber Identity {gender, location, serial} =
 -- The input must be of the form __@A123456789@__.
 --
 fromText :: Text -> Either FromTextError Identity
-fromText t = do
-    v <-              guard InvalidLength   (parseRaw                     t)
-    i <- Identity <$> guard InvalidGender   (parseGender   $ readGender   v)
-                  <*> guard InvalidLocation (parseLocation $ readLocation v)
-                  <*> guard InvalidSerial   (parseSerial   $ readSerial   v)
-    c <-              guard InvalidChecksum (parseDigit    $ readChecksum v)
-    if c == checksum i then pure i else Left InvalidChecksum
-  where
-    parseDigit :: Char -> Maybe Digit
-    parseDigit = Digit.fromChar
-
-    parseGender :: Char -> Maybe Gender
-    parseGender = \case
-      '1' -> pure Male
-      '2' -> pure Female
-      _   -> Nothing
-
-    parseLocation :: Char -> Maybe Location
-    parseLocation = Location.fromChar
-
-    parseRaw :: Text -> Maybe (Vector 10 Char)
-    parseRaw = V.fromList . T.unpack
-
-    parseSerial :: Vector 7 Char -> Maybe Serial
-    parseSerial a = Serial <$> traverse Digit.fromChar a
-
-    readSerial :: Vector 10 Char -> Vector 7 Char
-    readSerial = V.slice (Proxy :: Proxy 2)
-
-    readLocation :: Vector 10 Char -> Char
-    readLocation = flip V.index 0
-
-    readGender :: Vector 10 Char -> Char
-    readGender = flip V.index 1
-
-    readChecksum :: Vector 10 Char -> Char
-    readChecksum = flip V.index 9
-
--- | An error produced when parsing an 'Identity' with the 'fromText'
---   function.
---
-data FromTextError
-  = InvalidLength
-    -- ^ The input was either too short or too long.
-  | InvalidGender
-    -- ^ The gender portion of the input was invalid.
-  | InvalidLocation
-    -- ^ The location portion of the input included non-alphabetic characters.
-  | InvalidSerial
-    -- ^ The serial number portion of the input included non-numeric characters.
-  | InvalidChecksum
-    -- ^ The computed checksum did not match the checksum portion of the input.
-  deriving (Eq, Show)
+fromText t = fromNumber <$> Number.fromText t
 
 toText :: Identity -> Text
 toText = Number.toText . toNumber

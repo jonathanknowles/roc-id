@@ -12,7 +12,7 @@ import Data.Text
 import ROC.ID
   ( Identity (Identity) )
 import ROC.ID.Digit
-  ( Digit )
+  ( Digit (..) )
 import ROC.ID.Gender
   ( Gender )
 import ROC.ID.Location
@@ -98,14 +98,16 @@ main = hspec $ do
               T.take 1 (printIdentity i) <>
               T.pack [invalidGenderCode] <>
               T.drop 2 (printIdentity i)
-        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidGender
+        ID.fromText invalidIdentity `shouldBe`
+          Left (ID.InvalidChar (ID.CharIndex D1) (ID.CharRange '1' '2'))
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
         let invalidIdentity =
               T.cons invalidLocationCode $ T.drop 1 $ printIdentity i
-        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLocation
+        ID.fromText invalidIdentity `shouldBe`
+          Left (ID.InvalidChar (ID.CharIndex D0) (ID.CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: Identity) (c :: Int) -> do
