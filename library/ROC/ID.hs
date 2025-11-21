@@ -80,11 +80,7 @@ instance Read Identity where
       Left _ -> []
 
 instance Show Identity where
-  show i@Identity {gender, location, serial} = show $ ""
-    <> show location
-    <> foldMap show (toDigits gender)
-    <> foldMap show (toDigits serial)
-    <> show (checksum i)
+  show = show . toText
 
 -- | Calculate the checksum of the specified 'Identity'.
 --
