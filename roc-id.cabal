@@ -81,6 +81,7 @@ test-suite roc-id-test
     , dependency-base
     , dependency-hspec
     , dependency-MonadRandom
+    , dependency-nonempty-containers
     , dependency-QuickCheck
     , dependency-quickcheck-classes
     , dependency-text

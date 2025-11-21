@@ -25,11 +25,13 @@ import Data.Text
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
-  ( Digit (..), Digit12 (..) )
+  ( Digit (..), Digit1289 (..) )
 import ROC.ID.Gender
   ( Gender (..) )
 import ROC.ID.Location
   ( Location )
+import ROC.ID.Nationality
+  ( Nationality (..) )
 import ROC.ID.Number
   ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharSet (..) )
 import ROC.ID.Serial
@@ -40,6 +42,7 @@ import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Number as Number
 import qualified ROC.ID.Serial as Serial
+import qualified ROC.ID.Nationality as Nationality
 
 -- Types:
 
@@ -57,6 +60,8 @@ data Identity = Identity
   -- ^ The gender of the person to whom this ID number belongs.
   , location :: !Location
   -- ^ The location in which the person first registered for an ID card.
+  , nationality :: !Nationality
+  -- ^ The nationality of the person to whom this ID number belongs.
   , serial :: !Serial
   -- ^ The serial number portion of this ID number.
   } deriving (Eq, Generic, Ord)
@@ -79,22 +84,26 @@ checksum = Number.checksum . toNumber
 
 fromNumber :: IdentityNumber -> Identity
 fromNumber IdentityNumber {c0, c1, c2} =
-    Identity {gender, location, serial}
+    Identity {gender, location, nationality, serial}
   where
     location = Location.fromLetter c0
-    gender = case c1 of
-      D12_1 -> Male
-      D12_2 -> Female
+    (gender, nationality) = case c1 of
+      D1289_1 -> (  Male,    National)
+      D1289_2 -> (Female,    National)
+      D1289_8 -> (  Male, NonNational)
+      D1289_9 -> (Female, NonNational)
     serial = Serial c2
 
 toNumber :: Identity -> IdentityNumber
-toNumber Identity {gender, location, serial} =
+toNumber Identity {gender, location, nationality, serial} =
     IdentityNumber {c0, c1, c2}
   where
     c0 = Location.toLetter location
-    c1 = case gender of
-      Male   -> D12_1
-      Female -> D12_2
+    c1 = case (gender, nationality) of
+      (  Male,    National) -> D1289_1
+      (Female,    National) -> D1289_2
+      (  Male, NonNational) -> D1289_8
+      (Female, NonNational) -> D1289_9
     c2 = case serial of Serial s -> s
 
 -- | Attempt to parse an 'Identity' using the specified 'Text' as input.
@@ -114,4 +123,5 @@ generate =
   Identity
     <$> Gender.generate
     <*> Location.generate
+    <*> Nationality.generate
     <*> Serial.generate
