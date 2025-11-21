@@ -1,10 +1,14 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module ROC.ID.Location
-  ( Location (..)
+  ( Location
   , fromChar
+  , fromLetter
+  , toLetter
   , toText
   , generate
   ) where
@@ -17,6 +21,8 @@ import GHC.Generics
   ( Generic )
 import ROC.ID.Language
   ( Language (..) )
+import ROC.ID.Letter
+  ( Letter (..) )
 import ROC.ID.Utilities
   ( randomBoundedEnum )
 import Text.Read
@@ -30,34 +36,9 @@ import Text.Read
 --
 -- To generate a random 'Location', use the 'generate' function.
 --
-data Location
-  = A -- ^ 臺北市 Taipei City
-  | B -- ^ 臺中市 Taichung City
-  | C -- ^ 基隆市 Keelung City
-  | D -- ^ 臺南市 Tainan City
-  | E -- ^ 高雄市 Kaohsiung City
-  | F -- ^ 新北市 New Taipei City
-  | G -- ^ 宜蘭縣 Yilan County
-  | H -- ^ 桃園市 Taoyuan City
-  | I -- ^ 嘉義市 Chiayi City
-  | J -- ^ 新竹縣 Hsinchu County
-  | K -- ^ 苗栗縣 Miaoli County
-  | L -- ^ 臺中縣 Taichung County
-  | M -- ^ 南投縣 Nantou County
-  | N -- ^ 彰化縣 Changhua County
-  | O -- ^ 新竹市 Hsinchu City
-  | P -- ^ 雲林縣 Yunlin County
-  | Q -- ^ 嘉義縣 Chiayi County
-  | R -- ^ 臺南縣 Pingtung County
-  | S -- ^ 高雄縣 Kaohsiung County
-  | T -- ^ 屏東縣 Pingtung County
-  | U -- ^ 花蓮縣 Hualien County
-  | V -- ^ 臺東縣 Taitung County
-  | W -- ^ 金門縣 Kinmen County
-  | X -- ^ 澎湖縣 Penghu County
-  | Y -- ^ 陽明山 Yangmingshan
-  | Z -- ^ 連江縣 Lienchiang County
-  deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+newtype Location = Location {toLetter :: Letter}
+  deriving stock (Eq, Generic, Ord)
+  deriving newtype (Bounded, Enum, Read, Show)
 
 -- | Parse the specified uppercase alphabetic character as a 'Location'.
 --
@@ -67,6 +48,9 @@ data Location
 fromChar :: Char -> Maybe Location
 fromChar c = readMaybe [c]
 
+fromLetter :: Letter -> Location
+fromLetter = Location
+
 -- | Pretty-print the specified 'Location'.
 toText :: Language -> Location -> Text
 toText = \case
@@ -74,7 +58,7 @@ toText = \case
   Chinese -> toTextChinese
 
 toTextChinese :: Location -> Text
-toTextChinese = \case
+toTextChinese (Location letter) = case letter of
   A -> "臺北市"
   B -> "臺中市"
   C -> "基隆市"
@@ -103,7 +87,7 @@ toTextChinese = \case
   Z -> "連江縣"
 
 toTextEnglish :: Location -> Text
-toTextEnglish = \case
+toTextEnglish (Location letter) = case letter of
   A -> "Taipei City"
   B -> "Taichung City"
   C -> "Keelung City"
