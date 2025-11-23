@@ -1,6 +1,5 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeApplications #-}
 
 module ROC.ID.Number
@@ -27,7 +26,7 @@ import ROC.ID.Digit
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Number.Unchecked
-  ( CharIndex (..), CharSet (..), u0, u1, u2 )
+  ( CharIndex (..), CharSet (..) )
 import ROC.ID.Utilities
   ( guard )
 
@@ -36,10 +35,9 @@ import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Number.Unchecked as U
 
 data IdentityNumber = IdentityNumber
-  { c0 :: !Letter
-  , c1 :: !Digit1289
-  , c2 :: !(Vector 7 Digit)
-  }
+  !Letter
+  !Digit1289
+  !(Vector 7 Digit)
   deriving (Eq, Ord, Show)
 
 data FromTextError
@@ -64,19 +62,19 @@ toText :: IdentityNumber -> Text
 toText = U.toText . toUnchecked
 
 fromUnchecked :: U.IdentityNumber -> Maybe IdentityNumber
-fromUnchecked U.IdentityNumber {u0, u1, u2}
+fromUnchecked (U.IdentityNumber u0 u1 u2)
     | checksum i == c = Just i
     | otherwise = Nothing
   where
-    i = IdentityNumber {c0 = u0, c1 = u1, c2 = V.take @7 u2}
+    i = IdentityNumber u0 u1 (V.take @7 u2)
     c = V.last u2
 
 toUnchecked :: IdentityNumber -> U.IdentityNumber
-toUnchecked i@IdentityNumber {c0, c1, c2} =
-  U.IdentityNumber {u0 = c0, u1 = c1, u2 = c2 V.++ V.singleton (checksum i)}
+toUnchecked i@(IdentityNumber c0 c1 c2) =
+  U.IdentityNumber c0 c1 (c2 V.++ V.singleton (checksum i))
 
 checksum :: IdentityNumber -> Digit
-checksum IdentityNumber {c0, c1, c2} =
+checksum (IdentityNumber c0 c1 c2) =
     toEnum $ (`mod` 10) $ negate $ sum $ zipWith (*) cs vs
   where
     cs = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1]

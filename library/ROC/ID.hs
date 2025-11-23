@@ -83,7 +83,7 @@ checksum :: Identity -> Digit
 checksum = Number.checksum . toNumber
 
 fromNumber :: IdentityNumber -> Identity
-fromNumber IdentityNumber {c0, c1, c2} =
+fromNumber (IdentityNumber c0 c1 c2) =
     Identity {gender, location, nationality, serial}
   where
     location = Location.fromLetter c0
@@ -96,7 +96,7 @@ fromNumber IdentityNumber {c0, c1, c2} =
 
 toNumber :: Identity -> IdentityNumber
 toNumber Identity {gender, location, nationality, serial} =
-    IdentityNumber {c0, c1, c2}
+    IdentityNumber c0 c1 c2
   where
     c0 = Location.toLetter location
     c1 = case (gender, nationality) of

@@ -2,7 +2,6 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE NamedFieldPuns #-}
 
 module ROC.ID.Number.Unchecked
   ( IdentityNumber (..)
@@ -40,10 +39,9 @@ import qualified Data.Vector.Sized as V
 import qualified Data.Set.NonEmpty as NESet
 
 data IdentityNumber = IdentityNumber
-  { u0 :: !Letter
-  , u1 :: !Digit1289
-  , u2 :: !(Vector 8 Digit)
-  }
+  !Letter
+  !Digit1289
+  !(Vector 8 Digit)
   deriving (Eq, Ord, Show)
 
 newtype CharIndex = CharIndex Digit
@@ -79,7 +77,7 @@ fromText text = do
       InvalidLength
 
 toText :: IdentityNumber -> Text
-toText IdentityNumber {u0, u1, u2} = t0 <> t1 <> t2
+toText (IdentityNumber u0 u1 u2) = t0 <> t1 <> t2
   where
     t0 = T.singleton (Letter.toChar u0)
     t1 = T.singleton (Digit.toChar1289 u1)
