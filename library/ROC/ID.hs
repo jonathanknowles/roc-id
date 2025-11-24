@@ -8,12 +8,10 @@
 module ROC.ID
   ( Identity (..)
   , checksum
-  , fromNumber
   , fromText
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
-  , toNumber
   , toText
   , generate
   ) where
