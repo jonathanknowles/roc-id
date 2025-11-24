@@ -59,7 +59,7 @@ data FromTextError
 
 fromText :: Text -> Either FromTextError IdentityNumber
 fromText text = do
-    v  <- guard invalidLength $ V.fromList @10 $ T.unpack text
+    v <- guard invalidLength $ V.fromList @10 $ T.unpack text
     IdentityNumber
       <$> guard (invalidChar letters    D0) (Letter.fromChar    $ V.index v 0)
       <*> guard (invalidChar digits1289 D1) (Digit.fromChar1289 $ V.index v 1)
