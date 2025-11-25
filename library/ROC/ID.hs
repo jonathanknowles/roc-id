@@ -96,6 +96,10 @@ fromText t = fromNumber <$> Number.fromText t
 -- Printing
 --------------------------------------------------------------------------------
 
+-- | Print the specified 'Identity'.
+--
+-- The output is of the form __@A123456789@__.
+--
 toText :: Identity -> Text
 toText = Number.toText . toNumber
 
