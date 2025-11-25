@@ -1,3 +1,6 @@
+# `roc-id`
+<a href="https://jonathanknowles.github.io/roc-id/"><img src="https://img.shields.io/badge/API-Documentation-227755" /></a>
+
 This package provides a [Haskell](https://www.haskell.org/) implementation of
 the ROC (Taiwan) Identification Number (中華民國身分證號碼) standard.
 
