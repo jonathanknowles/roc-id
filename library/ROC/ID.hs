@@ -31,7 +31,9 @@ import Data.Text
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
-  ( Digit (..), Digit1289 (..) )
+  ( Digit (..) )
+import ROC.ID.Digit1289
+  ( Digit1289 (..) )
 import ROC.ID.Gender
   ( Gender (..) )
 import ROC.ID.Location

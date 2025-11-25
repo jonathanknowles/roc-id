@@ -61,6 +61,7 @@ library
   exposed-modules:
       ROC.ID
       ROC.ID.Digit
+      ROC.ID.Digit1289
       ROC.ID.Gender
       ROC.ID.Language
       ROC.ID.Letter
