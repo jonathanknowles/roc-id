@@ -7,12 +7,20 @@
 
 module ROC.ID
   ( Identity (..)
-  , checksum
+
+  -- * Parsing
   , fromText
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
+
+  -- * Printing
   , toText
+
+  -- * Verification
+  , checksum
+
+  -- * Generation
   , generate
   ) where
 
