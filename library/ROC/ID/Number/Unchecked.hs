@@ -32,11 +32,11 @@ import ROC.ID.Letter
 import ROC.ID.Utilities
   ( guard )
 
+import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
+import qualified Data.Vector.Sized as V
 import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Digit as Digit
-import qualified Data.Vector.Sized as V
-import qualified Data.Set.NonEmpty as NESet
 
 data IdentityNumber = IdentityNumber
   !Letter
