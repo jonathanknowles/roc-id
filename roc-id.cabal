@@ -68,6 +68,7 @@ library
       ROC.ID.Nationality
       ROC.ID.Serial
   other-modules:
+      ROC.ID.Digit1289
       ROC.ID.Number
       ROC.ID.Number.Unchecked
       ROC.ID.Utilities

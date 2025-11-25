@@ -26,17 +26,20 @@ import Data.Vector.Sized
 import GHC.TypeLits
   ( KnownNat )
 import ROC.ID.Digit
-  ( Digit (..), Digit1289 )
+  ( Digit (..) )
+import ROC.ID.Digit1289
+  ( Digit1289 )
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Utilities
   ( guard )
 
+import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
+import qualified Data.Vector.Sized as V
 import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Digit as Digit
-import qualified Data.Vector.Sized as V
-import qualified Data.Set.NonEmpty as NESet
+import qualified ROC.ID.Digit1289 as Digit1289
 
 data IdentityNumber = IdentityNumber
   !Letter
@@ -62,7 +65,7 @@ fromText text = do
     v <- guard invalidLength $ V.fromList @10 $ T.unpack text
     IdentityNumber
       <$> guard (invalidChar letters    D0) (Letter.fromChar    $ V.index v 0)
-      <*> guard (invalidChar digits1289 D1) (Digit.fromChar1289 $ V.index v 1)
+      <*> guard (invalidChar digits1289 D1) (Digit1289.fromChar $ V.index v 1)
       <*> first
           (invalidChar digits . toEnum . (+ 2))
           (imapMay Digit.fromChar $ V.drop @2 v)
@@ -80,7 +83,7 @@ toText :: IdentityNumber -> Text
 toText (IdentityNumber u0 u1 u2) = t0 <> t1 <> t2
   where
     t0 = T.singleton (Letter.toChar u0)
-    t1 = T.singleton (Digit.toChar1289 u1)
+    t1 = T.singleton (Digit1289.toChar u1)
     t2 = T.pack (Digit.toChar <$> V.toList u2)
 
 imapMay :: KnownNat n => (a -> Maybe b) -> Vector n a -> Either Int (Vector n b)

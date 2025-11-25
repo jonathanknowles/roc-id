@@ -22,7 +22,9 @@ import Data.Vector.Sized
 import Data.Text
   ( Text )
 import ROC.ID.Digit
-  ( Digit (..), Digit1289 )
+  ( Digit (..) )
+import ROC.ID.Digit1289
+  ( Digit1289 )
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Number.Unchecked
@@ -31,7 +33,7 @@ import ROC.ID.Utilities
   ( guard )
 
 import qualified Data.Vector.Sized as V
-import qualified ROC.ID.Digit as Digit
+import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Number.Unchecked as U
 
 data IdentityNumber = IdentityNumber
@@ -78,7 +80,7 @@ checksum (IdentityNumber c0 c1 c2) =
     toEnum $ (`mod` 10) $ negate $ sum $ zipWith (*) cs vs
   where
     cs = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    vs = fromEnum <$> V.toList (as V.++ V.cons (Digit.fromDigit1289 c1) c2)
+    vs = fromEnum <$> V.toList (as V.++ V.cons (Digit1289.toDigit c1) c2)
 
     as :: Vector 2 Digit
     as = V.fromTuple $ case c0 of
