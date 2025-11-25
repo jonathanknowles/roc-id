@@ -61,7 +61,6 @@ library
   exposed-modules:
       ROC.ID
       ROC.ID.Digit
-      ROC.ID.Digit1289
       ROC.ID.Gender
       ROC.ID.Language
       ROC.ID.Letter
@@ -69,6 +68,7 @@ library
       ROC.ID.Nationality
       ROC.ID.Serial
   other-modules:
+      ROC.ID.Digit1289
       ROC.ID.Number
       ROC.ID.Number.Unchecked
       ROC.ID.Utilities
