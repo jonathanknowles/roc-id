@@ -66,10 +66,10 @@ library
       ROC.ID.Letter
       ROC.ID.Location
       ROC.ID.Nationality
-      ROC.ID.Number
-      ROC.ID.Number.Unchecked
       ROC.ID.Serial
   other-modules:
+      ROC.ID.Number
+      ROC.ID.Number.Unchecked
       ROC.ID.Utilities
   hs-source-dirs:
       library

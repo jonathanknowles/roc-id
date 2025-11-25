@@ -7,14 +7,20 @@
 
 module ROC.ID
   ( Identity (..)
-  , checksum
-  , fromNumber
+
+  -- * Parsing
   , fromText
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
-  , toNumber
+
+  -- * Printing
   , toText
+
+  -- * Verification
+  , checksum
+
+  -- * Generation
   , generate
   ) where
 
@@ -43,8 +49,6 @@ import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Number as Number
 import qualified ROC.ID.Serial as Serial
 import qualified ROC.ID.Nationality as Nationality
-
--- Types:
 
 -- | Represents a __valid__ 10-digit ROC national identification number
 -- (中華民國身份證號碼) of the form __@A123456789@__.
@@ -77,13 +81,57 @@ instance Read Identity where
 instance Show Identity where
   show = show . toText
 
+--------------------------------------------------------------------------------
+-- Parsing
+--------------------------------------------------------------------------------
+
+-- | Attempt to parse an 'Identity' using the specified 'Text' as input.
+--
+-- The input must be of the form __@A123456789@__.
+--
+fromText :: Text -> Either FromTextError Identity
+fromText t = fromNumber <$> Number.fromText t
+
+--------------------------------------------------------------------------------
+-- Printing
+--------------------------------------------------------------------------------
+
+-- | Print the specified 'Identity'.
+--
+-- The output is of the form __@A123456789@__.
+--
+toText :: Identity -> Text
+toText = Number.toText . toNumber
+
+--------------------------------------------------------------------------------
+-- Verification
+--------------------------------------------------------------------------------
+
 -- | Calculate the checksum of the specified 'Identity'.
 --
 checksum :: Identity -> Digit
 checksum = Number.checksum . toNumber
 
+--------------------------------------------------------------------------------
+-- Generation
+--------------------------------------------------------------------------------
+
+-- | Generate a random 'Identity'.
+--
+generate :: MonadRandom m => m Identity
+generate =
+  Identity
+    <$> Gender.generate
+    <*> Location.generate
+    <*> Nationality.generate
+    <*> Serial.generate
+
+--------------------------------------------------------------------------------
+-- Internal
+--------------------------------------------------------------------------------
+
 fromNumber :: IdentityNumber -> Identity
-fromNumber IdentityNumber {c0, c1, c2} =
+fromNumber (IdentityNumber c0 c1 c2) =
     Identity {gender, location, nationality, serial}
   where
     location = Location.fromLetter c0
@@ -96,7 +144,7 @@ fromNumber IdentityNumber {c0, c1, c2} =
 
 toNumber :: Identity -> IdentityNumber
 toNumber Identity {gender, location, nationality, serial} =
-    IdentityNumber {c0, c1, c2}
+    IdentityNumber c0 c1 c2
   where
     c0 = Location.toLetter location
     c1 = case (gender, nationality) of
@@ -105,23 +153,3 @@ toNumber Identity {gender, location, nationality, serial} =
       (  Male, NonNational) -> D1289_8
       (Female, NonNational) -> D1289_9
     c2 = case serial of Serial s -> s
-
--- | Attempt to parse an 'Identity' using the specified 'Text' as input.
---
--- The input must be of the form __@A123456789@__.
---
-fromText :: Text -> Either FromTextError Identity
-fromText t = fromNumber <$> Number.fromText t
-
-toText :: Identity -> Text
-toText = Number.toText . toNumber
-
--- | Generate a random 'Identity'.
---
-generate :: MonadRandom m => m Identity
-generate =
-  Identity
-    <$> Gender.generate
-    <*> Location.generate
-    <*> Nationality.generate
-    <*> Serial.generate
