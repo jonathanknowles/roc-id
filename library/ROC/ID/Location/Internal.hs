@@ -23,10 +23,10 @@ import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Letter
   ( Letter (..) )
-import ROC.ID.Utilities
-  ( randomBoundedEnum )
 import Text.Read
   ( readMaybe )
+
+import qualified ROC.ID.Letter as Letter
 
 -- | A location, encodable within an ROC identification number.
 --
@@ -118,4 +118,4 @@ toTextEnglish (Location letter) = case letter of
 -- | Generate a random 'Location'.
 --
 generate :: MonadRandom m => m Location
-generate = randomBoundedEnum
+generate = Location <$> Letter.generate
