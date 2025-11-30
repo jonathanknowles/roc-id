@@ -48,6 +48,7 @@ import ROC.ID.Serial
 import qualified Data.Text as T
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
+import qualified ROC.ID.Location.Internal as Location
 import qualified ROC.ID.Number as Number
 import qualified ROC.ID.Serial as Serial
 import qualified ROC.ID.Nationality as Nationality
