@@ -28,11 +28,74 @@ import Text.Read
 
 import qualified ROC.ID.Letter as Letter
 
--- | A location, encodable within an ROC identification number.
+-- | Represents a location, encodable within an ROC identification number.
 --
--- To generate the name of a 'Location', use the 'toText' function.
+-- == Location codes
 --
--- To parse a 'Location', use the 'fromChar' function.
+-- Every location that can be represented in an ROC identification number has a
+-- unique code:
+--
+-- +------+---------+-------------------+
+-- | Code | Chinese | English           |
+-- +======+=========+===================+
+-- | @A@  | 臺北市     | Taipei City       |
+-- +------+---------+-------------------+
+-- | @B@  | 臺中市     | Taichung City     |
+-- +------+---------+-------------------+
+-- | @C@  | 基隆市     | Keelung City      |
+-- +------+---------+-------------------+
+-- | @D@  | 臺南市     | Tainan City       |
+-- +------+---------+-------------------+
+-- | @E@  | 高雄市     | Kaohsiung City    |
+-- +------+---------+-------------------+
+-- | @F@  | 新北市     | New Taipei City   |
+-- +------+---------+-------------------+
+-- | @G@  | 宜蘭縣     | Yilan County      |
+-- +------+---------+-------------------+
+-- | @H@  | 桃園市     | Taoyuan City      |
+-- +------+---------+-------------------+
+-- | @I@  | 嘉義市     | Chiayi City       |
+-- +------+---------+-------------------+
+-- | @J@  | 新竹縣     | Hsinchu County    |
+-- +------+---------+-------------------+
+-- | @K@  | 苗栗縣     | Miaoli County     |
+-- +------+---------+-------------------+
+-- | @L@  | 臺中縣     | Taichung County   |
+-- +------+---------+-------------------+
+-- | @M@  | 南投縣     | Nantou County     |
+-- +------+---------+-------------------+
+-- | @N@  | 彰化縣     | Changhua County   |
+-- +------+---------+-------------------+
+-- | @O@  | 新竹市     | Hsinchu City      |
+-- +------+---------+-------------------+
+-- | @P@  | 雲林縣     | Yunlin County     |
+-- +------+---------+-------------------+
+-- | @Q@  | 嘉義縣     | Chiayi County     |
+-- +------+---------+-------------------+
+-- | @R@  | 臺南縣     | Tainan County     |
+-- +------+---------+-------------------+
+-- | @S@  | 高雄縣     | Kaohsiung County  |
+-- +------+---------+-------------------+
+-- | @T@  | 屏東縣     | Pingtung County   |
+-- +------+---------+-------------------+
+-- | @U@  | 花蓮縣     | Hualien County    |
+-- +------+---------+-------------------+
+-- | @V@  | 臺東縣     | Taitung County    |
+-- +------+---------+-------------------+
+-- | @W@  | 金門縣     | Kinmen County     |
+-- +------+---------+-------------------+
+-- | @X@  | 澎湖縣     | Penghu County     |
+-- +------+---------+-------------------+
+-- | @Y@  | 陽明山     | Yangmingshan      |
+-- +------+---------+-------------------+
+-- | @Z@  | 連江縣     | Lienchiang County |
+-- +------+---------+-------------------+
+--
+-- == Usage
+--
+-- To parse a 'Location' from its code, use the 'fromChar' function.
+--
+-- To print the full name of a 'Location', use the 'toText' function.
 --
 -- To generate a random 'Location', use the 'generate' function.
 --
