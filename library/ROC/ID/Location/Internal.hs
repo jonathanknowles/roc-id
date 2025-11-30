@@ -105,7 +105,7 @@ toTextEnglish (Location letter) = case letter of
   O -> "Hsinchu City"
   P -> "Yunlin County"
   Q -> "Chiayi County"
-  R -> "Pingtung County"
+  R -> "Tainan County"
   S -> "Kaohsiung County"
   T -> "Pingtung County"
   U -> "Hualien County"
