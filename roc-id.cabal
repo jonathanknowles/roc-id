@@ -63,12 +63,12 @@ library
       ROC.ID.Digit
       ROC.ID.Gender
       ROC.ID.Language
-      ROC.ID.Letter
       ROC.ID.Location
       ROC.ID.Nationality
       ROC.ID.Serial
   other-modules:
       ROC.ID.Digit1289
+      ROC.ID.Letter
       ROC.ID.Number
       ROC.ID.Number.Unchecked
       ROC.ID.Utilities
