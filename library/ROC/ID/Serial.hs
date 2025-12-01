@@ -21,8 +21,6 @@ import qualified Data.Vector.Sized as V
 
 -- | A 7-digit serial number, as found within an ROC identification number.
 --
--- A serial number is unique for a gender and location.
---
 -- To generate a random 'Serial' number, use the 'generate' function.
 --
 newtype Serial = Serial (Vector 7 Digit)
