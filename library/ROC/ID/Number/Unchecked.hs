@@ -47,6 +47,8 @@ data IdentityNumber = IdentityNumber
   !(Vector 8 Digit)
   deriving (Eq, Ord, Show)
 
+-- | Specifies the position of a character within a string.
+--
 newtype CharIndex = CharIndex Digit
   deriving (Bounded, Enum, Eq, Ord, Show)
 
