@@ -52,9 +52,13 @@ data IdentityNumber = IdentityNumber
 newtype CharIndex = CharIndex Digit
   deriving (Bounded, Enum, Eq, Ord, Show)
 
+-- | Specifies a set of characters.
+--
 data CharSet
   = CharSet (NESet Char)
+  -- ^ An explicit set of characters.
   | CharRange Char Char
+  -- ^ An inclusive range of characters.
   deriving (Eq, Ord, Show)
 
 data FromTextError
