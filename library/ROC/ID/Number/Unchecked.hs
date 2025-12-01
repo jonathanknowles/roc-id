@@ -47,12 +47,18 @@ data IdentityNumber = IdentityNumber
   !(Vector 8 Digit)
   deriving (Eq, Ord, Show)
 
+-- | Specifies the position of a character within a string.
+--
 newtype CharIndex = CharIndex Digit
   deriving (Bounded, Enum, Eq, Ord, Show)
 
+-- | Specifies a set of characters.
+--
 data CharSet
   = CharSet (NESet Char)
+  -- ^ An explicit set of characters.
   | CharRange Char Char
+  -- ^ An inclusive range of characters.
   deriving (Eq, Ord, Show)
 
 data FromTextError

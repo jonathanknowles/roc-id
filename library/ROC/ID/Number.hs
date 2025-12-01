@@ -42,10 +42,20 @@ data IdentityNumber = IdentityNumber
   !(Vector 7 Digit)
   deriving (Eq, Ord, Show)
 
+-- | Indicates an error that occurred while parsing an identification number.
+--
 data FromTextError
-  = InvalidLength
+  = InvalidChar CharIndex CharSet
+  -- ^ Indicates that the input contains a character that is not allowed.
+  --
+  --   - `CharIndex` specifies the position of the offending character.
+  --   - `CharSet` specifies the set of characters allowed at that position.
+
+  | InvalidLength
+  -- ^ Indicates that the input does not have the correct length.
+
   | InvalidChecksum
-  | InvalidChar CharIndex CharSet
+  -- ^ Indicates that the parsed identification number has an invalid checksum.
   deriving (Eq, Ord, Show)
 
 fromText :: Text -> Either FromTextError IdentityNumber

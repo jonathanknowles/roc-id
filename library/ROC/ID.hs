@@ -56,11 +56,8 @@ import qualified ROC.ID.Nationality as Nationality
 -- | Represents a __valid__ 10-digit ROC national identification number
 -- (中華民國身份證號碼) of the form __@A123456789@__.
 --
--- By construction, invalid values are __not representable__ by this type.
---
--- An identification number encodes a person's 'Gender', the 'Location' in
--- which they first registered for an identification card, and a unique 'Serial'
--- number.
+-- By construction, invalid identification numbers are __not representable__ by
+-- this type.
 --
 data Identity = Identity
   { gender :: !Gender
@@ -88,9 +85,13 @@ instance Show Identity where
 -- Parsing
 --------------------------------------------------------------------------------
 
--- | Attempt to parse an 'Identity' using the specified 'Text' as input.
+-- | Attempts to parse an 'Identity' using the specified 'Text' as input.
 --
--- The input must be of the form __@A123456789@__.
+-- The input must be exactly 10 characters in length and of the form
+-- __@A123456789@__.
+--
+-- More precisely, the input must match the regular expression
+-- __@^[A-Z][1289][0-9]{8}$@__.
 --
 fromText :: Text -> Either FromTextError Identity
 fromText t = fromNumber <$> Number.fromText t
@@ -99,7 +100,7 @@ fromText t = fromNumber <$> Number.fromText t
 -- Printing
 --------------------------------------------------------------------------------
 
--- | Print the specified 'Identity'.
+-- | Prints the specified 'Identity'.
 --
 -- The output is of the form __@A123456789@__.
 --
@@ -110,7 +111,7 @@ toText = Number.toText . toNumber
 -- Verification
 --------------------------------------------------------------------------------
 
--- | Calculate the checksum of the specified 'Identity'.
+-- | Calculates the checksum of the specified 'Identity'.
 --
 checksum :: Identity -> Digit
 checksum = Number.checksum . toNumber
@@ -119,7 +120,7 @@ checksum = Number.checksum . toNumber
 -- Generation
 --------------------------------------------------------------------------------
 
--- | Generate a random 'Identity'.
+-- | Generates a random 'Identity'.
 --
 generate :: MonadRandom m => m Identity
 generate =

@@ -103,7 +103,7 @@ newtype Location = Location {toLetter :: Letter}
   deriving stock (Eq, Generic, Ord)
   deriving newtype (Bounded, Enum, Read, Show)
 
--- | Parse the specified uppercase alphabetic character as a 'Location'.
+-- | Parses the specified uppercase alphabetic character as a 'Location'.
 --
 -- Returns 'Nothing' if the specified character is not an uppercase alphabetic
 -- character.
@@ -114,7 +114,7 @@ fromChar c = readMaybe [c]
 fromLetter :: Letter -> Location
 fromLetter = Location
 
--- | Pretty-print the specified 'Location'.
+-- | Prints the specified 'Location'.
 toText :: Language -> Location -> Text
 toText = \case
   English -> toTextEnglish
@@ -178,7 +178,7 @@ toTextEnglish (Location letter) = case letter of
   Y -> "Yangmingshan"
   Z -> "Lienchiang County"
 
--- | Generate a random 'Location'.
+-- | Generates a random 'Location'.
 --
 generate :: MonadRandom m => m Location
 generate = Location <$> Letter.generate
