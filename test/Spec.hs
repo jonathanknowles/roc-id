@@ -9,8 +9,6 @@ import Data.Char
   ( intToDigit )
 import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
-import Data.Text
-  ( Text )
 import ROC.ID
   ( Identity (Identity), CharSet (CharSet) )
 import ROC.ID.Digit
@@ -130,9 +128,3 @@ main = hspec $ do
         let invalidIdentity =
               T.take 9 (ID.toText i) <> T.pack [invalidChecksum]
         ID.fromText invalidIdentity `shouldBe` Left ID.InvalidChecksum
-
--- Produces an unquoted textual representation of an 'Identity' that can be
--- parsed with the 'ID.fromText' function.
---
-printIdentity :: Identity -> Text
-printIdentity i = T.pack $ read $ show i
