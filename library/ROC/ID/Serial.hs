@@ -28,7 +28,7 @@ import qualified Data.Vector.Sized as V
 newtype Serial = Serial (Vector 7 Digit)
   deriving (Eq, Generic, Ord, Show)
 
--- | Generate a random 'Serial' number.
+-- | Generates a random 'Serial' number.
 --
 generate :: MonadRandom m => m Serial
 generate = Serial <$> V.replicateM randomBoundedEnum

@@ -24,7 +24,7 @@ import ROC.ID.Utilities
 data Gender = Male | Female
   deriving (Bounded, Enum, Eq, Generic, Ord, Show)
 
--- | Pretty-print the specified 'Gender'.
+-- | Prints the specified 'Gender'.
 --
 toText :: Language -> Gender -> Text
 toText = \case
@@ -41,7 +41,7 @@ toTextChinese = \case
   Male   -> "男性"
   Female -> "女性"
 
--- | Generate a random 'Gender'.
+-- | Generates a random 'Gender'.
 --
 generate :: MonadRandom m => m Gender
 generate = randomBoundedEnum

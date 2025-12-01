@@ -85,7 +85,7 @@ instance Show Identity where
 -- Parsing
 --------------------------------------------------------------------------------
 
--- | Attempt to parse an 'Identity' using the specified 'Text' as input.
+-- | Attempts to parse an 'Identity' using the specified 'Text' as input.
 --
 -- The input must be exactly 10 characters in length and of the form
 -- __@A123456789@__.
@@ -100,7 +100,7 @@ fromText t = fromNumber <$> Number.fromText t
 -- Printing
 --------------------------------------------------------------------------------
 
--- | Print the specified 'Identity'.
+-- | Prints the specified 'Identity'.
 --
 -- The output is of the form __@A123456789@__.
 --
@@ -111,7 +111,7 @@ toText = Number.toText . toNumber
 -- Verification
 --------------------------------------------------------------------------------
 
--- | Calculate the checksum of the specified 'Identity'.
+-- | Calculates the checksum of the specified 'Identity'.
 --
 checksum :: Identity -> Digit
 checksum = Number.checksum . toNumber
@@ -120,7 +120,7 @@ checksum = Number.checksum . toNumber
 -- Generation
 --------------------------------------------------------------------------------
 
--- | Generate a random 'Identity'.
+-- | Generates a random 'Identity'.
 --
 generate :: MonadRandom m => m Identity
 generate =
