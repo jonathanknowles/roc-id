@@ -87,7 +87,11 @@ instance Show Identity where
 
 -- | Attempt to parse an 'Identity' using the specified 'Text' as input.
 --
--- The input must be of the form __@A123456789@__.
+-- The input must be exactly 10 characters in length and of the form
+-- __@A123456789@__.
+--
+-- More precisely, the input must match the regular expression
+-- __@^[A-Z][1289][0-9]{8}$@__.
 --
 fromText :: Text -> Either FromTextError Identity
 fromText t = fromNumber <$> Number.fromText t
