@@ -56,11 +56,8 @@ import qualified ROC.ID.Nationality as Nationality
 -- | Represents a __valid__ 10-digit ROC national identification number
 -- (中華民國身份證號碼) of the form __@A123456789@__.
 --
--- By construction, invalid values are __not representable__ by this type.
---
--- An identification number encodes a person's 'Gender', the 'Location' in
--- which they first registered for an identification card, and a unique 'Serial'
--- number.
+-- By construction, invalid identification numbers are __not representable__ by
+-- this type.
 --
 data Identity = Identity
   { gender :: !Gender
