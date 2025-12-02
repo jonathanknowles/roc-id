@@ -42,7 +42,7 @@ import ROC.ID.Nationality
   ( Nationality (..) )
 import ROC.ID.Number
   ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharSet (..) )
-import ROC.ID.Serial
+import ROC.ID.Serial.Internal
   ( Serial (Serial) )
 
 import qualified Data.Text as T

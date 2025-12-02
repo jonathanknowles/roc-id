@@ -20,7 +20,7 @@ import ROC.ID.Location
 import ROC.ID.Nationality
   ( Nationality )
 import ROC.ID.Serial
-  ( Serial (..) )
+  ( Serial )
 import Test.Hspec
   ( describe, hspec, it, shouldBe )
 import Test.QuickCheck
