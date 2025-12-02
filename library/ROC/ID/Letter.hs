@@ -16,6 +16,8 @@ import ROC.ID.Utilities
 import Text.Read
   ( readMaybe )
 
+-- | Represents a letter in the latin alphabet.
+--
 data Letter
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
