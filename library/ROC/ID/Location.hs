@@ -1,6 +1,5 @@
 module ROC.ID.Location
   ( Location
-  , fromChar
   , fromLetter
   , toLetter
   , toText
@@ -8,4 +7,4 @@ module ROC.ID.Location
   ) where
 
 import ROC.ID.Location.Internal
-  ( Location, fromChar, fromLetter, toLetter, toText, generate )
+  ( Location, fromLetter, toLetter, toText, generate )

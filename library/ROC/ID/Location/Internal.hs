@@ -6,7 +6,6 @@
 
 module ROC.ID.Location.Internal
   ( Location
-  , fromChar
   , fromLetter
   , toLetter
   , toText
@@ -23,8 +22,6 @@ import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Letter
   ( Letter (..) )
-import Text.Read
-  ( readMaybe )
 
 import qualified ROC.ID.Letter as Letter
 
@@ -93,8 +90,6 @@ import qualified ROC.ID.Letter as Letter
 --
 -- == Usage
 --
--- To parse a 'Location' from its code, use the 'fromChar' function.
---
 -- To print the full name of a 'Location', use the 'toText' function.
 --
 -- To generate a random 'Location', use the 'generate' function.
@@ -102,14 +97,6 @@ import qualified ROC.ID.Letter as Letter
 newtype Location = Location Letter
   deriving stock (Eq, Generic, Ord)
   deriving newtype (Bounded, Enum, Read, Show)
-
--- | Parses the specified uppercase alphabetic character as a 'Location'.
---
--- Returns 'Nothing' if the specified character is not an uppercase alphabetic
--- character.
---
-fromChar :: Char -> Maybe Location
-fromChar c = readMaybe [c]
 
 -- | Constructs a 'Location' from its corresponding letter code.
 --
