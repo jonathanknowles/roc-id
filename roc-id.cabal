@@ -72,6 +72,7 @@ library
       ROC.ID.Location.Internal
       ROC.ID.Number
       ROC.ID.Number.Unchecked
+      ROC.ID.Serial.Internal
       ROC.ID.Utilities
   hs-source-dirs:
       library
@@ -87,7 +88,6 @@ test-suite roc-id-test
     , dependency-QuickCheck
     , dependency-quickcheck-classes
     , dependency-text
-    , dependency-vector-sized
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:

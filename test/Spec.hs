@@ -20,7 +20,7 @@ import ROC.ID.Location
 import ROC.ID.Nationality
   ( Nationality )
 import ROC.ID.Serial
-  ( Serial (..) )
+  ( Serial )
 import Test.Hspec
   ( describe, hspec, it, shouldBe )
 import Test.QuickCheck
@@ -41,8 +41,8 @@ import Test.QuickCheck.Classes.Hspec
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
-import qualified Data.Vector.Sized as V
 import qualified ROC.ID as ID
+import qualified ROC.ID.Serial as Serial
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
@@ -68,8 +68,8 @@ instance Arbitrary Nationality where
   shrink = shrinkBoundedEnum
 
 instance Arbitrary Serial where
-  arbitrary = Serial . V.fromTuple <$> arbitrary
-  shrink (Serial v) = Serial <$> traverse shrink v
+  arbitrary = Serial.fromTuple <$> arbitrary
+  shrink = shrinkMap Serial.fromTuple Serial.toTuple
 
 main :: IO ()
 main = hspec $ do
