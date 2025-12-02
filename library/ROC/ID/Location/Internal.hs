@@ -111,9 +111,13 @@ newtype Location = Location Letter
 fromChar :: Char -> Maybe Location
 fromChar c = readMaybe [c]
 
+-- | Constructs a 'Location' from its corresponding letter code.
+--
 fromLetter :: Letter -> Location
 fromLetter = Location
 
+-- | Converts a 'Location' to its corresponding letter code.
+--
 toLetter :: Location -> Letter
 toLetter (Location letter) = letter
 
