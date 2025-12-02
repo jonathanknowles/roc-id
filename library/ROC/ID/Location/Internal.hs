@@ -90,6 +90,9 @@ import qualified ROC.ID.Letter as Letter
 --
 -- == Usage
 --
+-- To construct a 'Location' from its letter code, use the 'fromLetter'
+-- function.
+--
 -- To print the full name of a 'Location', use the 'toText' function.
 --
 -- To generate a random 'Location', use the 'generate' function.
