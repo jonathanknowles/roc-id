@@ -13,7 +13,7 @@ import ROC.ID.Utilities
 import Text.Read
   ( readMaybe )
 
--- | Represents a single decimal digit in the range 0 to 9.
+-- | Represents a single decimal digit in the range @0@ to @9@.
 --
 data Digit
   = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
