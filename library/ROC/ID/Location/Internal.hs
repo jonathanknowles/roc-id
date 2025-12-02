@@ -99,7 +99,7 @@ import qualified ROC.ID.Letter as Letter
 --
 -- To generate a random 'Location', use the 'generate' function.
 --
-newtype Location = Location {toLetter :: Letter}
+newtype Location = Location Letter
   deriving stock (Eq, Generic, Ord)
   deriving newtype (Bounded, Enum, Read, Show)
 
@@ -113,6 +113,9 @@ fromChar c = readMaybe [c]
 
 fromLetter :: Letter -> Location
 fromLetter = Location
+
+toLetter :: Location -> Letter
+toLetter (Location letter) = letter
 
 -- | Prints the specified 'Location'.
 toText :: Language -> Location -> Text
