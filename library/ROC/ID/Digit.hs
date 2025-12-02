@@ -21,9 +21,15 @@ data Digit
 
 instance Show Digit where show = show . fromEnum
 
+-- | Attempts to parse a 'Digit' from a character.
+--
+-- The 'Char' must be a decimal digit in the range @0@ to @9@.
+--
 fromChar :: Char -> Maybe Digit
 fromChar c = readMaybe [c] >>= maybeBoundedEnum
 
+-- | Converts a 'Digit' to a decimal digit character.
+--
 toChar :: Digit -> Char
 toChar digit = case show digit of
   [c] -> c
