@@ -87,7 +87,6 @@ test-suite roc-id-test
     , dependency-QuickCheck
     , dependency-quickcheck-classes
     , dependency-text
-    , dependency-vector-sized
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
