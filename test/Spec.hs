@@ -35,7 +35,7 @@ import Test.QuickCheck
   , shrinkMap
   )
 import Test.QuickCheck.Classes
-  ( eqLaws, ordLaws, showLaws, showReadLaws )
+  ( boundedEnumLaws, eqLaws, numLaws, ordLaws, showLaws, showReadLaws )
 import Test.QuickCheck.Classes.Hspec
   ( testLawsMany )
 
@@ -75,6 +75,14 @@ main :: IO ()
 main = hspec $ do
 
   describe "Class laws" $ do
+
+    testLawsMany @Digit
+        [ boundedEnumLaws
+        , eqLaws
+        , numLaws
+        , ordLaws
+        , showLaws
+        ]
 
     testLawsMany @Identity
         [ eqLaws
