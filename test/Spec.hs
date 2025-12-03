@@ -92,6 +92,10 @@ main = hspec $ do
         , showReadLaws
         ]
 
+    testLawsMany @Serial
+        [ showLaws
+        ]
+
   describe "ID.fromText" $ do
 
     it "successfully parses valid identification numbers" $
