@@ -20,15 +20,21 @@
 </span><span id="line-20"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier">Digit</span></a></span><span> </span><span class="hs-special">)</span><span>
 </span><span id="line-21"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html"><span class="hs-identifier">ROC.ID.Utilities</span></a></span><span>
 </span><span id="line-22"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier">randomBoundedEnum</span></a></span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-23"></span><span>
-</span><span id="line-24"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.Vector.Sized</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">V</span></span><span>
-</span><span id="line-25"></span><span>
-</span><span id="line-26"></span><span class="hs-comment">-- | A 7-digit serial number, as found within an ROC identification number.</span><span>
-</span><span id="line-27"></span><span class="hs-comment">--</span><span>
-</span><span id="line-28"></span><span class="hs-comment">-- To generate a random 'Serial' number, use the 'generate' function.</span><span>
-</span><span id="line-29"></span><span class="hs-comment">--</span><span>
-</span><span id="line-30"></span><span class="hs-keyword">newtype</span><span> </span><span id="Serial"><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Serial"><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Vector</span></span><span> </span><span class="annot"><span class="hs-number">7</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-31"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679115546"><span id="local-6989586621679115552"><span class="annot"><span class="annottext">Serial -&gt; Serial -&gt; Bool
+</span><span id="line-23"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Text.Read</span></span><span>
+</span><span id="line-24"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Lexeme</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Ident</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">Symbol</span></span><span class="hs-special">)</span><span>
+</span><span id="line-25"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">Read</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">readPrec</span></span><span class="hs-special">)</span><span>
+</span><span id="line-26"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">lexP</span></span><span>
+</span><span id="line-27"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">parens</span></span><span>
+</span><span id="line-28"></span><span>  </span><span class="hs-special">)</span><span>
+</span><span id="line-29"></span><span>
+</span><span id="line-30"></span><span class="hs-keyword">import</span><span> </span><span class="hs-keyword">qualified</span><span> </span><span class="annot"><span class="hs-identifier">Data.Vector.Sized</span></span><span> </span><span class="hs-keyword">as</span><span> </span><span class="annot"><span class="hs-identifier">V</span></span><span>
+</span><span id="line-31"></span><span>
+</span><span id="line-32"></span><span class="hs-comment">-- | A 7-digit serial number, as found within an ROC identification number.</span><span>
+</span><span id="line-33"></span><span class="hs-comment">--</span><span>
+</span><span id="line-34"></span><span class="hs-comment">-- To generate a random 'Serial' number, use the 'generate' function.</span><span>
+</span><span id="line-35"></span><span class="hs-comment">--</span><span>
+</span><span id="line-36"></span><span class="hs-keyword">newtype</span><span> </span><span id="Serial"><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Serial"><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Vector</span></span><span> </span><span class="annot"><span class="hs-number">7</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-37"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679115684"><span id="local-6989586621679115690"><span class="annot"><span class="annottext">Serial -&gt; Serial -&gt; Bool
 (Serial -&gt; Serial -&gt; Bool)
 -&gt; (Serial -&gt; Serial -&gt; Bool) -&gt; Eq Serial
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -36,7 +42,7 @@ $c== :: Serial -&gt; Serial -&gt; Bool
 == :: Serial -&gt; Serial -&gt; Bool
 $c/= :: Serial -&gt; Serial -&gt; Bool
 /= :: Serial -&gt; Serial -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679115564"><span id="local-6989586621679115566"><span class="annot"><span class="annottext">(forall x. Serial -&gt; Rep Serial x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679115702"><span id="local-6989586621679115704"><span class="annot"><span class="annottext">(forall x. Serial -&gt; Rep Serial x)
 -&gt; (forall x. Rep Serial x -&gt; Serial) -&gt; Generic Serial
 forall x. Rep Serial x -&gt; Serial
 forall x. Serial -&gt; Rep Serial x
@@ -46,7 +52,7 @@ $cfrom :: forall x. Serial -&gt; Rep Serial x
 from :: forall x. Serial -&gt; Rep Serial x
 $cto :: forall x. Rep Serial x -&gt; Serial
 to :: forall x. Rep Serial x -&gt; Serial
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679115574"><span id="local-6989586621679115580"><span id="local-6989586621679115585"><span id="local-6989586621679115590"><span id="local-6989586621679115595"><span id="local-6989586621679115600"><span id="local-6989586621679115605"><span class="annot"><span class="annottext">Eq Serial
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679115712"><span id="local-6989586621679115718"><span id="local-6989586621679115723"><span id="local-6989586621679115728"><span id="local-6989586621679115733"><span id="local-6989586621679115738"><span id="local-6989586621679115743"><span class="annot"><span class="annottext">Eq Serial
 Eq Serial =&gt;
 (Serial -&gt; Serial -&gt; Ordering)
 -&gt; (Serial -&gt; Serial -&gt; Bool)
@@ -83,25 +89,42 @@ $cmax :: Serial -&gt; Serial -&gt; Serial
 max :: Serial -&gt; Serial -&gt; Serial
 $cmin :: Serial -&gt; Serial -&gt; Serial
 min :: Serial -&gt; Serial -&gt; Serial
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679115627"><span id="local-6989586621679115634"><span id="local-6989586621679115638"><span class="annot"><span class="annottext">Int -&gt; Serial -&gt; ShowS
-[Serial] -&gt; ShowS
-Serial -&gt; String
-(Int -&gt; Serial -&gt; ShowS)
--&gt; (Serial -&gt; String) -&gt; ([Serial] -&gt; ShowS) -&gt; Show Serial
-forall a.
-(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
-$cshowsPrec :: Int -&gt; Serial -&gt; ShowS
-showsPrec :: Int -&gt; Serial -&gt; ShowS
-$cshow :: Serial -&gt; String
-show :: Serial -&gt; String
-$cshowList :: [Serial] -&gt; ShowS
-showList :: [Serial] -&gt; ShowS
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-32"></span><span>
-</span><span id="line-33"></span><span class="hs-comment">-- | Constructs a 'Serial' number from a tuple.</span><span>
-</span><span id="line-34"></span><span class="hs-comment">--</span><span>
-</span><span id="line-35"></span><span id="local-6989586621679115500"><span class="annot"><a href="ROC.ID.Serial.Internal.html#fromTuple"><span class="hs-identifier hs-type">fromTuple</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">~</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115500"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span><span>
-</span><span id="line-36"></span><span id="fromTuple"><span class="annot"><span class="annottext">fromTuple :: forall d. (d ~ Digit) =&gt; (d, d, d, d, d, d, d) -&gt; Serial
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-38"></span><span>
+</span><span id="line-39"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679115765"><span id="local-6989586621679115769"><span id="local-6989586621679115773"><span class="annot"><span class="hs-identifier hs-type">Read</span></span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-40"></span><span>  </span><span id="local-6989586621679115797"><span class="annot"><span class="annottext">readPrec :: ReadPrec Serial
+</span><span class="hs-identifier hs-var hs-var hs-var">readPrec</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReadPrec Serial -&gt; ReadPrec Serial
+forall a. ReadPrec a -&gt; ReadPrec a
+</span><span class="hs-identifier hs-var">parens</span></span><span> </span><span class="annot"><span class="annottext">(ReadPrec Serial -&gt; ReadPrec Serial)
+-&gt; ReadPrec Serial -&gt; ReadPrec Serial
+forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-41"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Ident</span></span><span> </span><span class="annot"><span class="hs-string">&quot;Serial&quot;</span></span><span>    </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">ReadPrec Lexeme
+</span><span class="hs-identifier hs-var">lexP</span></span><span>
+</span><span id="line-42"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Symbol</span></span><span> </span><span class="annot"><span class="hs-string">&quot;.&quot;</span></span><span>        </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="hs-identifier hs-type">lexP</span></span><span>
+</span><span id="line-43"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Ident</span></span><span> </span><span class="annot"><span class="hs-string">&quot;fromTuple&quot;</span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="hs-identifier hs-type">lexP</span></span><span>
+</span><span id="line-44"></span><span>    </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#fromTuple"><span class="hs-identifier hs-type">fromTuple</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">readPrec</span></span><span>
+</span><span id="line-45"></span><span>
+</span><span id="line-46"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679115801"><span id="local-6989586621679115805"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-47"></span><span>  </span><span id="local-6989586621679115819"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; Serial -&gt; ShowS
+</span><a href="#local-6989586621679115819"><span class="hs-identifier hs-var hs-var hs-var">showsPrec</span></a></span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679115821"><span class="annot"><span class="annottext">Serial
+</span><a href="#local-6989586621679115821"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-48"></span><span>    </span><span class="annot"><span class="annottext">String -&gt; ShowS
+</span><span class="hs-identifier hs-var">showString</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;Serial.fromTuple &quot;</span></span><span> </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
+forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">(Digit, Digit, Digit, Digit, Digit, Digit, Digit) -&gt; ShowS
+forall a. Show a =&gt; a -&gt; ShowS
+</span><span class="hs-identifier hs-var">shows</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Serial -&gt; (Digit, Digit, Digit, Digit, Digit, Digit, Digit)
+forall d. (d ~ Digit) =&gt; Serial -&gt; (d, d, d, d, d, d, d)
+</span><a href="ROC.ID.Serial.Internal.html#toTuple"><span class="hs-identifier hs-var">toTuple</span></a></span><span> </span><span class="annot"><span class="annottext">Serial
+</span><a href="#local-6989586621679115821"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-49"></span><span>
+</span><span id="line-50"></span><span class="hs-comment">-- | Constructs a 'Serial' number from a tuple.</span><span>
+</span><span id="line-51"></span><span class="hs-comment">--</span><span>
+</span><span id="line-52"></span><span id="local-6989586621679115623"><span class="annot"><a href="ROC.ID.Serial.Internal.html#fromTuple"><span class="hs-identifier hs-type">fromTuple</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">~</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115623"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span><span>
+</span><span id="line-53"></span><span id="fromTuple"><span class="annot"><span class="annottext">fromTuple :: forall d. (d ~ Digit) =&gt; (d, d, d, d, d, d, d) -&gt; Serial
 </span><a href="ROC.ID.Serial.Internal.html#fromTuple"><span class="hs-identifier hs-var hs-var">fromTuple</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit -&gt; Serial
 </span><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span><span> </span><span class="annot"><span class="annottext">(Vector 7 Digit -&gt; Serial)
 -&gt; ((d, d, d, d, d, d, d) -&gt; Vector 7 Digit)
@@ -113,58 +136,58 @@ forall input (length :: Nat) ty.
 (IndexedListLiterals input length ty, KnownNat length) =&gt;
 input -&gt; Vector length ty
 </span><span class="hs-identifier hs-var">V.fromTuple</span></span><span>
-</span><span id="line-37"></span><span>
-</span><span id="line-38"></span><span class="hs-comment">-- | Converts a 'Serial' number to a tuple.</span><span>
-</span><span id="line-39"></span><span class="hs-comment">--</span><span>
-</span><span id="line-40"></span><span id="local-6989586621679115510"><span class="annot"><a href="ROC.ID.Serial.Internal.html#toTuple"><span class="hs-identifier hs-type">toTuple</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">~</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115510"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">)</span></span><span>
-</span><span id="line-41"></span><span id="toTuple"><span class="annot"><span class="annottext">toTuple :: forall d. (d ~ Digit) =&gt; Serial -&gt; (d, d, d, d, d, d, d)
-</span><a href="ROC.ID.Serial.Internal.html#toTuple"><span class="hs-identifier hs-var hs-var">toTuple</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span> </span><span id="local-6989586621679115671"><span class="annot"><span class="annottext">Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Vector Vector 7 d
+</span><span id="line-54"></span><span>
+</span><span id="line-55"></span><span class="hs-comment">-- | Converts a 'Serial' number to a tuple.</span><span>
+</span><span id="line-56"></span><span class="hs-comment">--</span><span>
+</span><span id="line-57"></span><span id="local-6989586621679115640"><span class="annot"><a href="ROC.ID.Serial.Internal.html#toTuple"><span class="hs-identifier hs-type">toTuple</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">~</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679115640"><span class="hs-identifier hs-type">d</span></a></span><span class="hs-special">)</span></span><span>
+</span><span id="line-58"></span><span id="toTuple"><span class="annot"><span class="annottext">toTuple :: forall d. (d ~ Digit) =&gt; Serial -&gt; (d, d, d, d, d, d, d)
+</span><a href="ROC.ID.Serial.Internal.html#toTuple"><span class="hs-identifier hs-var hs-var">toTuple</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span> </span><span id="local-6989586621679115850"><span class="annot"><span class="annottext">Vector 7 Digit
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">0</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">1</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">2</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">3</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">4</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">5</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Vector Vector 7 d
 Vector 7 Digit
-</span><a href="#local-6989586621679115671"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
+</span><a href="#local-6989586621679115850"><span class="hs-identifier hs-var">s</span></a></span><span class="annot"><span class="annottext">Vector Vector 7 d -&gt; Finite 7 -&gt; d
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var">!</span></a></span><span class="annot"><span class="annottext">Finite 7
 </span><span class="hs-number">6</span></span><span class="hs-special">)</span><span>
-</span><span id="line-42"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-43"></span><span>    </span><span id="local-6989586621679115672"><span class="annot"><span class="annottext">! :: Vector n a -&gt; Finite n -&gt; a
-</span><a href="#local-6989586621679115672"><span class="hs-operator hs-var hs-var">(!)</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector n a -&gt; Finite n -&gt; a
+</span><span id="line-59"></span><span>  </span><span class="hs-keyword">where</span><span>
+</span><span id="line-60"></span><span>    </span><span id="local-6989586621679115851"><span class="annot"><span class="annottext">! :: Vector n a -&gt; Finite n -&gt; a
+</span><a href="#local-6989586621679115851"><span class="hs-operator hs-var hs-var">(!)</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector n a -&gt; Finite n -&gt; a
 forall {n :: Nat} {a}. Vector n a -&gt; Finite n -&gt; a
 </span><span class="hs-identifier hs-var">V.index</span></span><span>
-</span><span id="line-44"></span><span>
-</span><span id="line-45"></span><span class="hs-comment">-- | Generates a random 'Serial' number.</span><span>
-</span><span id="line-46"></span><span class="hs-comment">--</span><span>
-</span><span id="line-47"></span><span id="local-6989586621679115526"><span class="annot"><a href="ROC.ID.Serial.Internal.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679115526"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679115526"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span><span>
-</span><span id="line-48"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Serial
+</span><span id="line-61"></span><span>
+</span><span id="line-62"></span><span class="hs-comment">-- | Generates a random 'Serial' number.</span><span>
+</span><span id="line-63"></span><span class="hs-comment">--</span><span>
+</span><span id="line-64"></span><span id="local-6989586621679115662"><span class="annot"><a href="ROC.ID.Serial.Internal.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679115662"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679115662"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span></span><span>
+</span><span id="line-65"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Serial
 </span><a href="ROC.ID.Serial.Internal.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit -&gt; Serial
 </span><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span><span> </span><span class="annot"><span class="annottext">(Vector 7 Digit -&gt; Serial) -&gt; m (Vector 7 Digit) -&gt; m Serial
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
@@ -175,4 +198,4 @@ m a -&gt; m (Vector n a)
 </span><span class="hs-identifier hs-var">V.replicateM</span></span><span> </span><span class="annot"><span class="annottext">m Digit
 forall (m :: * -&gt; *) a. (MonadRandom m, Bounded a, Enum a) =&gt; m a
 </span><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier hs-var">randomBoundedEnum</span></a></span><span>
-</span><span id="line-49"></span></pre></body></html>
+</span><span id="line-66"></span></pre></body></html>
