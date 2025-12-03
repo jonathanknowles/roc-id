@@ -20,6 +20,12 @@ import ROC.ID.Digit
   ( Digit )
 import ROC.ID.Utilities
   ( randomBoundedEnum )
+import Text.Read
+  ( Lexeme (Ident, Symbol)
+  , Read (readPrec)
+  , lexP
+  , parens
+  )
 
 import qualified Data.Vector.Sized as V
 
@@ -28,7 +34,18 @@ import qualified Data.Vector.Sized as V
 -- To generate a random 'Serial' number, use the 'generate' function.
 --
 newtype Serial = Serial (Vector 7 Digit)
-  deriving (Eq, Generic, Ord, Show)
+  deriving (Eq, Generic, Ord)
+
+instance Read Serial where
+  readPrec = parens $ do
+    Ident "Serial"    <- lexP
+    Symbol "."        <- lexP
+    Ident "fromTuple" <- lexP
+    fromTuple <$> readPrec
+
+instance Show Serial where
+  showsPrec _ s =
+    showString "Serial.fromTuple " . shows (toTuple s)
 
 -- | Constructs a 'Serial' number from a tuple.
 --
