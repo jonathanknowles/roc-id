@@ -11,7 +11,7 @@ import GHC.Generics
 import ROC.ID.Utilities
   ( maybeBoundedEnum )
 import Text.Read
-  ( readMaybe )
+  ( Read (readPrec), readMaybe )
 
 import Prelude hiding
   ( fromIntegral )
@@ -34,6 +34,8 @@ instance Num Digit where
   fromInteger = fromIntegral
   signum D0 = D0
   signum __ = D1
+
+instance Read Digit where readPrec = fromInteger <$> readPrec
 
 instance Show Digit where show = show . fromEnum
 
