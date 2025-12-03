@@ -20,6 +20,12 @@ import ROC.ID.Digit
   ( Digit )
 import ROC.ID.Utilities
   ( randomBoundedEnum )
+import Text.Read
+  ( Lexeme (Ident, Symbol)
+  , Read (readPrec)
+  , lexP
+  , parens
+  )
 
 import qualified Data.Vector.Sized as V
 
@@ -29,6 +35,13 @@ import qualified Data.Vector.Sized as V
 --
 newtype Serial = Serial (Vector 7 Digit)
   deriving (Eq, Generic, Ord)
+
+instance Read Serial where
+  readPrec = parens $ do
+    Ident "Serial"    <- lexP
+    Symbol "."        <- lexP
+    Ident "fromTuple" <- lexP
+    fromTuple <$> readPrec
 
 instance Show Serial where
   showsPrec _ s =

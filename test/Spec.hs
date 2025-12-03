@@ -94,6 +94,7 @@ main = hspec $ do
 
     testLawsMany @Serial
         [ showLaws
+        , showReadLaws
         ]
 
   describe "ID.fromText" $ do
