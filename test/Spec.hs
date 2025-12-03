@@ -82,6 +82,7 @@ main = hspec $ do
         , numLaws
         , ordLaws
         , showLaws
+        , showReadLaws
         ]
 
     testLawsMany @Identity
