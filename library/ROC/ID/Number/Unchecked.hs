@@ -64,7 +64,7 @@ data CharSet
 data FromTextError
   = InvalidLength
   | InvalidChar CharIndex CharSet
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Read, Show)
 
 fromText :: Text -> Either FromTextError IdentityNumber
 fromText text = do
