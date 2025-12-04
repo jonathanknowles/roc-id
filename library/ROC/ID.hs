@@ -2,7 +2,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module ROC.ID
@@ -45,7 +44,6 @@ import ROC.ID.Number
 import ROC.ID.Serial.Internal
   ( Serial (Serial) )
 
-import qualified Data.Text as T
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Number as Number
@@ -67,18 +65,7 @@ data Identity = Identity
   -- ^ The nationality of the person to whom this ID number belongs.
   , serial :: !Serial
   -- ^ The serial number portion of this ID number.
-  } deriving (Eq, Generic, Ord)
-
-instance Read Identity where
-  readsPrec _ s = do
-    (token, remainder) <- lex s
-    (unquotedString, "") <- reads token
-    case fromText (T.pack unquotedString) of
-      Right i -> pure (i, remainder)
-      Left _ -> []
-
-instance Show Identity where
-  show = show . toText
+  } deriving (Eq, Generic, Ord, Read, Show)
 
 --------------------------------------------------------------------------------
 -- Parsing
