@@ -101,7 +101,9 @@ main = hspec $ do
         ]
 
     testLawsMany @Serial
-        [ showLaws
+        [ eqLaws
+        , ordLaws
+        , showLaws
         , showReadLaws
         ]
 
