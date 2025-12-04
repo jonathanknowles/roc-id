@@ -6,4 +6,4 @@ module ROC.ID.Serial
   ) where
 
 import ROC.ID.Serial.Internal
-  (Serial, fromTuple, toTuple, generate)
+  ( Serial, fromTuple, toTuple, generate )

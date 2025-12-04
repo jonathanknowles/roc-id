@@ -22,7 +22,7 @@ import ROC.ID.Utilities
 -- | A person's gender, encodable within an ROC identification number.
 --
 data Gender = Male | Female
-  deriving (Bounded, Enum, Eq, Generic, Ord, Show)
+  deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
 
 -- | Prints the specified 'Gender'.
 --

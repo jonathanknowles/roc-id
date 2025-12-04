@@ -85,6 +85,14 @@ main = hspec $ do
         , showReadLaws
         ]
 
+    testLawsMany @Gender
+        [ boundedEnumLaws
+        , eqLaws
+        , ordLaws
+        , showLaws
+        , showReadLaws
+        ]
+
     testLawsMany @Identity
         [ eqLaws
         , ordLaws
@@ -93,6 +101,14 @@ main = hspec $ do
         ]
 
     testLawsMany @Location
+        [ boundedEnumLaws
+        , eqLaws
+        , ordLaws
+        , showLaws
+        , showReadLaws
+        ]
+
+    testLawsMany @Nationality
         [ boundedEnumLaws
         , eqLaws
         , ordLaws

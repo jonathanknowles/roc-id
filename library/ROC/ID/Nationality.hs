@@ -12,7 +12,7 @@ import ROC.ID.Utilities
 -- | Specifies a person's nationality.
 --
 data Nationality = National | NonNational
-  deriving (Bounded, Enum, Eq, Ord, Show)
+  deriving (Bounded, Enum, Eq, Ord, Read, Show)
 
 -- | Generates a random 'Nationality'.
 --
