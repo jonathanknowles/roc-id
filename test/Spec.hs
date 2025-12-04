@@ -92,6 +92,11 @@ main = hspec $ do
         , showReadLaws
         ]
 
+    testLawsMany @Location
+        [ showLaws
+        , showReadLaws
+        ]
+
     testLawsMany @Serial
         [ showLaws
         , showReadLaws

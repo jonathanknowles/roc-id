@@ -22,6 +22,8 @@ import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Letter
   ( Letter (..) )
+import Text.Read
+  ( Lexeme (Ident, Symbol), Read (readPrec), lexP, parens )
 
 import qualified ROC.ID.Letter as Letter
 
@@ -99,7 +101,18 @@ import qualified ROC.ID.Letter as Letter
 --
 newtype Location = Location Letter
   deriving stock (Eq, Generic, Ord)
-  deriving newtype (Bounded, Enum, Read, Show)
+  deriving newtype (Bounded, Enum)
+
+instance Read Location where
+  readPrec = parens $ do
+    Ident "Location"   <- lexP
+    Symbol "."         <- lexP
+    Ident "fromLetter" <- lexP
+    fromLetter <$> readPrec
+
+instance Show Location where
+  showsPrec _ s =
+    showString "Location.fromLetter " . shows (toLetter s)
 
 -- | Constructs a 'Location' from its corresponding letter code.
 --
