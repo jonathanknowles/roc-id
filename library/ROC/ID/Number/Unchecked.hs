@@ -50,7 +50,7 @@ data IdentityNumber = IdentityNumber
 -- | Specifies the position of a character within a string.
 --
 newtype CharIndex = CharIndex Digit
-  deriving (Bounded, Enum, Eq, Ord, Show)
+  deriving (Bounded, Enum, Eq, Ord, Read, Show)
 
 -- | Specifies a set of characters.
 --
@@ -59,7 +59,7 @@ data CharSet
   -- ^ An explicit set of characters.
   | CharRange Char Char
   -- ^ An inclusive range of characters.
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Read, Show)
 
 data FromTextError
   = InvalidLength
