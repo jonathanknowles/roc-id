@@ -85,6 +85,14 @@ main = hspec $ do
         , showReadLaws
         ]
 
+    testLawsMany @Gender
+        [ boundedEnumLaws
+        , eqLaws
+        , ordLaws
+        , showLaws
+        , showReadLaws
+        ]
+
     testLawsMany @Identity
         [ eqLaws
         , ordLaws
