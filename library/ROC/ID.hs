@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -65,7 +66,8 @@ data Identity = Identity
   -- ^ The nationality of the person to whom this ID number belongs.
   , serial :: !Serial
   -- ^ The serial number portion of this ID number.
-  } deriving (Eq, Generic, Ord, Read, Show)
+  }
+  deriving stock (Eq, Generic, Ord, Read, Show)
 
 --------------------------------------------------------------------------------
 -- Parsing
