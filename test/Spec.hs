@@ -108,6 +108,14 @@ main = hspec $ do
         , showReadLaws
         ]
 
+    testLawsMany @Nationality
+        [ boundedEnumLaws
+        , eqLaws
+        , ordLaws
+        , showLaws
+        , showReadLaws
+        ]
+
     testLawsMany @Serial
         [ eqLaws
         , ordLaws
