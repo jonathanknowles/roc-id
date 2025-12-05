@@ -133,12 +133,12 @@ main = hspec $ do
       property $ \(i :: Identity) n -> do
         let newLength = n `mod` 10
         let invalidIdentity = T.take newLength $ ID.toText i
-        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
+        ID.fromText invalidIdentity `shouldBe` Left ID.TextTooShort
 
     it "does not parse identification numbers that are too long" $
       property $ \(i :: Identity) (NonEmpty s) -> do
         let invalidIdentity = ID.toText i <> T.pack s
-        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
+        ID.fromText invalidIdentity `shouldBe` Left ID.TextTooLong
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do

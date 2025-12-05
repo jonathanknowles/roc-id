@@ -45,17 +45,22 @@ data IdentityNumber = IdentityNumber
 -- | Indicates an error that occurred while parsing an identification number.
 --
 data FromTextError
-  = InvalidChar CharIndex CharSet
-  -- ^ Indicates that the input contains a character that is not allowed.
+
+  = TextTooShort
+  -- ^ Indicates that the input text is too short.
+
+  | TextTooLong
+  -- ^ Indicates that the input text is too long.
+
+  | InvalidChar CharIndex CharSet
+  -- ^ Indicates that the input text contains a character that is not allowed.
   --
   --   - `CharIndex` specifies the position of the offending character.
   --   - `CharSet` specifies the set of characters allowed at that position.
 
-  | InvalidLength
-  -- ^ Indicates that the input does not have the correct length.
-
   | InvalidChecksum
   -- ^ Indicates that the parsed identification number has an invalid checksum.
+
   deriving (Eq, Ord, Show)
 
 fromText :: Text -> Either FromTextError IdentityNumber
@@ -65,8 +70,10 @@ fromText text = do
   where
     fromUncheckedError :: U.FromTextError -> FromTextError
     fromUncheckedError = \case
-      U.InvalidLength ->
-        InvalidLength
+      U.TextTooShort ->
+        TextTooShort
+      U.TextTooLong ->
+        TextTooLong
       U.InvalidChar i r ->
         InvalidChar i r
 

@@ -61,7 +61,8 @@ data CharSet
   deriving (Eq, Ord, Read, Show)
 
 data FromTextError
-  = InvalidLength
+  = TextTooShort
+  | TextTooLong
   | InvalidChar CharIndex CharSet
   deriving (Eq, Ord, Read, Show)
 
@@ -69,7 +70,7 @@ type Parser a = Text -> Either FromTextError (Text, a)
 
 fromText :: Text -> Either FromTextError IdentityNumber
 fromText text0 = do
-    when (T.length text0 > 10) $ Left inputTooLong
+    when (T.length text0 > 10) $ Left TextTooLong
     (text1, part0) <- parseLetter    text0
     (text2, part1) <- parseDigit1289 text1
     (_____, part2) <- parseDigits    text2
@@ -77,13 +78,13 @@ fromText text0 = do
   where
     parseLetter :: Parser Letter
     parseLetter text = do
-      (char, remainder) <- guard inputTooShort $ T.uncons text
+      (char, remainder) <- guard TextTooShort $ T.uncons text
       letter <- guard (invalidChar letters D0) (Letter.fromChar char)
       pure (remainder, letter)
 
     parseDigit1289 :: Parser Digit1289
     parseDigit1289 text = do
-      (char, remainder) <- guard inputTooShort $ T.uncons text
+      (char, remainder) <- guard TextTooShort $ T.uncons text
       digit1289 <- guard (invalidChar digits1289 D1) (Digit1289.fromChar char)
       pure (remainder, digit1289)
 
@@ -91,7 +92,7 @@ fromText text0 = do
     parseDigits text = do
         let (cs, remainder) = T.splitAt 8 text
         ds <- traverse parseIndexedDigit (zip [D2 ..] (T.unpack cs))
-        vs <- guard inputTooShort (V.fromList @8 ds)
+        vs <- guard TextTooShort (V.fromList @8 ds)
         pure (remainder, vs)
       where
         parseIndexedDigit (i, c) =
@@ -102,8 +103,6 @@ fromText text0 = do
     letters    = CharRange 'A' 'Z'
 
     invalidChar charSet index = InvalidChar (CharIndex index) charSet
-    inputTooShort = InvalidLength
-    inputTooLong  = InvalidLength
 
 toText :: IdentityNumber -> Text
 toText (IdentityNumber u0 u1 u2) = t0 <> t1 <> t2
