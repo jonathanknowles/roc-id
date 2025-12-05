@@ -180,6 +180,15 @@ main = hspec $ do
           Left (ID.InvalidChar (CharIndex i) _) | i == invalidCharIndex -> True
           _ -> False
 
+    it "does not report invalid characters if input is too long" $
+      property $ \(identity :: Identity) (NonEmpty trailingExcess) ->
+      forAll (choose (0, 9)) $ \invalidCharIndex -> do
+        let textInvalid =
+              replaceCharAt invalidCharIndex 'x' (ID.toText identity)
+              <>
+              T.pack trailingExcess
+        ID.fromText textInvalid `shouldBe` Left ID.TextTooLong
+
 -- | Replaces a character at a specific position.
 --
 replaceCharAt :: Int -> Char -> Text -> Text
