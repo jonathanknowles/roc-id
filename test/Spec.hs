@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
@@ -5,12 +6,16 @@
 
 module Main where
 
+import Data.Bifunctor
+  ( Bifunctor (second) )
 import Data.Char
   ( intToDigit )
 import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
+import Data.Text
+  ( Text )
 import ROC.ID
-  ( Identity (Identity), CharSet (CharSet) )
+  ( Identity (Identity), CharSet (CharSet), CharIndex (CharIndex) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Gender
@@ -22,12 +27,13 @@ import ROC.ID.Nationality
 import ROC.ID.Serial
   ( Serial )
 import Test.Hspec
-  ( describe, hspec, it, shouldBe )
+  ( describe, hspec, it, shouldBe, shouldSatisfy )
 import Test.QuickCheck
   ( Arbitrary (..)
   , NonEmptyList (..)
   , applyArbitrary4
   , arbitraryBoundedEnum
+  , choose
   , elements
   , forAll
   , property
@@ -133,31 +139,26 @@ main = hspec $ do
       property $ \(i :: Identity) n -> do
         let newLength = n `mod` 10
         let invalidIdentity = T.take newLength $ ID.toText i
-        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
+        ID.fromText invalidIdentity `shouldBe` Left ID.TextTooShort
 
     it "does not parse identification numbers that are too long" $
       property $ \(i :: Identity) (NonEmpty s) -> do
         let invalidIdentity = ID.toText i <> T.pack s
-        ID.fromText invalidIdentity `shouldBe` Left ID.InvalidLength
+        ID.fromText invalidIdentity `shouldBe` Left ID.TextTooLong
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
-        let invalidIdentity =
-              T.cons invalidLocationCode $ T.drop 1 $ ID.toText i
+        let invalidIdentity = replaceCharAt 0 invalidLocationCode $ ID.toText i
         ID.fromText invalidIdentity `shouldBe`
-          Left (ID.InvalidChar (ID.CharIndex D0) (ID.CharRange 'A' 'Z'))
+          Left (ID.InvalidChar 0 (ID.CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid initial digits" $
       property $ \(i :: Identity) ->
         forAll (elements ['0', '3', '4', '5', '6', '7']) $ \initialDigit -> do
-          let invalidIdentity =
-                T.take 1 (ID.toText i) <>
-                T.pack [initialDigit] <>
-                T.drop 2 (ID.toText i)
+          let invalidIdentity = replaceCharAt 1 initialDigit (ID.toText i)
           let expectedError =
-                ID.InvalidChar
-                  (ID.CharIndex D1)
+                ID.InvalidChar 1
                   (CharSet $ NESet.fromList $ '1' :| ['2', '8', '9'])
           ID.fromText invalidIdentity `shouldBe` Left expectedError
 
@@ -168,3 +169,31 @@ main = hspec $ do
         let invalidIdentity =
               T.take 9 (ID.toText i) <> T.pack [invalidChecksum]
         ID.fromText invalidIdentity `shouldBe` Left ID.InvalidChecksum
+
+    it "reports invalid characters even when input is too short" $
+      property $ \(identity :: Identity) ->
+      forAll (choose (1, 9)) $ \truncatedLength ->
+      forAll (choose (0, truncatedLength - 1)) $ \invalidCharIndex -> do
+        let textTruncated = T.take truncatedLength (ID.toText identity)
+        let textInvalid = replaceCharAt invalidCharIndex 'x' textTruncated
+        ID.fromText textInvalid `shouldSatisfy` \case
+          Left (ID.InvalidChar (CharIndex i) _) | i == invalidCharIndex -> True
+          _ -> False
+
+    it "does not report invalid characters if input is too long" $
+      property $ \(identity :: Identity) (NonEmpty trailingExcess) ->
+      forAll (choose (0, 9)) $ \invalidCharIndex -> do
+        let textInvalid =
+              replaceCharAt invalidCharIndex 'x' (ID.toText identity)
+              <>
+              T.pack trailingExcess
+        ID.fromText textInvalid `shouldBe` Left ID.TextTooLong
+
+-- | Replaces a character at a specific position.
+--
+replaceCharAt :: Int -> Char -> Text -> Text
+replaceCharAt i c t
+    | i < 0 || i >= T.length t = error "replaceCharAt: invalid index"
+    | otherwise = prefix <> T.singleton c <> suffix
+  where
+    (prefix, suffix) = second (T.drop 1) (T.splitAt i t)
