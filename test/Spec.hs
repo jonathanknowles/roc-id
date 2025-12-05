@@ -149,18 +149,14 @@ main = hspec $ do
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: Identity) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
-        let invalidIdentity =
-              T.cons invalidLocationCode $ T.drop 1 $ ID.toText i
+        let invalidIdentity = replaceCharAt 0 invalidLocationCode $ ID.toText i
         ID.fromText invalidIdentity `shouldBe`
           Left (ID.InvalidChar 0 (ID.CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid initial digits" $
       property $ \(i :: Identity) ->
         forAll (elements ['0', '3', '4', '5', '6', '7']) $ \initialDigit -> do
-          let invalidIdentity =
-                T.take 1 (ID.toText i) <>
-                T.pack [initialDigit] <>
-                T.drop 2 (ID.toText i)
+          let invalidIdentity = replaceCharAt 1 initialDigit (ID.toText i)
           let expectedError =
                 ID.InvalidChar 1
                   (CharSet $ NESet.fromList $ '1' :| ['2', '8', '9'])
