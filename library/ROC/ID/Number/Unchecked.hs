@@ -80,30 +80,28 @@ fromText text0 = do
     parseLetter :: Parser Letter
     parseLetter text = do
       (char, remainder) <- guard TextTooShort $ T.uncons text
-      letter <- guard (invalidChar letters D0) (Letter.fromChar char)
+      letter <- guard (InvalidChar 0 letters) (Letter.fromChar char)
       pure (remainder, letter)
 
     parseDigit1289 :: Parser Digit1289
     parseDigit1289 text = do
       (char, remainder) <- guard TextTooShort $ T.uncons text
-      digit1289 <- guard (invalidChar digits1289 D1) (Digit1289.fromChar char)
+      digit1289 <- guard (InvalidChar 1 digits1289) (Digit1289.fromChar char)
       pure (remainder, digit1289)
 
     parseDigits :: Parser (Vector 8 Digit)
     parseDigits text = do
         let (cs, remainder) = T.splitAt 8 text
-        ds <- traverse parseIndexedDigit (zip [D2 ..] (T.unpack cs))
+        ds <- traverse parseIndexedDigit (zip [2 ..] (T.unpack cs))
         vs <- guard TextTooShort (V.fromList @8 ds)
         pure (remainder, vs)
       where
         parseIndexedDigit (i, c) =
-          guard (invalidChar digits i) (Digit.fromChar c)
+          guard (InvalidChar i digits) (Digit.fromChar c)
 
     digits     = CharRange '0' '9'
     digits1289 = CharSet $ NESet.fromList $ '1' :| ['2', '8', '9']
     letters    = CharRange 'A' 'Z'
-
-    invalidChar charSet index = InvalidChar (CharIndex index) charSet
 
 toText :: IdentityNumber -> Text
 toText (IdentityNumber u0 u1 u2) = t0 <> t1 <> t2
