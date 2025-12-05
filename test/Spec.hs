@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
@@ -5,10 +6,14 @@
 
 module Main where
 
+import Data.Bifunctor
+  ( Bifunctor (second) )
 import Data.Char
   ( intToDigit )
 import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
+import Data.Text
+  ( Text )
 import ROC.ID
   ( Identity (Identity), CharSet (CharSet) )
 import ROC.ID.Digit
@@ -22,12 +27,13 @@ import ROC.ID.Nationality
 import ROC.ID.Serial
   ( Serial )
 import Test.Hspec
-  ( describe, hspec, it, shouldBe )
+  ( describe, hspec, it, shouldBe, shouldSatisfy )
 import Test.QuickCheck
   ( Arbitrary (..)
   , NonEmptyList (..)
   , applyArbitrary4
   , arbitraryBoundedEnum
+  , choose
   , elements
   , forAll
   , property
@@ -167,3 +173,22 @@ main = hspec $ do
         let invalidIdentity =
               T.take 9 (ID.toText i) <> T.pack [invalidChecksum]
         ID.fromText invalidIdentity `shouldBe` Left ID.InvalidChecksum
+
+    it "reports invalid characters even when input is too short" $
+      property $ \(identity :: Identity) ->
+      forAll (choose (1, 9)) $ \truncatedLength ->
+      forAll (choose (0, truncatedLength - 1)) $ \invalidCharIndex -> do
+        let textTruncated = T.take truncatedLength (ID.toText identity)
+        let textInvalid = replaceCharAt invalidCharIndex 'x' textTruncated
+        ID.fromText textInvalid `shouldSatisfy` \case
+          Left (ID.InvalidChar i _) | i == toEnum invalidCharIndex -> True
+          _ -> False
+
+-- | Replaces a character at a specific position.
+--
+replaceCharAt :: Int -> Char -> Text -> Text
+replaceCharAt i c t
+    | i < 0 || i >= T.length t = error "replaceCharAt: invalid index"
+    | otherwise = prefix <> T.singleton c <> suffix
+  where
+    (prefix, suffix) = second (T.drop 1) (T.splitAt i t)
