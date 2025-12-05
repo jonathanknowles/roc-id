@@ -71,7 +71,7 @@
 </span><a href="ROC.ID.html#serial"><span class="hs-identifier hs-var hs-var">serial</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span>
 </span><span id="line-68"></span><span>  </span><span class="annot"><span class="hs-comment">-- ^ The serial number portion of this ID number.</span></span><span>
 </span><span id="line-69"></span><span>  </span><span class="hs-special">}</span><span>
-</span><span id="line-70"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679118020"><span id="local-6989586621679118030"><span class="annot"><span class="annottext">Identity -&gt; Identity -&gt; Bool
+</span><span id="line-70"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679117958"><span id="local-6989586621679117968"><span class="annot"><span class="annottext">Identity -&gt; Identity -&gt; Bool
 (Identity -&gt; Identity -&gt; Bool)
 -&gt; (Identity -&gt; Identity -&gt; Bool) -&gt; Eq Identity
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -79,7 +79,7 @@ $c== :: Identity -&gt; Identity -&gt; Bool
 == :: Identity -&gt; Identity -&gt; Bool
 $c/= :: Identity -&gt; Identity -&gt; Bool
 /= :: Identity -&gt; Identity -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118035"><span id="local-6989586621679118037"><span class="annot"><span class="annottext">(forall x. Identity -&gt; Rep Identity x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679117973"><span id="local-6989586621679117975"><span class="annot"><span class="annottext">(forall x. Identity -&gt; Rep Identity x)
 -&gt; (forall x. Rep Identity x -&gt; Identity) -&gt; Generic Identity
 forall x. Rep Identity x -&gt; Identity
 forall x. Identity -&gt; Rep Identity x
@@ -89,7 +89,7 @@ $cfrom :: forall x. Identity -&gt; Rep Identity x
 from :: forall x. Identity -&gt; Rep Identity x
 $cto :: forall x. Rep Identity x -&gt; Identity
 to :: forall x. Rep Identity x -&gt; Identity
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118045"><span id="local-6989586621679118055"><span id="local-6989586621679118061"><span id="local-6989586621679118065"><span id="local-6989586621679118068"><span id="local-6989586621679118071"><span id="local-6989586621679118074"><span class="annot"><span class="annottext">Eq Identity
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679117983"><span id="local-6989586621679117993"><span id="local-6989586621679117999"><span id="local-6989586621679118003"><span id="local-6989586621679118006"><span id="local-6989586621679118009"><span id="local-6989586621679118012"><span class="annot"><span class="annottext">Eq Identity
 Eq Identity =&gt;
 (Identity -&gt; Identity -&gt; Ordering)
 -&gt; (Identity -&gt; Identity -&gt; Bool)
@@ -126,7 +126,7 @@ $cmax :: Identity -&gt; Identity -&gt; Identity
 max :: Identity -&gt; Identity -&gt; Identity
 $cmin :: Identity -&gt; Identity -&gt; Identity
 min :: Identity -&gt; Identity -&gt; Identity
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118082"><span id="local-6989586621679118086"><span id="local-6989586621679118089"><span id="local-6989586621679118111"><span class="annot"><span class="annottext">ReadPrec [Identity]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118020"><span id="local-6989586621679118024"><span id="local-6989586621679118027"><span id="local-6989586621679118049"><span class="annot"><span class="annottext">ReadPrec [Identity]
 ReadPrec Identity
 Int -&gt; ReadS Identity
 ReadS [Identity]
@@ -146,7 +146,7 @@ $creadPrec :: ReadPrec Identity
 readPrec :: ReadPrec Identity
 $creadListPrec :: ReadPrec [Identity]
 readListPrec :: ReadPrec [Identity]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Read</span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118118"><span id="local-6989586621679118130"><span id="local-6989586621679118134"><span class="annot"><span class="annottext">Int -&gt; Identity -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Read</span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118056"><span id="local-6989586621679118068"><span id="local-6989586621679118072"><span class="annot"><span class="annottext">Int -&gt; Identity -&gt; ShowS
 [Identity] -&gt; ShowS
 Identity -&gt; String
 (Int -&gt; Identity -&gt; ShowS)
@@ -175,15 +175,15 @@ showList :: [Identity] -&gt; ShowS
 </span><span id="line-83"></span><span class="hs-comment">--</span><span>
 </span><span id="line-84"></span><span class="annot"><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-type">fromText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><a href="ROC.ID.Number.html#FromTextError"><span class="hs-identifier hs-type">FromTextError</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span><span>
 </span><span id="line-85"></span><span id="fromText"><span class="annot"><span class="annottext">fromText :: Text -&gt; Either FromTextError Identity
-</span><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-var hs-var">fromText</span></a></span></span><span> </span><span id="local-6989586621679118138"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679118138"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">IdentityNumber -&gt; Identity
+</span><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-var hs-var">fromText</span></a></span></span><span> </span><span id="local-6989586621679118076"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679118076"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">IdentityNumber -&gt; Identity
 </span><a href="ROC.ID.html#fromNumber"><span class="hs-identifier hs-var">fromNumber</span></a></span><span> </span><span class="annot"><span class="annottext">(IdentityNumber -&gt; Identity)
 -&gt; Either FromTextError IdentityNumber
 -&gt; Either FromTextError Identity
 forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-operator hs-var">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Either FromTextError IdentityNumber
 </span><a href="ROC.ID.Number.html#fromText"><span class="hs-identifier hs-var">Number.fromText</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679118138"><span class="hs-identifier hs-var">t</span></a></span><span>
+</span><a href="#local-6989586621679118076"><span class="hs-identifier hs-var">t</span></a></span><span>
 </span><span id="line-86"></span><span>
 </span><span id="line-87"></span><span class="hs-comment">--------------------------------------------------------------------------------</span><span>
 </span><span id="line-88"></span><span class="hs-comment">-- Printing</span><span>
@@ -223,7 +223,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span id="line-110"></span><span>
 </span><span id="line-111"></span><span class="hs-comment">-- | Generates a random 'Identity'.</span><span>
 </span><span id="line-112"></span><span class="hs-comment">--</span><span>
-</span><span id="line-113"></span><span id="local-6989586621679117990"><span class="annot"><a href="ROC.ID.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679117990"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679117990"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span></span><span>
+</span><span id="line-113"></span><span id="local-6989586621679117928"><span class="annot"><a href="ROC.ID.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679117928"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679117928"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span></span><span>
 </span><span id="line-114"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Identity
 </span><a href="ROC.ID.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-115"></span><span>  </span><span class="annot"><span class="annottext">Gender -&gt; Location -&gt; Nationality -&gt; Serial -&gt; Identity
@@ -261,10 +261,10 @@ forall (m :: * -&gt; *). MonadRandom m =&gt; m Serial
 </span><span id="line-124"></span><span>
 </span><span id="line-125"></span><span class="annot"><a href="ROC.ID.html#fromNumber"><span class="hs-identifier hs-type">fromNumber</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Number.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span><span>
 </span><span id="line-126"></span><span id="fromNumber"><span class="annot"><span class="annottext">fromNumber :: IdentityNumber -&gt; Identity
-</span><a href="ROC.ID.html#fromNumber"><span class="hs-identifier hs-var hs-var">fromNumber</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Number.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span> </span><span id="local-6989586621679118166"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679118166"><span class="hs-identifier hs-var">c0</span></a></span></span><span> </span><span id="local-6989586621679118167"><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679118167"><span class="hs-identifier hs-var">c1</span></a></span></span><span> </span><span id="local-6989586621679118168"><span class="annot"><span class="annottext">Vector 7 Digit
-</span><a href="#local-6989586621679118168"><span class="hs-identifier hs-var">c2</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="ROC.ID.html#fromNumber"><span class="hs-identifier hs-var hs-var">fromNumber</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Number.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span> </span><span id="local-6989586621679118104"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679118104"><span class="hs-identifier hs-var">c0</span></a></span></span><span> </span><span id="local-6989586621679118105"><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679118105"><span class="hs-identifier hs-var">c1</span></a></span></span><span> </span><span id="local-6989586621679118106"><span class="annot"><span class="annottext">Vector 7 Digit
+</span><a href="#local-6989586621679118106"><span class="hs-identifier hs-var">c2</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-127"></span><span>    </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><span class="annottext">Gender
 gender :: Gender
 gender :: Gender
@@ -279,14 +279,14 @@ serial :: Serial
 serial :: Serial
 </span><a href="ROC.ID.html#serial"><span class="hs-identifier hs-var hs-var">serial</span></a></span><span class="hs-special">}</span><span>
 </span><span id="line-128"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-129"></span><span>    </span><span id="local-6989586621679118170"><span class="annot"><span class="annottext">location :: Location
-</span><a href="#local-6989586621679118170"><span class="hs-identifier hs-var hs-var">location</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter -&gt; Location
+</span><span id="line-129"></span><span>    </span><span id="local-6989586621679118108"><span class="annot"><span class="annottext">location :: Location
+</span><a href="#local-6989586621679118108"><span class="hs-identifier hs-var hs-var">location</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter -&gt; Location
 </span><a href="ROC.ID.Location.Internal.html#fromLetter"><span class="hs-identifier hs-var">Location.fromLetter</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679118166"><span class="hs-identifier hs-var">c0</span></a></span><span>
-</span><span id="line-130"></span><span>    </span><span class="hs-special">(</span><span id="local-6989586621679118169"><span class="annot"><span class="annottext">Gender
-</span><a href="#local-6989586621679118169"><span class="hs-identifier hs-var">gender</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118171"><span class="annot"><span class="annottext">Nationality
-</span><a href="#local-6989586621679118171"><span class="hs-identifier hs-var">nationality</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679118167"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679118104"><span class="hs-identifier hs-var">c0</span></a></span><span>
+</span><span id="line-130"></span><span>    </span><span class="hs-special">(</span><span id="local-6989586621679118107"><span class="annot"><span class="annottext">Gender
+</span><a href="#local-6989586621679118107"><span class="hs-identifier hs-var">gender</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118109"><span class="annot"><span class="annottext">Nationality
+</span><a href="#local-6989586621679118109"><span class="hs-identifier hs-var">nationality</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679118105"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-131"></span><span>      </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_1"><span class="hs-identifier hs-var">D1289_1</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span>  </span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span><span class="hs-special">,</span><span>    </span><span class="annot"><span class="annottext">Nationality
@@ -303,40 +303,40 @@ serial :: Serial
 </span><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Nationality
 </span><a href="ROC.ID.Nationality.html#NonNational"><span class="hs-identifier hs-var">NonNational</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-135"></span><span>    </span><span id="local-6989586621679118172"><span class="annot"><span class="annottext">serial :: Serial
-</span><a href="#local-6989586621679118172"><span class="hs-identifier hs-var hs-var">serial</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit -&gt; Serial
+</span><span id="line-135"></span><span>    </span><span id="local-6989586621679118110"><span class="annot"><span class="annottext">serial :: Serial
+</span><a href="#local-6989586621679118110"><span class="hs-identifier hs-var hs-var">serial</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit -&gt; Serial
 </span><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-var">Serial</span></a></span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit
-</span><a href="#local-6989586621679118168"><span class="hs-identifier hs-var">c2</span></a></span><span>
+</span><a href="#local-6989586621679118106"><span class="hs-identifier hs-var">c2</span></a></span><span>
 </span><span id="line-136"></span><span>
 </span><span id="line-137"></span><span class="annot"><a href="ROC.ID.html#toNumber"><span class="hs-identifier hs-type">toNumber</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Number.html#IdentityNumber"><span class="hs-identifier hs-type">IdentityNumber</span></a></span><span>
 </span><span id="line-138"></span><span id="toNumber"><span class="annot"><span class="annottext">toNumber :: Identity -&gt; IdentityNumber
-</span><a href="ROC.ID.html#toNumber"><span class="hs-identifier hs-var hs-var">toNumber</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679118182"><span class="annot"><span class="annottext">Gender
+</span><a href="ROC.ID.html#toNumber"><span class="hs-identifier hs-var hs-var">toNumber</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#Identity"><span class="hs-identifier hs-type">Identity</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679118120"><span class="annot"><span class="annottext">Gender
 gender :: Identity -&gt; Gender
 gender :: Gender
-</span><a href="ROC.ID.html#gender"><span class="hs-identifier hs-var hs-var">gender</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118183"><span class="annot"><span class="annottext">Location
+</span><a href="ROC.ID.html#gender"><span class="hs-identifier hs-var hs-var">gender</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118121"><span class="annot"><span class="annottext">Location
 location :: Identity -&gt; Location
 location :: Location
-</span><a href="ROC.ID.html#location"><span class="hs-identifier hs-var hs-var">location</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118184"><span class="annot"><span class="annottext">Nationality
+</span><a href="ROC.ID.html#location"><span class="hs-identifier hs-var hs-var">location</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118122"><span class="annot"><span class="annottext">Nationality
 nationality :: Identity -&gt; Nationality
 nationality :: Nationality
-</span><a href="ROC.ID.html#nationality"><span class="hs-identifier hs-var hs-var">nationality</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118185"><span class="annot"><span class="annottext">Serial
+</span><a href="ROC.ID.html#nationality"><span class="hs-identifier hs-var hs-var">nationality</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679118123"><span class="annot"><span class="annottext">Serial
 serial :: Identity -&gt; Serial
 serial :: Serial
 </span><a href="ROC.ID.html#serial"><span class="hs-identifier hs-var hs-var">serial</span></a></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-139"></span><span>    </span><span class="annot"><span class="annottext">Letter -&gt; Digit1289 -&gt; Vector 7 Digit -&gt; IdentityNumber
 </span><a href="ROC.ID.Number.html#IdentityNumber"><span class="hs-identifier hs-var">IdentityNumber</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679118186"><span class="hs-identifier hs-var">c0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679118187"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit
-</span><a href="#local-6989586621679118188"><span class="hs-identifier hs-var">c2</span></a></span><span>
+</span><a href="#local-6989586621679118124"><span class="hs-identifier hs-var">c0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679118125"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit
+</span><a href="#local-6989586621679118126"><span class="hs-identifier hs-var">c2</span></a></span><span>
 </span><span id="line-140"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-141"></span><span>    </span><span id="local-6989586621679118186"><span class="annot"><span class="annottext">c0 :: Letter
-</span><a href="#local-6989586621679118186"><span class="hs-identifier hs-var hs-var">c0</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Location -&gt; Letter
+</span><span id="line-141"></span><span>    </span><span id="local-6989586621679118124"><span class="annot"><span class="annottext">c0 :: Letter
+</span><a href="#local-6989586621679118124"><span class="hs-identifier hs-var hs-var">c0</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Location -&gt; Letter
 </span><a href="ROC.ID.Location.Internal.html#toLetter"><span class="hs-identifier hs-var">Location.toLetter</span></a></span><span> </span><span class="annot"><span class="annottext">Location
-</span><a href="#local-6989586621679118183"><span class="hs-identifier hs-var">location</span></a></span><span>
-</span><span id="line-142"></span><span>    </span><span id="local-6989586621679118187"><span class="annot"><span class="annottext">c1 :: Digit1289
-</span><a href="#local-6989586621679118187"><span class="hs-identifier hs-var hs-var">c1</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Gender
-</span><a href="#local-6989586621679118182"><span class="hs-identifier hs-var">gender</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Nationality
-</span><a href="#local-6989586621679118184"><span class="hs-identifier hs-var">nationality</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679118121"><span class="hs-identifier hs-var">location</span></a></span><span>
+</span><span id="line-142"></span><span>    </span><span id="local-6989586621679118125"><span class="annot"><span class="annottext">c1 :: Digit1289
+</span><a href="#local-6989586621679118125"><span class="hs-identifier hs-var hs-var">c1</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Gender
+</span><a href="#local-6989586621679118120"><span class="hs-identifier hs-var">gender</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Nationality
+</span><a href="#local-6989586621679118122"><span class="hs-identifier hs-var">nationality</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-143"></span><span>      </span><span class="hs-special">(</span><span>  </span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span><span class="hs-special">,</span><span>    </span><span class="annot"><span class="annottext">Nationality
 </span><a href="ROC.ID.Nationality.html#National"><span class="hs-identifier hs-var">National</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit1289
@@ -353,9 +353,9 @@ serial :: Serial
 </span><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Nationality
 </span><a href="ROC.ID.Nationality.html#NonNational"><span class="hs-identifier hs-var">NonNational</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span><span>
-</span><span id="line-147"></span><span>    </span><span id="local-6989586621679118188"><span class="annot"><span class="annottext">c2 :: Vector 7 Digit
-</span><a href="#local-6989586621679118188"><span class="hs-identifier hs-var hs-var">c2</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Serial
-</span><a href="#local-6989586621679118185"><span class="hs-identifier hs-var">serial</span></a></span><span> </span><span class="hs-keyword">of</span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span> </span><span id="local-6989586621679118190"><span class="annot"><span class="annottext">Vector 7 Digit
-</span><a href="#local-6989586621679118190"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit
-</span><a href="#local-6989586621679118190"><span class="hs-identifier hs-var">s</span></a></span><span>
+</span><span id="line-147"></span><span>    </span><span id="local-6989586621679118126"><span class="annot"><span class="annottext">c2 :: Vector 7 Digit
+</span><a href="#local-6989586621679118126"><span class="hs-identifier hs-var hs-var">c2</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Serial
+</span><a href="#local-6989586621679118123"><span class="hs-identifier hs-var">serial</span></a></span><span> </span><span class="hs-keyword">of</span><span> </span><span class="annot"><a href="ROC.ID.Serial.Internal.html#Serial"><span class="hs-identifier hs-type">Serial</span></a></span><span> </span><span id="local-6989586621679118128"><span class="annot"><span class="annottext">Vector 7 Digit
+</span><a href="#local-6989586621679118128"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Vector 7 Digit
+</span><a href="#local-6989586621679118128"><span class="hs-identifier hs-var">s</span></a></span><span>
 </span><span id="line-148"></span></pre></body></html>
