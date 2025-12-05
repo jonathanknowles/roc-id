@@ -15,7 +15,7 @@ import Data.List.NonEmpty
 import Data.Text
   ( Text )
 import ROC.ID
-  ( Identity (Identity), CharSet (CharSet) )
+  ( Identity (Identity), CharSet (CharSet), CharIndex (CharIndex) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Gender
@@ -177,7 +177,7 @@ main = hspec $ do
         let textTruncated = T.take truncatedLength (ID.toText identity)
         let textInvalid = replaceCharAt invalidCharIndex 'x' textTruncated
         ID.fromText textInvalid `shouldSatisfy` \case
-          Left (ID.InvalidChar i _) | i == toEnum invalidCharIndex -> True
+          Left (ID.InvalidChar (CharIndex i) _) | i == invalidCharIndex -> True
           _ -> False
 
 -- | Replaces a character at a specific position.
