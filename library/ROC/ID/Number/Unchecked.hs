@@ -44,12 +44,13 @@ data IdentityNumber = IdentityNumber
   !Letter
   !Digit1289
   !(Vector 8 Digit)
-  deriving (Eq, Ord, Show)
+  deriving stock (Eq, Ord, Show)
 
 -- | Specifies the position of a character within a string.
 --
 newtype CharIndex = CharIndex Digit
-  deriving (Bounded, Enum, Eq, Ord, Read, Show)
+  deriving stock (Read, Show)
+  deriving newtype (Bounded, Enum, Eq, Ord)
 
 -- | Specifies a set of characters.
 --
@@ -58,13 +59,13 @@ data CharSet
   -- ^ An explicit set of characters.
   | CharRange Char Char
   -- ^ An inclusive range of characters.
-  deriving (Eq, Ord, Read, Show)
+  deriving stock (Eq, Ord, Read, Show)
 
 data FromTextError
   = TextTooShort
   | TextTooLong
   | InvalidChar CharIndex CharSet
-  deriving (Eq, Ord, Read, Show)
+  deriving stock (Eq, Ord, Read, Show)
 
 type Parser a = Text -> Either FromTextError (Text, a)
 
