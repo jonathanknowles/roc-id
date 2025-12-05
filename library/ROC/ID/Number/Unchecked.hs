@@ -50,7 +50,7 @@ data IdentityNumber = IdentityNumber
 --
 newtype CharIndex = CharIndex Digit
   deriving stock (Read, Show)
-  deriving newtype (Bounded, Enum, Eq, Ord)
+  deriving newtype (Bounded, Enum, Eq, Num, Ord)
 
 -- | Specifies a set of characters.
 --

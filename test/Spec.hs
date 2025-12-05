@@ -146,7 +146,7 @@ main = hspec $ do
         let invalidIdentity =
               T.cons invalidLocationCode $ T.drop 1 $ ID.toText i
         ID.fromText invalidIdentity `shouldBe`
-          Left (ID.InvalidChar (ID.CharIndex D0) (ID.CharRange 'A' 'Z'))
+          Left (ID.InvalidChar 0 (ID.CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid initial digits" $
       property $ \(i :: Identity) ->
@@ -156,8 +156,7 @@ main = hspec $ do
                 T.pack [initialDigit] <>
                 T.drop 2 (ID.toText i)
           let expectedError =
-                ID.InvalidChar
-                  (ID.CharIndex D1)
+                ID.InvalidChar 1
                   (CharSet $ NESet.fromList $ '1' :| ['2', '8', '9'])
           ID.fromText invalidIdentity `shouldBe` Left expectedError
 
