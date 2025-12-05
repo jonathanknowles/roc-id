@@ -80,13 +80,15 @@ fromText text0 = do
     parseLetter :: Parser Letter
     parseLetter text = do
       (char, remainder) <- guard TextTooShort $ T.uncons text
-      letter <- guard (InvalidChar 0 letters) (Letter.fromChar char)
+      letter <- guard (InvalidChar 0 (CharRange 'A' 'Z')) (Letter.fromChar char)
       pure (remainder, letter)
 
     parseDigit1289 :: Parser Digit1289
     parseDigit1289 text = do
       (char, remainder) <- guard TextTooShort $ T.uncons text
-      digit1289 <- guard (InvalidChar 1 digits1289) (Digit1289.fromChar char)
+      digit1289 <- guard
+        (InvalidChar 1 (CharSet $ NESet.fromList $ '1' :| ['2', '8', '9']))
+        (Digit1289.fromChar char)
       pure (remainder, digit1289)
 
     parseDigits :: Parser (Vector 8 Digit)
@@ -97,11 +99,7 @@ fromText text0 = do
         pure (remainder, vs)
       where
         parseIndexedDigit (i, c) =
-          guard (InvalidChar i digits) (Digit.fromChar c)
-
-    digits     = CharRange '0' '9'
-    digits1289 = CharSet $ NESet.fromList $ '1' :| ['2', '8', '9']
-    letters    = CharRange 'A' 'Z'
+          guard (InvalidChar i (CharRange '0' '9')) (Digit.fromChar c)
 
 toText :: IdentityNumber -> Text
 toText (IdentityNumber u0 u1 u2) = t0 <> t1 <> t2
