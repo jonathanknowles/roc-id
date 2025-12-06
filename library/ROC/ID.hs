@@ -51,8 +51,8 @@ import qualified ROC.ID.Number as Number
 import qualified ROC.ID.Serial as Serial
 import qualified ROC.ID.Nationality as Nationality
 
--- | Represents a __valid__ 10-digit ROC national identification number
--- (中華民國身份證號碼) of the form __@A123456789@__.
+-- | Represents a __valid__ 10-digit ROC (Taiwan) Uniform Identification Number
+-- (中華民國統一證號) of the form __@A123456789@__.
 --
 -- By construction, invalid identification numbers are __not representable__ by
 -- this type.
