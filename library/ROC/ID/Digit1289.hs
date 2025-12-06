@@ -6,12 +6,17 @@ module ROC.ID.Digit1289
   , fromChar
   , toChar
   , toDigit
+  , generate
   ) where
 
-import ROC.ID.Digit
-  ( Digit (..) )
+import Control.Monad.Random
+  ( MonadRandom )
 import GHC.Generics
   ( Generic )
+import ROC.ID.Digit
+  ( Digit (..) )
+import ROC.ID.Utilities
+  ( randomBoundedEnum )
 
 data Digit1289
   = D1289_1 | D1289_2 | D1289_8 | D1289_9
@@ -41,3 +46,6 @@ toDigit = \case
   D1289_2 -> D2
   D1289_8 -> D8
   D1289_9 -> D9
+
+generate :: MonadRandom m => m Digit1289
+generate = randomBoundedEnum
