@@ -28,7 +28,7 @@ import ROC.ID.Digit1289
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Number.Unchecked
-  ( CharIndex (..), CharSet (..) )
+  ( CharIndex (..), CharSet (..), UncheckedIdentityNumber (..) )
 import ROC.ID.Utilities
   ( guard )
 
@@ -80,17 +80,17 @@ fromText text = do
 toText :: IdentityNumber -> Text
 toText = U.toText . toUnchecked
 
-fromUnchecked :: U.IdentityNumber -> Maybe IdentityNumber
-fromUnchecked (U.IdentityNumber u0 u1 u2)
+fromUnchecked :: UncheckedIdentityNumber -> Maybe IdentityNumber
+fromUnchecked (UncheckedIdentityNumber u0 u1 u2)
     | checksum i == c = Just i
     | otherwise = Nothing
   where
     i = IdentityNumber u0 u1 (V.take @7 u2)
     c = V.last u2
 
-toUnchecked :: IdentityNumber -> U.IdentityNumber
+toUnchecked :: IdentityNumber -> UncheckedIdentityNumber
 toUnchecked i@(IdentityNumber c0 c1 c2) =
-  U.IdentityNumber c0 c1 (c2 V.++ V.singleton (checksum i))
+  UncheckedIdentityNumber c0 c1 (c2 V.++ V.singleton (checksum i))
 
 checksum :: IdentityNumber -> Digit
 checksum (IdentityNumber c0 c1 c2) =

@@ -5,7 +5,7 @@
 {-# LANGUAGE TypeApplications #-}
 
 module ROC.ID.Number.Unchecked
-  ( IdentityNumber (..)
+  ( UncheckedIdentityNumber (..)
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
@@ -40,7 +40,7 @@ import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 
-data IdentityNumber = IdentityNumber
+data UncheckedIdentityNumber = UncheckedIdentityNumber
   !Letter
   !Digit1289
   !(Vector 8 Digit)
@@ -69,13 +69,13 @@ data FromTextError
 
 type Parser a = Text -> Either FromTextError (Text, a)
 
-fromText :: Text -> Either FromTextError IdentityNumber
+fromText :: Text -> Either FromTextError UncheckedIdentityNumber
 fromText text0 = do
     when (T.length text0 > 10) $ Left TextTooLong
     (text1, part0) <- parseLetter    text0
     (text2, part1) <- parseDigit1289 text1
     (_____, part2) <- parseDigits    text2
-    pure (IdentityNumber part0 part1 part2)
+    pure (UncheckedIdentityNumber part0 part1 part2)
   where
     parseLetter :: Parser Letter
     parseLetter text = do
@@ -101,8 +101,8 @@ fromText text0 = do
         parseIndexedDigit (i, c) =
           guard (InvalidChar i (CharRange '0' '9')) (Digit.fromChar c)
 
-toText :: IdentityNumber -> Text
-toText (IdentityNumber u0 u1 u2) = t0 <> t1 <> t2
+toText :: UncheckedIdentityNumber -> Text
+toText (UncheckedIdentityNumber u0 u1 u2) = t0 <> t1 <> t2
   where
     t0 = T.singleton (Letter.toChar u0)
     t1 = T.singleton (Digit1289.toChar u1)
