@@ -53,8 +53,6 @@ common dependency-quickcheck-classes
     build-depends:quickcheck-classes        >= 0.6.5.0      && < 0.7
 common dependency-text
     build-depends:text                      >= 1.2.3.1      && < 2.2
-common dependency-vector-sized
-    build-depends:vector-sized              >= 1.0.4.0      && < 1.7
 
 source-repository head
   type: git
@@ -66,7 +64,6 @@ library
     , dependency-MonadRandom
     , dependency-nonempty-containers
     , dependency-text
-    , dependency-vector-sized
   exposed-modules:
       ROC.ID
       ROC.ID.Digit

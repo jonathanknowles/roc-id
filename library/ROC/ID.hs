@@ -43,7 +43,7 @@ import ROC.ID.Nationality
 import ROC.ID.Number
   ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharSet (..) )
 import ROC.ID.Serial.Internal
-  ( Serial (Serial) )
+  ( Serial )
 
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
@@ -123,7 +123,7 @@ generate =
 --------------------------------------------------------------------------------
 
 fromNumber :: IdentityNumber -> Identity
-fromNumber (IdentityNumber c0 c1 c2) =
+fromNumber (IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8) =
     Identity {gender, location, nationality, serial}
   where
     location = Location.fromLetter c0
@@ -132,11 +132,11 @@ fromNumber (IdentityNumber c0 c1 c2) =
       D1289_2 -> (Female,    National)
       D1289_8 -> (  Male, NonNational)
       D1289_9 -> (Female, NonNational)
-    serial = Serial c2
+    serial = Serial.fromTuple (c2, c3, c4, c5, c6, c7, c8)
 
 toNumber :: Identity -> IdentityNumber
 toNumber Identity {gender, location, nationality, serial} =
-    IdentityNumber c0 c1 c2
+    IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8
   where
     c0 = Location.toLetter location
     c1 = case (gender, nationality) of
@@ -144,4 +144,4 @@ toNumber Identity {gender, location, nationality, serial} =
       (Female,    National) -> D1289_2
       (  Male, NonNational) -> D1289_8
       (Female, NonNational) -> D1289_9
-    c2 = case serial of Serial s -> s
+    (c2, c3, c4, c5, c6, c7, c8) = Serial.toTuple serial

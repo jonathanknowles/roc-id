@@ -4,12 +4,15 @@ module ROC.ID.Digit
   ( Digit (..)
   , fromChar
   , toChar
+  , generate
   ) where
 
+import Control.Monad.Random
+  ( MonadRandom )
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
-  ( maybeBoundedEnum )
+  ( maybeBoundedEnum, randomBoundedEnum )
 import Text.Read
   ( Read (readPrec), readMaybe )
 
@@ -57,3 +60,8 @@ toChar digit = case show digit of
 --
 fromIntegral :: Integral i => i -> Digit
 fromIntegral i = toEnum (Prelude.fromIntegral (i `mod` 10))
+
+-- | Generates a random digit.
+--
+generate :: MonadRandom m => m Digit
+generate = randomBoundedEnum

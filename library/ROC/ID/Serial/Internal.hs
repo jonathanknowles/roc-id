@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
@@ -12,14 +13,10 @@ module ROC.ID.Serial.Internal
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
-import Data.Vector.Sized
-  ( Vector )
 import GHC.Generics
   ( Generic )
 import ROC.ID.Digit
   ( Digit )
-import ROC.ID.Utilities
-  ( randomBoundedEnum )
 import Text.Read
   ( Lexeme (Ident, Symbol)
   , Read (readPrec)
@@ -27,13 +24,21 @@ import Text.Read
   , parens
   )
 
-import qualified Data.Vector.Sized as V
+import qualified ROC.ID.Digit as Digit
 
 -- | A 7-digit serial number, as found within an ROC identification number.
 --
 -- To generate a random 'Serial' number, use the 'generate' function.
 --
-newtype Serial = Serial (Vector 7 Digit)
+data Serial = Serial
+  { s0 :: !Digit
+  , s1 :: !Digit
+  , s2 :: !Digit
+  , s3 :: !Digit
+  , s4 :: !Digit
+  , s5 :: !Digit
+  , s6 :: !Digit
+  }
   deriving (Eq, Generic, Ord)
 
 instance Read Serial where
@@ -50,16 +55,21 @@ instance Show Serial where
 -- | Constructs a 'Serial' number from a tuple.
 --
 fromTuple :: d ~ Digit => (d, d, d, d, d, d, d) -> Serial
-fromTuple = Serial . V.fromTuple
+fromTuple (s0, s1, s2, s3, s4, s5, s6) = Serial {s0, s1, s2, s3, s4, s5, s6}
 
 -- | Converts a 'Serial' number to a tuple.
 --
 toTuple :: d ~ Digit => Serial -> (d, d, d, d, d, d, d)
-toTuple (Serial s) = (s!0, s!1, s!2, s!3, s!4, s!5, s!6)
-  where
-    (!) = V.index
+toTuple Serial {s0, s1, s2, s3, s4, s5, s6} = (s0, s1, s2, s3, s4, s5, s6)
 
 -- | Generates a random 'Serial' number.
 --
 generate :: MonadRandom m => m Serial
-generate = Serial <$> V.replicateM randomBoundedEnum
+generate = Serial
+  <$> Digit.generate
+  <*> Digit.generate
+  <*> Digit.generate
+  <*> Digit.generate
+  <*> Digit.generate
+  <*> Digit.generate
+  <*> Digit.generate
