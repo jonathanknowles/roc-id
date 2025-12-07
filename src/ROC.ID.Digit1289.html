@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679116721"><span id="local-6989586621679116722"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679114008"><span id="local-6989586621679114009"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
 </span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE LambdaCase #-}</span><span>
 </span><span id="line-3"></span><span>
 </span><span id="line-4"></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html"><span class="hs-identifier">ROC.ID.Digit1289</span></a></span><span>
@@ -6,23 +6,28 @@
 </span><span id="line-6"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#fromChar"><span class="hs-identifier">fromChar</span></a></span><span>
 </span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#toChar"><span class="hs-identifier">toChar</span></a></span><span>
 </span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#toDigit"><span class="hs-identifier">toDigit</span></a></span><span>
-</span><span id="line-9"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-10"></span><span>
-</span><span id="line-11"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html"><span class="hs-identifier">ROC.ID.Digit</span></a></span><span>
-</span><span id="line-12"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier">Digit</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-13"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>
-</span><span id="line-14"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Generic</span></span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-15"></span><span>
-</span><span id="line-16"></span><span class="hs-keyword">data</span><span> </span><span id="Digit1289"><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-var">Digit1289</span></a></span></span><span>
-</span><span id="line-17"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="D1289_1"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_1"><span class="hs-identifier hs-var">D1289_1</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="D1289_2"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_2"><span class="hs-identifier hs-var">D1289_2</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="D1289_8"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_8"><span class="hs-identifier hs-var">D1289_8</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="D1289_9"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span></span><span>
-</span><span id="line-18"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679116731"><span id="local-6989586621679116733"><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#generate"><span class="hs-identifier">generate</span></a></span><span>
+</span><span id="line-10"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-11"></span><span>
+</span><span id="line-12"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Monad.Random</span></span><span>
+</span><span id="line-13"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">MonadRandom</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-14"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>
+</span><span id="line-15"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Generic</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-16"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html"><span class="hs-identifier">ROC.ID.Digit</span></a></span><span>
+</span><span id="line-17"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier">Digit</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-18"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html"><span class="hs-identifier">ROC.ID.Utilities</span></a></span><span>
+</span><span id="line-19"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier">randomBoundedEnum</span></a></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-20"></span><span>
+</span><span id="line-21"></span><span class="hs-keyword">data</span><span> </span><span id="Digit1289"><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-var">Digit1289</span></a></span></span><span>
+</span><span id="line-22"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="D1289_1"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_1"><span class="hs-identifier hs-var">D1289_1</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="D1289_2"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_2"><span class="hs-identifier hs-var">D1289_2</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="D1289_8"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_8"><span class="hs-identifier hs-var">D1289_8</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="D1289_9"><span class="annot"><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span></span><span>
+</span><span id="line-23"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114020"><span id="local-6989586621679114022"><span class="annot"><span class="annottext">Digit1289
 Digit1289 -&gt; Digit1289 -&gt; Bounded Digit1289
 forall a. a -&gt; a -&gt; Bounded a
 $cminBound :: Digit1289
 minBound :: Digit1289
 $cmaxBound :: Digit1289
 maxBound :: Digit1289
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679116739"><span id="local-6989586621679116747"><span id="local-6989586621679116752"><span id="local-6989586621679116758"><span id="local-6989586621679116761"><span id="local-6989586621679116766"><span id="local-6989586621679116773"><span id="local-6989586621679116777"><span class="annot"><span class="annottext">Int -&gt; Digit1289
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114028"><span id="local-6989586621679114036"><span id="local-6989586621679114041"><span id="local-6989586621679114047"><span id="local-6989586621679114050"><span id="local-6989586621679114055"><span id="local-6989586621679114062"><span id="local-6989586621679114066"><span class="annot"><span class="annottext">Int -&gt; Digit1289
 Digit1289 -&gt; Int
 Digit1289 -&gt; [Digit1289]
 Digit1289 -&gt; Digit1289
@@ -63,7 +68,7 @@ $cenumFromTo :: Digit1289 -&gt; Digit1289 -&gt; [Digit1289]
 enumFromTo :: Digit1289 -&gt; Digit1289 -&gt; [Digit1289]
 $cenumFromThenTo :: Digit1289 -&gt; Digit1289 -&gt; Digit1289 -&gt; [Digit1289]
 enumFromThenTo :: Digit1289 -&gt; Digit1289 -&gt; Digit1289 -&gt; [Digit1289]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679116785"><span id="local-6989586621679116789"><span class="annot"><span class="annottext">Digit1289 -&gt; Digit1289 -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114074"><span id="local-6989586621679114078"><span class="annot"><span class="annottext">Digit1289 -&gt; Digit1289 -&gt; Bool
 (Digit1289 -&gt; Digit1289 -&gt; Bool)
 -&gt; (Digit1289 -&gt; Digit1289 -&gt; Bool) -&gt; Eq Digit1289
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -71,7 +76,7 @@ $c== :: Digit1289 -&gt; Digit1289 -&gt; Bool
 == :: Digit1289 -&gt; Digit1289 -&gt; Bool
 $c/= :: Digit1289 -&gt; Digit1289 -&gt; Bool
 /= :: Digit1289 -&gt; Digit1289 -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679116794"><span id="local-6989586621679116796"><span class="annot"><span class="annottext">(forall x. Digit1289 -&gt; Rep Digit1289 x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114083"><span id="local-6989586621679114085"><span class="annot"><span class="annottext">(forall x. Digit1289 -&gt; Rep Digit1289 x)
 -&gt; (forall x. Rep Digit1289 x -&gt; Digit1289) -&gt; Generic Digit1289
 forall x. Rep Digit1289 x -&gt; Digit1289
 forall x. Digit1289 -&gt; Rep Digit1289 x
@@ -81,7 +86,7 @@ $cfrom :: forall x. Digit1289 -&gt; Rep Digit1289 x
 from :: forall x. Digit1289 -&gt; Rep Digit1289 x
 $cto :: forall x. Rep Digit1289 x -&gt; Digit1289
 to :: forall x. Rep Digit1289 x -&gt; Digit1289
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679116804"><span id="local-6989586621679116808"><span id="local-6989586621679116812"><span id="local-6989586621679116816"><span id="local-6989586621679116819"><span id="local-6989586621679116822"><span id="local-6989586621679116825"><span class="annot"><span class="annottext">Eq Digit1289
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114093"><span id="local-6989586621679114097"><span id="local-6989586621679114101"><span id="local-6989586621679114105"><span id="local-6989586621679114108"><span id="local-6989586621679114111"><span id="local-6989586621679114114"><span class="annot"><span class="annottext">Eq Digit1289
 Eq Digit1289 =&gt;
 (Digit1289 -&gt; Digit1289 -&gt; Ordering)
 -&gt; (Digit1289 -&gt; Digit1289 -&gt; Bool)
@@ -119,73 +124,79 @@ max :: Digit1289 -&gt; Digit1289 -&gt; Digit1289
 $cmin :: Digit1289 -&gt; Digit1289 -&gt; Digit1289
 min :: Digit1289 -&gt; Digit1289 -&gt; Digit1289
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-19"></span><span>
-</span><span id="line-20"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679116833"><span id="local-6989586621679116838"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-21"></span><span>  </span><span id="local-6989586621679116841"><span class="annot"><span class="annottext">show :: Digit1289 -&gt; String
-</span><a href="#local-6989586621679116841"><span class="hs-identifier hs-var hs-var hs-var">show</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Char -&gt; ShowS
+</span><span id="line-24"></span><span>
+</span><span id="line-25"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679114122"><span id="local-6989586621679114127"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-26"></span><span>  </span><span id="local-6989586621679114130"><span class="annot"><span class="annottext">show :: Digit1289 -&gt; String
+</span><a href="#local-6989586621679114130"><span class="hs-identifier hs-var hs-var hs-var">show</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Char -&gt; ShowS
 forall a. a -&gt; [a] -&gt; [a]
 </span><span class="hs-glyph hs-var">:</span></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">(Char -&gt; String) -&gt; (Digit1289 -&gt; Char) -&gt; Digit1289 -&gt; String
 forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; Char
 </span><a href="ROC.ID.Digit1289.html#toChar"><span class="hs-identifier hs-var">toChar</span></a></span><span>
-</span><span id="line-22"></span><span>
-</span><span id="line-23"></span><span class="annot"><a href="ROC.ID.Digit1289.html#fromChar"><span class="hs-identifier hs-type">fromChar</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span><span>
-</span><span id="line-24"></span><span id="fromChar"><span class="annot"><span class="annottext">fromChar :: Char -&gt; Maybe Digit1289
+</span><span id="line-27"></span><span>
+</span><span id="line-28"></span><span class="annot"><a href="ROC.ID.Digit1289.html#fromChar"><span class="hs-identifier hs-type">fromChar</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span><span>
+</span><span id="line-29"></span><span id="fromChar"><span class="annot"><span class="annottext">fromChar :: Char -&gt; Maybe Digit1289
 </span><a href="ROC.ID.Digit1289.html#fromChar"><span class="hs-identifier hs-var hs-var">fromChar</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-25"></span><span>  </span><span class="annot"><span class="annottext">Char
+</span><span id="line-30"></span><span>  </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'1'</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; Maybe Digit1289
 forall a. a -&gt; Maybe a
 </span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_1"><span class="hs-identifier hs-var">D1289_1</span></a></span><span>
-</span><span id="line-26"></span><span>  </span><span class="annot"><span class="annottext">Char
+</span><span id="line-31"></span><span>  </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'2'</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; Maybe Digit1289
 forall a. a -&gt; Maybe a
 </span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_2"><span class="hs-identifier hs-var">D1289_2</span></a></span><span>
-</span><span id="line-27"></span><span>  </span><span class="annot"><span class="annottext">Char
+</span><span id="line-32"></span><span>  </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'8'</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; Maybe Digit1289
 forall a. a -&gt; Maybe a
 </span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_8"><span class="hs-identifier hs-var">D1289_8</span></a></span><span>
-</span><span id="line-28"></span><span>  </span><span class="annot"><span class="annottext">Char
+</span><span id="line-33"></span><span>  </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'9'</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; Maybe Digit1289
 forall a. a -&gt; Maybe a
 </span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span><span>
-</span><span id="line-29"></span><span>  </span><span class="annot"><span class="annottext">Char
+</span><span id="line-34"></span><span>  </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-identifier">_</span></span><span>   </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe Digit1289
 forall a. Maybe a
 </span><span class="hs-identifier hs-var">Nothing</span></span><span>
-</span><span id="line-30"></span><span>
-</span><span id="line-31"></span><span class="annot"><a href="ROC.ID.Digit1289.html#toChar"><span class="hs-identifier hs-type">toChar</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span>
-</span><span id="line-32"></span><span id="toChar"><span class="annot"><span class="annottext">toChar :: Digit1289 -&gt; Char
+</span><span id="line-35"></span><span>
+</span><span id="line-36"></span><span class="annot"><a href="ROC.ID.Digit1289.html#toChar"><span class="hs-identifier hs-type">toChar</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Char</span></span><span>
+</span><span id="line-37"></span><span id="toChar"><span class="annot"><span class="annottext">toChar :: Digit1289 -&gt; Char
 </span><a href="ROC.ID.Digit1289.html#toChar"><span class="hs-identifier hs-var hs-var">toChar</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-33"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-38"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_1"><span class="hs-identifier hs-var">D1289_1</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'1'</span></span><span>
-</span><span id="line-34"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-39"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_2"><span class="hs-identifier hs-var">D1289_2</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'2'</span></span><span>
-</span><span id="line-35"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-40"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_8"><span class="hs-identifier hs-var">D1289_8</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'8'</span></span><span>
-</span><span id="line-36"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-41"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Char
 </span><span class="hs-char">'9'</span></span><span>
-</span><span id="line-37"></span><span>
-</span><span id="line-38"></span><span class="annot"><a href="ROC.ID.Digit1289.html#toDigit"><span class="hs-identifier hs-type">toDigit</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
-</span><span id="line-39"></span><span id="toDigit"><span class="annot"><span class="annottext">toDigit :: Digit1289 -&gt; Digit
+</span><span id="line-42"></span><span>
+</span><span id="line-43"></span><span class="annot"><a href="ROC.ID.Digit1289.html#toDigit"><span class="hs-identifier hs-type">toDigit</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
+</span><span id="line-44"></span><span id="toDigit"><span class="annot"><span class="annottext">toDigit :: Digit1289 -&gt; Digit
 </span><a href="ROC.ID.Digit1289.html#toDigit"><span class="hs-identifier hs-var hs-var">toDigit</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-40"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-45"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_1"><span class="hs-identifier hs-var">D1289_1</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit
 </span><a href="ROC.ID.Digit.html#D1"><span class="hs-identifier hs-var">D1</span></a></span><span>
-</span><span id="line-41"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-46"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_2"><span class="hs-identifier hs-var">D1289_2</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit
 </span><a href="ROC.ID.Digit.html#D2"><span class="hs-identifier hs-var">D2</span></a></span><span>
-</span><span id="line-42"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-47"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_8"><span class="hs-identifier hs-var">D1289_8</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit
 </span><a href="ROC.ID.Digit.html#D8"><span class="hs-identifier hs-var">D8</span></a></span><span>
-</span><span id="line-43"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
+</span><span id="line-48"></span><span>  </span><span class="annot"><span class="annottext">Digit1289
 </span><a href="ROC.ID.Digit1289.html#D1289_9"><span class="hs-identifier hs-var">D1289_9</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Digit
 </span><a href="ROC.ID.Digit.html#D9"><span class="hs-identifier hs-var">D9</span></a></span><span>
-</span><span id="line-44"></span></pre></body></html>
+</span><span id="line-49"></span><span>
+</span><span id="line-50"></span><span id="local-6989586621679114003"><span class="annot"><a href="ROC.ID.Digit1289.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679114003"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679114003"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Digit1289.html#Digit1289"><span class="hs-identifier hs-type">Digit1289</span></a></span></span><span>
+</span><span id="line-51"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Digit1289
+</span><a href="ROC.ID.Digit1289.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m Digit1289
+forall (m :: * -&gt; *) a. (MonadRandom m, Bounded a, Enum a) =&gt; m a
+</span><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier hs-var">randomBoundedEnum</span></a></span><span>
+</span><span id="line-52"></span></pre></body></html>
