@@ -1,4 +1,5 @@
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
@@ -15,15 +16,17 @@ import Data.List.NonEmpty
 import Data.Text
   ( Text )
 import ROC.ID
-  ( Identity (Identity), CharSet (CharSet), CharIndex (CharIndex) )
+  ( CharSet (CharSet), CharIndex (CharIndex), Identity (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Gender
-  ( Gender )
+  ( Gender (..) )
+import ROC.ID.Letter
+  ( Letter (..) )
 import ROC.ID.Location
   ( Location )
 import ROC.ID.Nationality
-  ( Nationality )
+  ( Nationality (..) )
 import ROC.ID.Serial
   ( Serial )
 import Test.Hspec
@@ -48,6 +51,7 @@ import Test.QuickCheck.Classes.Hspec
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
 import qualified ROC.ID as ID
+import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Serial as Serial
 
 instance Arbitrary Digit where
@@ -130,6 +134,21 @@ main = hspec $ do
         ]
 
   describe "ID.fromText" $ do
+
+    it "successfully parses known-valid identification numbers" $
+      do
+        let i = ID.fromText "A123456789"
+        i `shouldBe`
+          ( Right
+            ( Identity
+              { gender = Male
+              , location = Location.fromLetter A
+              , nationality = National
+              , serial = Serial.fromTuple (2, 3, 4, 5, 6, 7, 8)
+              }
+            )
+          )
+        fmap ID.checksum i `shouldBe` Right 9
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: Identity) ->
