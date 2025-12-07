@@ -1,8 +1,10 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeOperators #-}
 
 module ROC.ID.Number.Unchecked
   ( UncheckedIdentityNumber (..)
@@ -22,8 +24,6 @@ import Data.Set.NonEmpty
   ( NESet )
 import Data.Text
   ( Text )
-import Data.Vector.Sized
-  ( Vector )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -35,15 +35,22 @@ import ROC.ID.Utilities
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
-import qualified Data.Vector.Sized as V
-import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
+import qualified ROC.ID.Letter as Letter
 
 data UncheckedIdentityNumber = UncheckedIdentityNumber
-  !Letter
-  !Digit1289
-  !(Vector 8 Digit)
+  { c0 :: !Letter
+  , c1 :: !Digit1289
+  , c2 :: !Digit
+  , c3 :: !Digit
+  , c4 :: !Digit
+  , c5 :: !Digit
+  , c6 :: !Digit
+  , c7 :: !Digit
+  , c8 :: !Digit
+  , c9 :: !Digit
+  }
   deriving stock (Eq, Ord, Show)
 
 -- | Specifies the zero-based position of a character within a string.
@@ -72,10 +79,10 @@ type Parser a = Text -> Either FromTextError (Text, a)
 fromText :: Text -> Either FromTextError UncheckedIdentityNumber
 fromText text0 = do
     when (T.length text0 > 10) $ Left TextTooLong
-    (text1, part0) <- parseLetter    text0
-    (text2, part1) <- parseDigit1289 text1
-    (_____, part2) <- parseDigits    text2
-    pure (UncheckedIdentityNumber part0 part1 part2)
+    (text1,  c0                             ) <- parseLetter    text0
+    (text2,  c1                             ) <- parseDigit1289 text1
+    (_____, (c2, c3, c4, c5, c6, c7, c8, c9)) <- parseDigits    text2
+    pure UncheckedIdentityNumber {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9}
   where
     parseLetter :: Parser Letter
     parseLetter text = do
@@ -91,19 +98,27 @@ fromText text0 = do
         (Digit1289.fromChar char)
       pure (remainder, digit1289)
 
-    parseDigits :: Parser (Vector 8 Digit)
+    parseDigits :: d ~ Digit => Parser (d, d, d, d, d, d, d, d)
     parseDigits text = do
-        let (cs, remainder) = T.splitAt 8 text
-        ds <- traverse parseIndexedDigit (zip [2 ..] (T.unpack cs))
-        vs <- guard TextTooShort (V.fromList @8 ds)
-        pure (remainder, vs)
+        let (chars, remainder) = T.splitAt 8 text
+        digitList <- traverse parseIndexedDigit (zip [2 ..] $ T.unpack chars)
+        digitTuple <- guard TextTooShort (listToTuple8 digitList)
+        pure (remainder, digitTuple)
       where
         parseIndexedDigit (i, c) =
           guard (InvalidChar i (CharRange '0' '9')) (Digit.fromChar c)
 
 toText :: UncheckedIdentityNumber -> Text
-toText (UncheckedIdentityNumber u0 u1 u2) = t0 <> t1 <> t2
-  where
-    t0 = T.singleton (Letter.toChar u0)
-    t1 = T.singleton (Digit1289.toChar u1)
-    t2 = T.pack (Digit.toChar <$> V.toList u2)
+toText UncheckedIdentityNumber {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9} =
+  T.pack
+    ( Letter.toChar c0
+    : Digit1289.toChar c1
+    : fmap Digit.toChar [c2, c3, c4, c5, c6, c7, c8, c9]
+    )
+
+listToTuple8 :: [a] -> Maybe (a, a, a, a, a, a, a, a)
+listToTuple8 = \case
+  (a0 : a1 : a2 : a3 : a4 : a5 : a6 : a7 : _) ->
+    Just (a0, a1, a2, a3, a4, a5, a6, a7)
+  _ ->
+    Nothing

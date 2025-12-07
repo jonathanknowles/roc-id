@@ -1,6 +1,5 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE TypeApplications #-}
 
 module ROC.ID.Number
   ( IdentityNumber (..)
@@ -17,8 +16,6 @@ module ROC.ID.Number
 
 import Data.Bifunctor
   ( Bifunctor (first) )
-import Data.Vector.Sized
-  ( Vector )
 import Data.Text
   ( Text )
 import ROC.ID.Digit
@@ -32,14 +29,20 @@ import ROC.ID.Number.Unchecked
 import ROC.ID.Utilities
   ( guard )
 
-import qualified Data.Vector.Sized as V
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Number.Unchecked as U
 
 data IdentityNumber = IdentityNumber
-  !Letter
-  !Digit1289
-  !(Vector 7 Digit)
+  { c0 :: !Letter
+  , c1 :: !Digit1289
+  , c2 :: !Digit
+  , c3 :: !Digit
+  , c4 :: !Digit
+  , c5 :: !Digit
+  , c6 :: !Digit
+  , c7 :: !Digit
+  , c8 :: !Digit
+  }
   deriving (Eq, Ord, Show)
 
 -- | Indicates an error that occurred while parsing an identification number.
@@ -81,26 +84,26 @@ toText :: IdentityNumber -> Text
 toText = U.toText . toUnchecked
 
 fromUnchecked :: UncheckedIdentityNumber -> Maybe IdentityNumber
-fromUnchecked (UncheckedIdentityNumber u0 u1 u2)
-    | checksum i == c = Just i
+fromUnchecked (UncheckedIdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
+    | checksum i == u9 = Just i
     | otherwise = Nothing
   where
-    i = IdentityNumber u0 u1 (V.take @7 u2)
-    c = V.last u2
+    i = IdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8
 
 toUnchecked :: IdentityNumber -> UncheckedIdentityNumber
-toUnchecked i@(IdentityNumber c0 c1 c2) =
-  UncheckedIdentityNumber c0 c1 (c2 V.++ V.singleton (checksum i))
+toUnchecked i@(IdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+  UncheckedIdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
 
 checksum :: IdentityNumber -> Digit
-checksum (IdentityNumber c0 c1 c2) =
+checksum (IdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8) =
     toEnum $ (`mod` 10) $ negate $ sum $ zipWith (*) cs vs
   where
     cs = [1, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    vs = fromEnum <$> V.toList (as V.++ V.cons (Digit1289.toDigit c1) c2)
+    vs = fromEnum <$>
+      (a0 : a1 : Digit1289.toDigit u1 : [u2, u3, u4, u5, u6, u7, u8])
 
-    as :: Vector 2 Digit
-    as = V.fromTuple $ case c0 of
+    a0, a1 :: Digit
+    (a0, a1) = case u0 of
       A -> (D1, D0); N -> (D2, D2)
       B -> (D1, D1); O -> (D3, D5)
       C -> (D1, D2); P -> (D2, D3)
