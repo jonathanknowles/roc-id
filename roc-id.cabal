@@ -67,16 +67,16 @@ library
   exposed-modules:
       ROC.ID
       ROC.ID.Digit
+      ROC.ID.Digit1289
       ROC.ID.Gender
       ROC.ID.Language
       ROC.ID.Letter
       ROC.ID.Location
       ROC.ID.Nationality
+      ROC.ID.Raw
       ROC.ID.Serial
   other-modules:
-      ROC.ID.Digit1289
       ROC.ID.Location.Internal
-      ROC.ID.Raw
       ROC.ID.Raw.Unchecked
       ROC.ID.Serial.Internal
       ROC.ID.Utilities

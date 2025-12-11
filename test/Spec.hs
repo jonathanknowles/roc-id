@@ -19,6 +19,8 @@ import ROC.ID.Raw
   ( CharSet (CharSet), CharIndex (CharIndex), RawID (..) )
 import ROC.ID.Digit
   ( Digit (..) )
+import ROC.ID.Digit1289
+  ( Digit1289 (..) )
 import ROC.ID.Gender
   ( Gender (..) )
 import ROC.ID.Letter
@@ -34,7 +36,6 @@ import Test.Hspec
 import Test.QuickCheck
   ( Arbitrary (..)
   , NonEmptyList (..)
-  , applyArbitrary4
   , arbitraryBoundedEnum
   , choose
   , elements
@@ -50,11 +51,14 @@ import Test.QuickCheck.Classes.Hspec
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
-import qualified ROC.ID as ID
-import qualified ROC.ID.Location as Location
+import qualified ROC.ID.Raw as ID
 import qualified ROC.ID.Serial as Serial
 
 instance Arbitrary Digit where
+  arbitrary = arbitraryBoundedEnum
+  shrink = shrinkBoundedEnum
+
+instance Arbitrary Digit1289 where
   arbitrary = arbitraryBoundedEnum
   shrink = shrinkBoundedEnum
 
@@ -62,12 +66,13 @@ instance Arbitrary Gender where
   arbitrary = arbitraryBoundedEnum
   shrink = shrinkBoundedEnum
 
-instance Arbitrary ID where
-  arbitrary = applyArbitrary4 ID
-  shrink = shrinkMap unTuple toTuple
-    where
-      toTuple (ID g l n s) = (g, l, n, s)
-      unTuple (g, l, n, s) = (ID g l n s)
+instance Arbitrary Letter where
+  arbitrary = arbitraryBoundedEnum
+  shrink = shrinkBoundedEnum
+
+instance Arbitrary RawID where
+  arbitrary = ID.fromTuple <$> arbitrary
+  shrink = shrinkMap ID.fromTuple ID.toTuple
 
 instance Arbitrary Location where
   arbitrary = arbitraryBoundedEnum
@@ -103,11 +108,10 @@ main = hspec $ do
         , showReadLaws
         ]
 
-    testLawsMany @ID
+    testLawsMany @RawID
         [ eqLaws
         , ordLaws
         , showLaws
-        , showReadLaws
         ]
 
     testLawsMany @Location
@@ -138,42 +142,33 @@ main = hspec $ do
     it "successfully parses known-valid identification numbers" $
       do
         let i = ID.fromText "A123456789"
-        i `shouldBe`
-          ( Right
-            ( ID
-              { gender = Male
-              , location = Location.fromLetter A
-              , nationality = National
-              , serial = Serial.fromTuple (2, 3, 4, 5, 6, 7, 8)
-              }
-            )
-          )
+        i `shouldBe` Right (RawID A D1289_1 2 3 4 5 6 7 8)
         fmap ID.checksum i `shouldBe` Right 9
 
     it "successfully parses valid identification numbers" $
-      property $ \(i :: ID) ->
+      property $ \(i :: RawID) ->
         ID.fromText (ID.toText i) `shouldBe` Right i
 
     it "does not parse identification numbers that are too short" $
-      property $ \(i :: ID) n -> do
+      property $ \(i :: RawID) n -> do
         let newLength = n `mod` 10
         let invalidID = T.take newLength $ ID.toText i
         ID.fromText invalidID `shouldBe` Left ID.TextTooShort
 
     it "does not parse identification numbers that are too long" $
-      property $ \(i :: ID) (NonEmpty s) -> do
+      property $ \(i :: RawID) (NonEmpty s) -> do
         let invalidID = ID.toText i <> T.pack s
         ID.fromText invalidID `shouldBe` Left ID.TextTooLong
 
     it "does not parse identification numbers with invalid location codes" $
-      property $ \(i :: ID) (c :: Int) -> do
+      property $ \(i :: RawID) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
         let invalidID = replaceCharAt 0 invalidLocationCode $ ID.toText i
         ID.fromText invalidID `shouldBe`
           Left (ID.InvalidChar 0 (ID.CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid initial digits" $
-      property $ \(i :: ID) ->
+      property $ \(i :: RawID) ->
         forAll (elements ['0', '3', '4', '5', '6', '7']) $ \initialDigit -> do
           let invalidID = replaceCharAt 1 initialDigit (ID.toText i)
           let expectedError =
@@ -182,7 +177,7 @@ main = hspec $ do
           ID.fromText invalidID `shouldBe` Left expectedError
 
     it "does not parse identification numbers with invalid checksums" $
-      property $ \(i :: ID) (c :: Int) -> do
+      property $ \(i :: RawID) (c :: Int) -> do
         let invalidChecksum = intToDigit $
               ((c `mod` 9) + fromEnum (ID.checksum i) + 1) `mod` 10
         let invalidID =
@@ -190,7 +185,7 @@ main = hspec $ do
         ID.fromText invalidID `shouldBe` Left ID.InvalidChecksum
 
     it "reports invalid characters even when input is too short" $
-      property $ \(identity :: ID) ->
+      property $ \(identity :: RawID) ->
       forAll (choose (1, 9)) $ \truncatedLength ->
       forAll (choose (0, truncatedLength - 1)) $ \invalidCharIndex -> do
         let textTruncated = T.take truncatedLength (ID.toText identity)
@@ -200,7 +195,7 @@ main = hspec $ do
           _ -> False
 
     it "does not report invalid characters if input is too long" $
-      property $ \(identity :: ID) (NonEmpty trailingExcess) ->
+      property $ \(identity :: RawID) (NonEmpty trailingExcess) ->
       forAll (choose (0, 9)) $ \invalidCharIndex -> do
         let textInvalid =
               replaceCharAt invalidCharIndex 'x' (ID.toText identity)
