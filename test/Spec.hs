@@ -15,8 +15,8 @@ import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
 import Data.Text
   ( Text )
-import ROC.ID.Raw
-  ( CharSet (CharSet), CharIndex (CharIndex), RawID (..) )
+import ROC.ID
+  ( CharSet (CharSet), CharIndex (CharIndex), ID (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -49,7 +49,7 @@ import Test.QuickCheck.Classes.Hspec
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
-import qualified ROC.ID.Raw as ID
+import qualified ROC.ID as ID
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
@@ -67,7 +67,7 @@ instance Arbitrary Letter where
   arbitrary = arbitraryBoundedEnum
   shrink = shrinkBoundedEnum
 
-instance Arbitrary RawID where
+instance Arbitrary ID where
   arbitrary = ID.fromTuple <$> arbitrary
   shrink = shrinkMap ID.fromTuple ID.toTuple
 
@@ -101,7 +101,7 @@ main = hspec $ do
         , showReadLaws
         ]
 
-    testLawsMany @RawID
+    testLawsMany @ID
         [ eqLaws
         , ordLaws
         , showLaws
@@ -128,33 +128,33 @@ main = hspec $ do
     it "successfully parses known-valid identification numbers" $
       do
         let i = ID.fromText "A123456789"
-        i `shouldBe` Right (RawID A D1289_1 2 3 4 5 6 7 8)
+        i `shouldBe` Right (ID A D1289_1 2 3 4 5 6 7 8)
         fmap ID.checksum i `shouldBe` Right 9
 
     it "successfully parses valid identification numbers" $
-      property $ \(i :: RawID) ->
+      property $ \(i :: ID) ->
         ID.fromText (ID.toText i) `shouldBe` Right i
 
     it "does not parse identification numbers that are too short" $
-      property $ \(i :: RawID) n -> do
+      property $ \(i :: ID) n -> do
         let newLength = n `mod` 10
         let invalidID = T.take newLength $ ID.toText i
         ID.fromText invalidID `shouldBe` Left ID.TextTooShort
 
     it "does not parse identification numbers that are too long" $
-      property $ \(i :: RawID) (NonEmpty s) -> do
+      property $ \(i :: ID) (NonEmpty s) -> do
         let invalidID = ID.toText i <> T.pack s
         ID.fromText invalidID `shouldBe` Left ID.TextTooLong
 
     it "does not parse identification numbers with invalid location codes" $
-      property $ \(i :: RawID) (c :: Int) -> do
+      property $ \(i :: ID) (c :: Int) -> do
         let invalidLocationCode = intToDigit $ c `mod` 10
         let invalidID = replaceCharAt 0 invalidLocationCode $ ID.toText i
         ID.fromText invalidID `shouldBe`
           Left (ID.InvalidChar 0 (ID.CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid initial digits" $
-      property $ \(i :: RawID) ->
+      property $ \(i :: ID) ->
         forAll (elements ['0', '3', '4', '5', '6', '7']) $ \initialDigit -> do
           let invalidID = replaceCharAt 1 initialDigit (ID.toText i)
           let expectedError =
@@ -163,7 +163,7 @@ main = hspec $ do
           ID.fromText invalidID `shouldBe` Left expectedError
 
     it "does not parse identification numbers with invalid checksums" $
-      property $ \(i :: RawID) (c :: Int) -> do
+      property $ \(i :: ID) (c :: Int) -> do
         let invalidChecksum = intToDigit $
               ((c `mod` 9) + fromEnum (ID.checksum i) + 1) `mod` 10
         let invalidID =
@@ -171,7 +171,7 @@ main = hspec $ do
         ID.fromText invalidID `shouldBe` Left ID.InvalidChecksum
 
     it "reports invalid characters even when input is too short" $
-      property $ \(identity :: RawID) ->
+      property $ \(identity :: ID) ->
       forAll (choose (1, 9)) $ \truncatedLength ->
       forAll (choose (0, truncatedLength - 1)) $ \invalidCharIndex -> do
         let textTruncated = T.take truncatedLength (ID.toText identity)
@@ -181,7 +181,7 @@ main = hspec $ do
           _ -> False
 
     it "does not report invalid characters if input is too long" $
-      property $ \(identity :: RawID) (NonEmpty trailingExcess) ->
+      property $ \(identity :: ID) (NonEmpty trailingExcess) ->
       forAll (choose (0, 9)) $ \invalidCharIndex -> do
         let textInvalid =
               replaceCharAt invalidCharIndex 'x' (ID.toText identity)

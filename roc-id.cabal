@@ -65,6 +65,7 @@ library
     , dependency-nonempty-containers
     , dependency-text
   exposed-modules:
+      ROC.ID
       ROC.ID.Digit
       ROC.ID.Digit1289
       ROC.ID.Gender
@@ -72,7 +73,6 @@ library
       ROC.ID.Letter
       ROC.ID.Location
       ROC.ID.Nationality
-      ROC.ID.Raw
   other-modules:
       ROC.ID.Location.Internal
       ROC.ID.Raw.Unchecked

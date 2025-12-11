@@ -4,10 +4,10 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE ViewPatterns #-}
 
-module ROC.ID.Raw
+module ROC.ID
   (
   -- * Type
-    RawID (..)
+    ID (..)
 
   -- * Construction
   , fromText
@@ -80,7 +80,7 @@ import qualified ROC.ID.Raw.Unchecked as U
 -- By construction, invalid identification numbers are __not representable__ by
 -- this type.
 --
-data RawID = RawID
+data ID = ID
   { c0 :: !Letter
   , c1 :: !Digit1289
   , c2 :: !Digit
@@ -97,7 +97,7 @@ data RawID = RawID
 -- Construction
 --------------------------------------------------------------------------------
 
--- | Attempts to construct a 'RawID' from 'Text'.
+-- | Attempts to construct an 'ID' from 'Text'.
 --
 -- The input must be exactly 10 characters in length and of the form
 -- __@A123456789@__.
@@ -111,7 +111,7 @@ data RawID = RawID
 -- 'fromText' ('toText' i) '==' 'Right' i
 -- @
 --
-fromText :: Text -> Either FromTextError RawID
+fromText :: Text -> Either FromTextError ID
 fromText text = do
     unchecked <- first fromUncheckedError $ U.fromText text
     guard InvalidChecksum $ fromUnchecked unchecked
@@ -125,7 +125,7 @@ fromText text = do
       U.InvalidChar i r ->
         InvalidChar i r
 
--- | Indicates an error that occurred while constructing a 'RawId' from 'Text'.
+-- | Indicates an error that occurred while constructing an 'ID' from 'Text'.
 --
 data FromTextError
 
@@ -146,7 +146,7 @@ data FromTextError
 
   deriving (Eq, Ord, Show)
 
--- | Constructs a 'RawID' from a tuple.
+-- | Constructs an 'ID' from a tuple.
 --
 -- This function satisfies the following laws:
 --
@@ -157,15 +157,15 @@ data FromTextError
 -- 'toTuple' ('fromTuple' t) '==' t
 -- @
 --
-fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> RawID
+fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> ID
 fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
-  RawID c0 c1 c2 c3 c4 c5 c6 c7 c8
+  ID c0 c1 c2 c3 c4 c5 c6 c7 c8
 
 --------------------------------------------------------------------------------
 -- Conversion
 --------------------------------------------------------------------------------
 
--- | Converts a 'RawID' to 'Text'.
+-- | Converts an 'ID' to 'Text'.
 --
 -- The output is of the form __@A123456789@__.
 --
@@ -175,10 +175,10 @@ fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
 -- 'fromText' ('toText' i) '==' 'Right' i
 -- @
 --
-toText :: RawID -> Text
+toText :: ID -> Text
 toText = U.toText . toUnchecked
 
--- | Converts a 'RawID' to a tuple.
+-- | Converts an 'ID' to a tuple.
 --
 -- This function satisfies the following laws:
 --
@@ -189,18 +189,18 @@ toText = U.toText . toUnchecked
 -- 'toTuple' ('fromTuple' t) '==' t
 -- @
 --
-toTuple :: Digit ~ d => RawID -> (Letter, Digit1289, d, d, d, d, d, d, d)
-toTuple (RawID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
+toTuple :: Digit ~ d => ID -> (Letter, Digit1289, d, d, d, d, d, d, d)
+toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
   (c0, c1, c2, c3, c4, c5, c6, c7, c8)
 
 --------------------------------------------------------------------------------
 -- Verification
 --------------------------------------------------------------------------------
 
--- | Computes the checksum digit for a 'RawID'.
+-- | Computes the checksum digit for an 'ID'.
 --
-checksum :: RawID -> Digit
-checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
+checksum :: ID -> Digit
+checksum (ID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
     negate $ sum $ zipWith (*)
       [ 1,  9,  8,  7,  6,  5,  4,  3,  2,  1]
       [a0, a1, u1, u2, u3, u4, u5, u6, u7, u8]
@@ -225,11 +225,11 @@ checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
 -- Generation
 --------------------------------------------------------------------------------
 
--- | Generates a random 'RawID'.
+-- | Generates a random 'ID'.
 --
-generate :: MonadRandom m => m RawID
+generate :: MonadRandom m => m ID
 generate =
-  RawID
+  ID
     <$> Letter.generate
     <*> Digit1289.generate
     <*> Digit.generate
@@ -244,38 +244,38 @@ generate =
 -- Inspection
 --------------------------------------------------------------------------------
 
--- | Decodes the 'Gender' component of a 'RawID'.
+-- | Decodes the 'Gender' component of an 'ID'.
 --
-getGender :: RawID -> Gender
-getGender RawID {c1} = fst $ decodeC1 c1
+getGender :: ID -> Gender
+getGender ID {c1} = fst $ decodeC1 c1
 
--- | Decodes the 'Location' component of a 'RawID'.
+-- | Decodes the 'Location' component of an 'ID'.
 --
-getLocation :: RawID -> Location
-getLocation RawID {c0} = Location.fromLetter c0
+getLocation :: ID -> Location
+getLocation ID {c0} = Location.fromLetter c0
 
--- | Decodes the 'Nationality' component of a 'RawID'.
+-- | Decodes the 'Nationality' component of an 'ID'.
 --
-getNationality :: RawID -> Nationality
-getNationality RawID {c1} = snd $ decodeC1 c1
+getNationality :: ID -> Nationality
+getNationality ID {c1} = snd $ decodeC1 c1
 
 --------------------------------------------------------------------------------
 -- Modification
 --------------------------------------------------------------------------------
 
--- | Updates the 'Gender' component of a 'RawID'.
+-- | Updates the 'Gender' component of an 'ID'.
 --
-setGender :: Gender -> RawID -> RawID
+setGender :: Gender -> ID -> ID
 setGender gender i = i {c1 = encodeC1 (gender, getNationality i)}
 
--- | Updates the 'Location' component of a 'RawID'.
+-- | Updates the 'Location' component of an 'ID'.
 --
-setLocation :: Location -> RawID -> RawID
+setLocation :: Location -> ID -> ID
 setLocation location i = i {c0 = Location.toLetter location}
 
--- | Updates the 'Nationality' component of a 'RawID'.
+-- | Updates the 'Nationality' component of an 'ID'.
 --
-setNationality :: Nationality -> RawID -> RawID
+setNationality :: Nationality -> ID -> ID
 setNationality nationality i = i {c1 = encodeC1 (getGender i, nationality)}
 
 --------------------------------------------------------------------------------
@@ -296,13 +296,13 @@ encodeC1 = \case
   (  Male, NonNational) -> D1289_8
   (Female, NonNational) -> D1289_9
 
-fromUnchecked :: UncheckedRawID -> Maybe RawID
+fromUnchecked :: UncheckedRawID -> Maybe ID
 fromUnchecked (UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
     | checksum i == u9 = Just i
     | otherwise = Nothing
   where
-    i = RawID u0 u1 u2 u3 u4 u5 u6 u7 u8
+    i = ID u0 u1 u2 u3 u4 u5 u6 u7 u8
 
-toUnchecked :: RawID -> UncheckedRawID
-toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+toUnchecked :: ID -> UncheckedRawID
+toUnchecked i@(ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
