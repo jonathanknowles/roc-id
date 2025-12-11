@@ -155,25 +155,10 @@ generate =
     <*> Digit.generate
 
 getGender :: RawID -> Gender
-getGender RawID {c1} =
-  case c1 of
-    D1289_1 -> Male
-    D1289_2 -> Female
-    D1289_8 -> Male
-    D1289_9 -> Female
+getGender RawID {c1} = fst $ decodeC1 c1
 
 setGender :: Gender -> RawID -> RawID
-setGender gender i = i {c1 = c1'}
-  where
-    c1' = case (c1 i, gender) of
-      (D1289_1,   Male) -> D1289_1
-      (D1289_1, Female) -> D1289_2
-      (D1289_2,   Male) -> D1289_1
-      (D1289_2, Female) -> D1289_2
-      (D1289_8,   Male) -> D1289_8
-      (D1289_8, Female) -> D1289_9
-      (D1289_9,   Male) -> D1289_8
-      (D1289_9, Female) -> D1289_9
+setGender gender i = i {c1 = encodeC1 (gender, getNationality i)}
 
 getLocation :: RawID -> Location
 getLocation RawID {c0} = Location.fromLetter c0
@@ -182,22 +167,25 @@ setLocation :: Location -> RawID -> RawID
 setLocation location i = i {c0 = Location.toLetter location}
 
 getNationality :: RawID -> Nationality
-getNationality RawID {c1} =
-  case c1 of
-    D1289_1 -> National
-    D1289_2 -> National
-    D1289_8 -> NonNational
-    D1289_9 -> NonNational
+getNationality RawID {c1} = snd $ decodeC1 c1
 
 setNationality :: Nationality -> RawID -> RawID
-setNationality nationality i = i {c1 = c1'}
-  where
-    c1' = case (c1 i, nationality) of
-      (D1289_1,    National) -> D1289_1
-      (D1289_1, NonNational) -> D1289_8
-      (D1289_2,    National) -> D1289_2
-      (D1289_2, NonNational) -> D1289_9
-      (D1289_8,    National) -> D1289_1
-      (D1289_8, NonNational) -> D1289_8
-      (D1289_9,    National) -> D1289_2
-      (D1289_9, NonNational) -> D1289_9
+setNationality nationality i = i {c1 = encodeC1 (getGender i, nationality)}
+
+--------------------------------------------------------------------------------
+-- Internal functions
+--------------------------------------------------------------------------------
+
+decodeC1 :: Digit1289 -> (Gender, Nationality)
+decodeC1 = \case
+  D1289_1 -> (  Male,    National)
+  D1289_2 -> (Female,    National)
+  D1289_8 -> (  Male, NonNational)
+  D1289_9 -> (Female, NonNational)
+
+encodeC1 :: (Gender, Nationality) -> Digit1289
+encodeC1 = \case
+  (  Male,    National) -> D1289_1
+  (Female,    National) -> D1289_2
+  (  Male, NonNational) -> D1289_8
+  (Female, NonNational) -> D1289_9
