@@ -6,7 +6,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module ROC.ID
-  ( Identity (..)
+  ( ID (..)
 
   -- * Parsing
   , fromText
@@ -57,7 +57,7 @@ import qualified ROC.ID.Nationality as Nationality
 -- By construction, invalid identification numbers are __not representable__ by
 -- this type.
 --
-data Identity = Identity
+data ID = ID
   { gender :: !Gender
   -- ^ The gender of the person to whom this ID number belongs.
   , location :: !Location
@@ -73,7 +73,7 @@ data Identity = Identity
 -- Parsing
 --------------------------------------------------------------------------------
 
--- | Attempts to parse an 'Identity' using the specified 'Text' as input.
+-- | Attempts to parse an 'ID' using the specified 'Text' as input.
 --
 -- The input must be exactly 10 characters in length and of the form
 -- __@A123456789@__.
@@ -81,38 +81,38 @@ data Identity = Identity
 -- More precisely, the input must match the regular expression
 -- __@^[A-Z][1289][0-9]{8}$@__.
 --
-fromText :: Text -> Either FromTextError Identity
+fromText :: Text -> Either FromTextError ID
 fromText t = fromNumber <$> Number.fromText t
 
 --------------------------------------------------------------------------------
 -- Printing
 --------------------------------------------------------------------------------
 
--- | Prints the specified 'Identity'.
+-- | Prints the specified 'ID'.
 --
 -- The output is of the form __@A123456789@__.
 --
-toText :: Identity -> Text
+toText :: ID -> Text
 toText = Number.toText . toNumber
 
 --------------------------------------------------------------------------------
 -- Verification
 --------------------------------------------------------------------------------
 
--- | Calculates the checksum of the specified 'Identity'.
+-- | Calculates the checksum of the specified 'ID'.
 --
-checksum :: Identity -> Digit
+checksum :: ID -> Digit
 checksum = Number.checksum . toNumber
 
 --------------------------------------------------------------------------------
 -- Generation
 --------------------------------------------------------------------------------
 
--- | Generates a random 'Identity'.
+-- | Generates a random 'ID'.
 --
-generate :: MonadRandom m => m Identity
+generate :: MonadRandom m => m ID
 generate =
-  Identity
+  ID
     <$> Gender.generate
     <*> Location.generate
     <*> Nationality.generate
@@ -122,9 +122,9 @@ generate =
 -- Internal
 --------------------------------------------------------------------------------
 
-fromNumber :: IdentityNumber -> Identity
+fromNumber :: IdentityNumber -> ID
 fromNumber (IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8) =
-    Identity {gender, location, nationality, serial}
+    ID {gender, location, nationality, serial}
   where
     location = Location.fromLetter c0
     (gender, nationality) = case c1 of
@@ -134,8 +134,8 @@ fromNumber (IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8) =
       D1289_9 -> (Female, NonNational)
     serial = Serial.fromTuple (c2, c3, c4, c5, c6, c7, c8)
 
-toNumber :: Identity -> IdentityNumber
-toNumber Identity {gender, location, nationality, serial} =
+toNumber :: ID -> IdentityNumber
+toNumber ID {gender, location, nationality, serial} =
     IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8
   where
     c0 = Location.toLetter location
