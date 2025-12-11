@@ -56,10 +56,10 @@ import ROC.ID.Location
   ( Location )
 import ROC.ID.Nationality
   ( Nationality (..) )
-import ROC.ID.Raw.Unchecked
+import ROC.ID.Unchecked
   ( CharIndex (..)
   , CharSet (..)
-  , UncheckedRawID (UncheckedRawID)
+  , UncheckedID (UncheckedID)
   )
 import ROC.ID.Utilities
   ( guard )
@@ -68,7 +68,7 @@ import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
-import qualified ROC.ID.Raw.Unchecked as U
+import qualified ROC.ID.Unchecked as U
 
 --------------------------------------------------------------------------------
 -- Type
@@ -296,13 +296,13 @@ encodeC1 = \case
   (  Male, NonNational) -> D1289_8
   (Female, NonNational) -> D1289_9
 
-fromUnchecked :: UncheckedRawID -> Maybe ID
-fromUnchecked (UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
+fromUnchecked :: UncheckedID -> Maybe ID
+fromUnchecked (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
     | checksum i == u9 = Just i
     | otherwise = Nothing
   where
     i = ID u0 u1 u2 u3 u4 u5 u6 u7 u8
 
-toUnchecked :: ID -> UncheckedRawID
+toUnchecked :: ID -> UncheckedID
 toUnchecked i@(ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
-  UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
+  UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)

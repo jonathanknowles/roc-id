@@ -75,7 +75,7 @@ library
       ROC.ID.Nationality
   other-modules:
       ROC.ID.Location.Internal
-      ROC.ID.Raw.Unchecked
+      ROC.ID.Unchecked
       ROC.ID.Utilities
   hs-source-dirs:
       library

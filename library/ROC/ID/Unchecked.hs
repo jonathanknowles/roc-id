@@ -7,8 +7,8 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
-module ROC.ID.Raw.Unchecked
-  ( UncheckedRawID (..)
+module ROC.ID.Unchecked
+  ( UncheckedID (..)
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
@@ -40,7 +40,7 @@ import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
 
-data UncheckedRawID = UncheckedRawID
+data UncheckedID = UncheckedID
   { c0 :: !Letter
   , c1 :: !Digit1289
   , c2 :: !Digit
@@ -77,13 +77,13 @@ data FromTextError
 
 type Parser a = Text -> Either FromTextError (Text, a)
 
-fromText :: Text -> Either FromTextError UncheckedRawID
+fromText :: Text -> Either FromTextError UncheckedID
 fromText text0 = do
     when (T.length text0 > 10) $ Left TextTooLong
     (text1,  c0                             ) <- parseLetter    text0
     (text2,  c1                             ) <- parseDigit1289 text1
     (_____, (c2, c3, c4, c5, c6, c7, c8, c9)) <- parseDigits    text2
-    pure UncheckedRawID {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9}
+    pure UncheckedID {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9}
   where
     parseLetter :: Parser Letter
     parseLetter text = do
@@ -109,8 +109,8 @@ fromText text0 = do
         parseIndexedDigit (i, c) =
           guard (InvalidChar i (CharRange '0' '9')) (Digit.fromChar c)
 
-toText :: UncheckedRawID -> Text
-toText UncheckedRawID {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9} =
+toText :: UncheckedID -> Text
+toText UncheckedID {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9} =
   T.pack
     ( Letter.toChar c0
     : Digit1289.toChar c1
