@@ -177,7 +177,8 @@ main = hspec $ do
         let textTruncated = T.take truncatedLength (ID.toText identity)
         let textInvalid = replaceCharAt invalidCharIndex 'x' textTruncated
         ID.fromText textInvalid `shouldSatisfy` \case
-          Left (ID.InvalidChar (CharIndex i) _) | i == invalidCharIndex -> True
+          Left (ID.InvalidChar (CharIndex index) _)
+            | index == invalidCharIndex -> True
           _ -> False
 
     it "does not report invalid characters if input is too long" $
