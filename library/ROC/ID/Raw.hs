@@ -58,6 +58,12 @@ import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Raw.Unchecked as U
 
+-- | Represents a __valid__ 10-digit ROC (Taiwan) Uniform Identification Number
+-- (中華民國統一證號) of the form __@A123456789@__.
+--
+-- By construction, invalid identification numbers are __not representable__ by
+-- this type.
+--
 data RawID = RawID
   { c0 :: !Letter
   , c1 :: !Digit1289
@@ -92,6 +98,14 @@ data FromTextError
 
   deriving (Eq, Ord, Show)
 
+-- | Attempts to parse a 'RawID' using the specified 'Text' as input.
+--
+-- The input must be exactly 10 characters in length and of the form
+-- __@A123456789@__.
+--
+-- More precisely, the input must match the regular expression
+-- __@^[A-Z][1289][0-9]{8}$@__.
+--
 fromText :: Text -> Either FromTextError RawID
 fromText text = do
     unchecked <- first fromUncheckedError $ U.fromText text
@@ -106,6 +120,10 @@ fromText text = do
       U.InvalidChar i r ->
         InvalidChar i r
 
+-- | Prints the specified 'RawID'.
+--
+-- The output is of the form __@A123456789@__.
+--
 toText :: RawID -> Text
 toText = U.toText . toUnchecked
 
@@ -120,14 +138,20 @@ toUnchecked :: RawID -> UncheckedRawID
 toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
 
+-- | Constructs a 'RawID' from a tuple.
+--
 fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> RawID
 fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
   RawID c0 c1 c2 c3 c4 c5 c6 c7 c8
 
+-- | Converts a 'RawID' to a tuple.
+--
 toTuple :: Digit ~ d => RawID -> (Letter, Digit1289, d, d, d, d, d, d, d)
 toTuple (RawID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
   (c0, c1, c2, c3, c4, c5, c6, c7, c8)
 
+-- | Computes the checksum digit for a 'RawID'.
+--
 checksum :: RawID -> Digit
 checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
     negate $ sum $ zipWith (*)
@@ -165,21 +189,33 @@ generate =
     <*> Digit.generate
     <*> Digit.generate
 
+-- | Decodes the 'Gender' component of a 'RawID'.
+--
 getGender :: RawID -> Gender
 getGender RawID {c1} = fst $ decodeC1 c1
 
+-- | Updates the 'Gender' component of a 'RawID'.
+--
 setGender :: Gender -> RawID -> RawID
 setGender gender i = i {c1 = encodeC1 (gender, getNationality i)}
 
+-- | Decodes the 'Location' component of a 'RawID'.
+--
 getLocation :: RawID -> Location
 getLocation RawID {c0} = Location.fromLetter c0
 
+-- | Updates the 'Location' component of a 'RawID'.
+--
 setLocation :: Location -> RawID -> RawID
 setLocation location i = i {c0 = Location.toLetter location}
 
+-- | Decodes the 'Nationality' component of a 'RawID'.
+--
 getNationality :: RawID -> Nationality
 getNationality RawID {c1} = snd $ decodeC1 c1
 
+-- | Updates the 'Nationality' component of a 'RawID'.
+--
 setNationality :: Nationality -> RawID -> RawID
 setNationality nationality i = i {c1 = encodeC1 (getGender i, nationality)}
 
