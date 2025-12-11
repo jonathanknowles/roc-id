@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module ROC.ID.Raw
   ( RawID (..)
@@ -13,6 +14,8 @@ module ROC.ID.Raw
   , toUnchecked
   , checksum
   , generate
+  , getLocation
+  , setLocation
   )
   where
 
@@ -28,6 +31,8 @@ import ROC.ID.Digit1289
   ( Digit1289 (..) )
 import ROC.ID.Letter
   ( Letter (..) )
+import ROC.ID.Location
+  ( Location )
 import ROC.ID.Raw.Unchecked
   ( CharIndex (..)
   , CharSet (..)
@@ -39,6 +44,7 @@ import ROC.ID.Utilities
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
+import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Raw.Unchecked as U
 
 data RawID = RawID
@@ -139,3 +145,9 @@ generate =
     <*> Digit.generate
     <*> Digit.generate
     <*> Digit.generate
+
+getLocation :: RawID -> Location
+getLocation RawID {c0} = Location.fromLetter c0
+
+setLocation :: Location -> RawID -> RawID
+setLocation location i = i {c0 = Location.toLetter location}
