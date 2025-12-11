@@ -18,6 +18,8 @@ module ROC.ID.Raw
   , setGender
   , getLocation
   , setLocation
+  , getNationality
+  , setNationality
   )
   where
 
@@ -37,6 +39,8 @@ import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Location
   ( Location )
+import ROC.ID.Nationality
+  ( Nationality (..) )
 import ROC.ID.Raw.Unchecked
   ( CharIndex (..)
   , CharSet (..)
@@ -176,3 +180,24 @@ getLocation RawID {c0} = Location.fromLetter c0
 
 setLocation :: Location -> RawID -> RawID
 setLocation location i = i {c0 = Location.toLetter location}
+
+getNationality :: RawID -> Nationality
+getNationality RawID {c1} =
+  case c1 of
+    D1289_1 -> National
+    D1289_2 -> National
+    D1289_8 -> NonNational
+    D1289_9 -> NonNational
+
+setNationality :: Nationality -> RawID -> RawID
+setNationality nationality i = i {c1 = c1'}
+  where
+    c1' = case (c1 i, nationality) of
+      (D1289_1,    National) -> D1289_1
+      (D1289_1, NonNational) -> D1289_8
+      (D1289_2,    National) -> D1289_2
+      (D1289_2, NonNational) -> D1289_9
+      (D1289_8,    National) -> D1289_1
+      (D1289_8, NonNational) -> D1289_8
+      (D1289_9,    National) -> D1289_2
+      (D1289_9, NonNational) -> D1289_9
