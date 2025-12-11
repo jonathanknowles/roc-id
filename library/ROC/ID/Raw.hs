@@ -10,9 +10,7 @@ module ROC.ID.Raw
   , CharIndex (..)
   , CharSet (..)
   , fromText
-  , fromUnchecked
   , toText
-  , toUnchecked
   , fromTuple
   , toTuple
   , checksum
@@ -127,17 +125,6 @@ fromText text = do
 toText :: RawID -> Text
 toText = U.toText . toUnchecked
 
-fromUnchecked :: UncheckedRawID -> Maybe RawID
-fromUnchecked (UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
-    | checksum i == u9 = Just i
-    | otherwise = Nothing
-  where
-    i = RawID u0 u1 u2 u3 u4 u5 u6 u7 u8
-
-toUnchecked :: RawID -> UncheckedRawID
-toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
-  UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
-
 -- | Constructs a 'RawID' from a tuple.
 --
 fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> RawID
@@ -236,3 +223,14 @@ encodeC1 = \case
   (Female,    National) -> D1289_2
   (  Male, NonNational) -> D1289_8
   (Female, NonNational) -> D1289_9
+
+fromUnchecked :: UncheckedRawID -> Maybe RawID
+fromUnchecked (UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
+    | checksum i == u9 = Just i
+    | otherwise = Nothing
+  where
+    i = RawID u0 u1 u2 u3 u4 u5 u6 u7 u8
+
+toUnchecked :: RawID -> UncheckedRawID
+toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+  UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
