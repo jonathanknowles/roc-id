@@ -12,9 +12,12 @@ module ROC.ID.Raw
   , toText
   , toUnchecked
   , checksum
+  , generate
   )
   where
 
+import Control.Monad.Random.Class
+  ( MonadRandom )
 import Data.Bifunctor
   ( Bifunctor (first) )
 import Data.Text
@@ -33,7 +36,9 @@ import ROC.ID.Raw.Unchecked
 import ROC.ID.Utilities
   ( guard )
 
+import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
+import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Raw.Unchecked as U
 
 data RawID = RawID
@@ -119,3 +124,18 @@ checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
       K -> (1, 9); X -> (3, 0)
       L -> (2, 0); Y -> (3, 1)
       M -> (2, 1); Z -> (3, 3)
+
+-- | Generates a random 'RawID'.
+--
+generate :: MonadRandom m => m RawID
+generate =
+  RawID
+    <$> Letter.generate
+    <*> Digit1289.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
