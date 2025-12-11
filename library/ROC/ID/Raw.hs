@@ -2,8 +2,8 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE ViewPatterns #-}
 
-module ROC.ID.Number
-  ( IdentityNumber (..)
+module ROC.ID.Raw
+  ( RawID (..)
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
@@ -36,7 +36,7 @@ import ROC.ID.Utilities
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Number.Unchecked as U
 
-data IdentityNumber = IdentityNumber
+data RawID = RawID
   { c0 :: !Letter
   , c1 :: !Digit1289
   , c2 :: !Digit
@@ -70,7 +70,7 @@ data FromTextError
 
   deriving (Eq, Ord, Show)
 
-fromText :: Text -> Either FromTextError IdentityNumber
+fromText :: Text -> Either FromTextError RawID
 fromText text = do
     unchecked <- first fromUncheckedError $ U.fromText text
     guard InvalidChecksum $ fromUnchecked unchecked
@@ -84,22 +84,22 @@ fromText text = do
       U.InvalidChar i r ->
         InvalidChar i r
 
-toText :: IdentityNumber -> Text
+toText :: RawID -> Text
 toText = U.toText . toUnchecked
 
-fromUnchecked :: UncheckedIdentityNumber -> Maybe IdentityNumber
+fromUnchecked :: UncheckedIdentityNumber -> Maybe RawID
 fromUnchecked (UncheckedIdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
     | checksum i == u9 = Just i
     | otherwise = Nothing
   where
-    i = IdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8
+    i = RawID u0 u1 u2 u3 u4 u5 u6 u7 u8
 
-toUnchecked :: IdentityNumber -> UncheckedIdentityNumber
-toUnchecked i@(IdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+toUnchecked :: RawID -> UncheckedIdentityNumber
+toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   UncheckedIdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
 
-checksum :: IdentityNumber -> Digit
-checksum (IdentityNumber u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
+checksum :: RawID -> Digit
+checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
     negate $ sum $ zipWith (*)
       [ 1,  9,  8,  7,  6,  5,  4,  3,  2,  1]
       [a0, a1, u1, u2, u3, u4, u5, u6, u7, u8]

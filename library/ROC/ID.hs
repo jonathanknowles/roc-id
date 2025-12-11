@@ -40,14 +40,14 @@ import ROC.ID.Location
   ( Location )
 import ROC.ID.Nationality
   ( Nationality (..) )
-import ROC.ID.Number
-  ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharSet (..) )
+import ROC.ID.Raw
+  ( RawID (..), FromTextError (..), CharIndex (..), CharSet (..) )
 import ROC.ID.Serial.Internal
   ( Serial )
 
 import qualified ROC.ID.Gender as Gender
 import qualified ROC.ID.Location as Location
-import qualified ROC.ID.Number as Number
+import qualified ROC.ID.Raw as Raw
 import qualified ROC.ID.Serial as Serial
 import qualified ROC.ID.Nationality as Nationality
 
@@ -82,7 +82,7 @@ data ID = ID
 -- __@^[A-Z][1289][0-9]{8}$@__.
 --
 fromText :: Text -> Either FromTextError ID
-fromText t = fromNumber <$> Number.fromText t
+fromText t = fromRaw <$> Raw.fromText t
 
 --------------------------------------------------------------------------------
 -- Printing
@@ -93,7 +93,7 @@ fromText t = fromNumber <$> Number.fromText t
 -- The output is of the form __@A123456789@__.
 --
 toText :: ID -> Text
-toText = Number.toText . toNumber
+toText = Raw.toText . toRaw
 
 --------------------------------------------------------------------------------
 -- Verification
@@ -102,7 +102,7 @@ toText = Number.toText . toNumber
 -- | Calculates the checksum of the specified 'ID'.
 --
 checksum :: ID -> Digit
-checksum = Number.checksum . toNumber
+checksum = Raw.checksum . toRaw
 
 --------------------------------------------------------------------------------
 -- Generation
@@ -122,8 +122,8 @@ generate =
 -- Internal
 --------------------------------------------------------------------------------
 
-fromNumber :: IdentityNumber -> ID
-fromNumber (IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8) =
+fromRaw :: RawID -> ID
+fromRaw (RawID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
     ID {gender, location, nationality, serial}
   where
     location = Location.fromLetter c0
@@ -134,9 +134,9 @@ fromNumber (IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8) =
       D1289_9 -> (Female, NonNational)
     serial = Serial.fromTuple (c2, c3, c4, c5, c6, c7, c8)
 
-toNumber :: ID -> IdentityNumber
-toNumber ID {gender, location, nationality, serial} =
-    IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8
+toRaw :: ID -> RawID
+toRaw ID {gender, location, nationality, serial} =
+    RawID c0 c1 c2 c3 c4 c5 c6 c7 c8
   where
     c0 = Location.toLetter location
     c1 = case (gender, nationality) of

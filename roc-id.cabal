@@ -76,7 +76,7 @@ library
   other-modules:
       ROC.ID.Digit1289
       ROC.ID.Location.Internal
-      ROC.ID.Number
+      ROC.ID.Raw
       ROC.ID.Number.Unchecked
       ROC.ID.Serial.Internal
       ROC.ID.Utilities
