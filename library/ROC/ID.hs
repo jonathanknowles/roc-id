@@ -1,55 +1,79 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE ViewPatterns #-}
 
 module ROC.ID
-  ( Identity (..)
+  (
+  -- * Type
+    ID (..)
 
-  -- * Parsing
+  -- * Construction
   , fromText
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
+  , fromTuple
 
-  -- * Printing
+  -- * Conversion
   , toText
+  , toTuple
 
   -- * Verification
   , checksum
 
   -- * Generation
   , generate
-  ) where
+
+  -- * Inspection
+  , getGender
+  , getLocation
+  , getNationality
+
+  -- * Modification
+  , setGender
+  , setLocation
+  , setNationality
+  )
+  where
 
 import Control.Monad.Random.Class
-  ( MonadRandom (..) )
+  ( MonadRandom )
+import Data.Bifunctor
+  ( Bifunctor (first) )
 import Data.Text
   ( Text )
-import GHC.Generics
-  ( Generic )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
   ( Digit1289 (..) )
 import ROC.ID.Gender
   ( Gender (..) )
+import ROC.ID.Letter
+  ( Letter (..) )
 import ROC.ID.Location
   ( Location )
 import ROC.ID.Nationality
   ( Nationality (..) )
-import ROC.ID.Number
-  ( IdentityNumber (..), FromTextError (..), CharIndex (..), CharSet (..) )
-import ROC.ID.Serial.Internal
-  ( Serial )
+import ROC.ID.Unchecked
+  ( CharIndex (..)
+  , CharSet (..)
+  , UncheckedID (UncheckedID)
+  )
+import ROC.ID.Utilities
+  ( guard )
 
-import qualified ROC.ID.Gender as Gender
+import qualified ROC.ID.Digit as Digit
+import qualified ROC.ID.Digit1289 as Digit1289
+import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
-import qualified ROC.ID.Number as Number
-import qualified ROC.ID.Serial as Serial
-import qualified ROC.ID.Nationality as Nationality
+import qualified ROC.ID.Unchecked as U
+
+--------------------------------------------------------------------------------
+-- Type
+--------------------------------------------------------------------------------
 
 -- | Represents a __valid__ 10-digit ROC (Taiwan) Uniform Identification Number
 -- (中華民國統一證號) of the form __@A123456789@__.
@@ -57,23 +81,26 @@ import qualified ROC.ID.Nationality as Nationality
 -- By construction, invalid identification numbers are __not representable__ by
 -- this type.
 --
-data Identity = Identity
-  { gender :: !Gender
-  -- ^ The gender of the person to whom this ID number belongs.
-  , location :: !Location
-  -- ^ The location in which the person first registered for an ID card.
-  , nationality :: !Nationality
-  -- ^ The nationality of the person to whom this ID number belongs.
-  , serial :: !Serial
-  -- ^ The serial number portion of this ID number.
+-- To calculate the checksum digit of an 'ID', use the 'checksum' function.
+--
+data ID = ID
+  { c0 :: !Letter
+  , c1 :: !Digit1289
+  , c2 :: !Digit
+  , c3 :: !Digit
+  , c4 :: !Digit
+  , c5 :: !Digit
+  , c6 :: !Digit
+  , c7 :: !Digit
+  , c8 :: !Digit
   }
-  deriving stock (Eq, Generic, Ord, Read, Show)
+  deriving (Eq, Ord, Show)
 
 --------------------------------------------------------------------------------
--- Parsing
+-- Construction
 --------------------------------------------------------------------------------
 
--- | Attempts to parse an 'Identity' using the specified 'Text' as input.
+-- | Attempts to construct an 'ID' from 'Text'.
 --
 -- The input must be exactly 10 characters in length and of the form
 -- __@A123456789@__.
@@ -81,67 +108,204 @@ data Identity = Identity
 -- More precisely, the input must match the regular expression
 -- __@^[A-Z][1289][0-9]{8}$@__.
 --
-fromText :: Text -> Either FromTextError Identity
-fromText t = fromNumber <$> Number.fromText t
+-- This function satisfies the following law:
+--
+-- @
+-- 'fromText' ('toText' i) '==' 'Right' i
+-- @
+--
+fromText :: Text -> Either FromTextError ID
+fromText text = do
+    unchecked <- first fromUncheckedError $ U.fromText text
+    guard InvalidChecksum $ fromUnchecked unchecked
+  where
+    fromUncheckedError :: U.FromTextError -> FromTextError
+    fromUncheckedError = \case
+      U.TextTooShort ->
+        TextTooShort
+      U.TextTooLong ->
+        TextTooLong
+      U.InvalidChar i r ->
+        InvalidChar i r
+
+-- | Indicates an error that occurred while constructing an 'ID' from 'Text'.
+--
+data FromTextError
+
+  = TextTooShort
+  -- ^ Indicates that the input text is too short.
+
+  | TextTooLong
+  -- ^ Indicates that the input text is too long.
+
+  | InvalidChar CharIndex CharSet
+  -- ^ Indicates that the input text contains a character that is not allowed.
+  --
+  --   - `CharIndex` specifies the position of the offending character.
+  --   - `CharSet` specifies the set of characters allowed at that position.
+
+  | InvalidChecksum
+  -- ^ Indicates that the parsed identification number has an invalid checksum.
+
+  deriving (Eq, Ord, Show)
+
+-- | Constructs an 'ID' from a tuple.
+--
+-- This function satisfies the following laws:
+--
+-- @
+-- 'fromTuple' ('toTuple' i) '==' i
+-- @
+-- @
+-- 'toTuple' ('fromTuple' t) '==' t
+-- @
+--
+fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> ID
+fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
+  ID c0 c1 c2 c3 c4 c5 c6 c7 c8
 
 --------------------------------------------------------------------------------
--- Printing
+-- Conversion
 --------------------------------------------------------------------------------
 
--- | Prints the specified 'Identity'.
+-- | Converts an 'ID' to 'Text'.
 --
 -- The output is of the form __@A123456789@__.
 --
-toText :: Identity -> Text
-toText = Number.toText . toNumber
+-- This function satisfies the following law:
+--
+-- @
+-- 'fromText' ('toText' i) '==' 'Right' i
+-- @
+--
+toText :: ID -> Text
+toText = U.toText . toUnchecked
+
+-- | Converts an 'ID' to a tuple.
+--
+-- This function satisfies the following laws:
+--
+-- @
+-- 'fromTuple' ('toTuple' i) '==' i
+-- @
+-- @
+-- 'toTuple' ('fromTuple' t) '==' t
+-- @
+--
+toTuple :: Digit ~ d => ID -> (Letter, Digit1289, d, d, d, d, d, d, d)
+toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
+  (c0, c1, c2, c3, c4, c5, c6, c7, c8)
 
 --------------------------------------------------------------------------------
 -- Verification
 --------------------------------------------------------------------------------
 
--- | Calculates the checksum of the specified 'Identity'.
+-- | Computes the checksum digit for an 'ID'.
 --
-checksum :: Identity -> Digit
-checksum = Number.checksum . toNumber
+checksum :: ID -> Digit
+checksum (ID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
+    negate $ sum $ zipWith (*)
+      [ 1,  9,  8,  7,  6,  5,  4,  3,  2,  1]
+      [a0, a1, u1, u2, u3, u4, u5, u6, u7, u8]
+  where
+    a0, a1 :: Digit
+    (a0, a1) = case u0 of
+      A -> (1, 0); N -> (2, 2)
+      B -> (1, 1); O -> (3, 5)
+      C -> (1, 2); P -> (2, 3)
+      D -> (1, 3); Q -> (2, 4)
+      E -> (1, 4); R -> (2, 5)
+      F -> (1, 5); S -> (2, 6)
+      G -> (1, 6); T -> (2, 7)
+      H -> (1, 7); U -> (2, 8)
+      I -> (3, 4); V -> (2, 9)
+      J -> (1, 8); W -> (3, 2)
+      K -> (1, 9); X -> (3, 0)
+      L -> (2, 0); Y -> (3, 1)
+      M -> (2, 1); Z -> (3, 3)
 
 --------------------------------------------------------------------------------
 -- Generation
 --------------------------------------------------------------------------------
 
--- | Generates a random 'Identity'.
+-- | Generates a random 'ID'.
 --
-generate :: MonadRandom m => m Identity
+generate :: MonadRandom m => m ID
 generate =
-  Identity
-    <$> Gender.generate
-    <*> Location.generate
-    <*> Nationality.generate
-    <*> Serial.generate
+  ID
+    <$> Letter.generate
+    <*> Digit1289.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+    <*> Digit.generate
+
+--------------------------------------------------------------------------------
+-- Inspection
+--------------------------------------------------------------------------------
+
+-- | Decodes the 'Gender' component of an 'ID'.
+--
+getGender :: ID -> Gender
+getGender ID {c1} = fst $ decodeC1 c1
+
+-- | Decodes the 'Location' component of an 'ID'.
+--
+getLocation :: ID -> Location
+getLocation ID {c0} = Location.fromLetter c0
+
+-- | Decodes the 'Nationality' component of an 'ID'.
+--
+getNationality :: ID -> Nationality
+getNationality ID {c1} = snd $ decodeC1 c1
+
+--------------------------------------------------------------------------------
+-- Modification
+--------------------------------------------------------------------------------
+
+-- | Updates the 'Gender' component of an 'ID'.
+--
+setGender :: Gender -> ID -> ID
+setGender gender i = i {c1 = encodeC1 (gender, getNationality i)}
+
+-- | Updates the 'Location' component of an 'ID'.
+--
+setLocation :: Location -> ID -> ID
+setLocation location i = i {c0 = Location.toLetter location}
+
+-- | Updates the 'Nationality' component of an 'ID'.
+--
+setNationality :: Nationality -> ID -> ID
+setNationality nationality i = i {c1 = encodeC1 (getGender i, nationality)}
 
 --------------------------------------------------------------------------------
 -- Internal
 --------------------------------------------------------------------------------
 
-fromNumber :: IdentityNumber -> Identity
-fromNumber (IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8) =
-    Identity {gender, location, nationality, serial}
-  where
-    location = Location.fromLetter c0
-    (gender, nationality) = case c1 of
-      D1289_1 -> (  Male,    National)
-      D1289_2 -> (Female,    National)
-      D1289_8 -> (  Male, NonNational)
-      D1289_9 -> (Female, NonNational)
-    serial = Serial.fromTuple (c2, c3, c4, c5, c6, c7, c8)
+decodeC1 :: Digit1289 -> (Gender, Nationality)
+decodeC1 = \case
+  D1289_1 -> (  Male,    National)
+  D1289_2 -> (Female,    National)
+  D1289_8 -> (  Male, NonNational)
+  D1289_9 -> (Female, NonNational)
 
-toNumber :: Identity -> IdentityNumber
-toNumber Identity {gender, location, nationality, serial} =
-    IdentityNumber c0 c1 c2 c3 c4 c5 c6 c7 c8
+encodeC1 :: (Gender, Nationality) -> Digit1289
+encodeC1 = \case
+  (  Male,    National) -> D1289_1
+  (Female,    National) -> D1289_2
+  (  Male, NonNational) -> D1289_8
+  (Female, NonNational) -> D1289_9
+
+fromUnchecked :: UncheckedID -> Maybe ID
+fromUnchecked (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
+    | checksum i == u9 = Just i
+    | otherwise = Nothing
   where
-    c0 = Location.toLetter location
-    c1 = case (gender, nationality) of
-      (  Male,    National) -> D1289_1
-      (Female,    National) -> D1289_2
-      (  Male, NonNational) -> D1289_8
-      (Female, NonNational) -> D1289_9
-    (c2, c3, c4, c5, c6, c7, c8) = Serial.toTuple serial
+    i = ID u0 u1 u2 u3 u4 u5 u6 u7 u8
+
+toUnchecked :: ID -> UncheckedID
+toUnchecked i@(ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+  UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
