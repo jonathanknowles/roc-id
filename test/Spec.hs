@@ -29,8 +29,6 @@ import ROC.ID.Location
   ( Location )
 import ROC.ID.Nationality
   ( Nationality (..) )
-import ROC.ID.Serial
-  ( Serial )
 import Test.Hspec
   ( describe, hspec, it, shouldBe, shouldSatisfy )
 import Test.QuickCheck
@@ -52,7 +50,6 @@ import Test.QuickCheck.Classes.Hspec
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
 import qualified ROC.ID.Raw as ID
-import qualified ROC.ID.Serial as Serial
 
 instance Arbitrary Digit where
   arbitrary = arbitraryBoundedEnum
@@ -81,10 +78,6 @@ instance Arbitrary Location where
 instance Arbitrary Nationality where
   arbitrary = arbitraryBoundedEnum
   shrink = shrinkBoundedEnum
-
-instance Arbitrary Serial where
-  arbitrary = Serial.fromTuple <$> arbitrary
-  shrink = shrinkMap Serial.fromTuple Serial.toTuple
 
 main :: IO ()
 main = hspec $ do
@@ -125,13 +118,6 @@ main = hspec $ do
     testLawsMany @Nationality
         [ boundedEnumLaws
         , eqLaws
-        , ordLaws
-        , showLaws
-        , showReadLaws
-        ]
-
-    testLawsMany @Serial
-        [ eqLaws
         , ordLaws
         , showLaws
         , showReadLaws

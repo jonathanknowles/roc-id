@@ -73,11 +73,9 @@ library
       ROC.ID.Location
       ROC.ID.Nationality
       ROC.ID.Raw
-      ROC.ID.Serial
   other-modules:
       ROC.ID.Location.Internal
       ROC.ID.Raw.Unchecked
-      ROC.ID.Serial.Internal
       ROC.ID.Utilities
   hs-source-dirs:
       library
