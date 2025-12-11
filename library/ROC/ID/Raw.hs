@@ -5,21 +5,35 @@
 {-# LANGUAGE ViewPatterns #-}
 
 module ROC.ID.Raw
-  ( RawID (..)
+  (
+  -- * Type
+    RawID (..)
+
+  -- * Construction
+  , fromText
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
-  , fromText
-  , toText
   , fromTuple
+
+  -- * Conversion
+  , toText
   , toTuple
+
+  -- * Verification
   , checksum
+
+  -- * Generation
   , generate
+
+  -- * Inspection
   , getGender
-  , setGender
   , getLocation
-  , setLocation
   , getNationality
+
+  -- * Modification
+  , setGender
+  , setLocation
   , setNationality
   )
   where
@@ -56,6 +70,10 @@ import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Raw.Unchecked as U
 
+--------------------------------------------------------------------------------
+-- Type
+--------------------------------------------------------------------------------
+
 -- | Represents a __valid__ 10-digit ROC (Taiwan) Uniform Identification Number
 -- (中華民國統一證號) of the form __@A123456789@__.
 --
@@ -75,7 +93,39 @@ data RawID = RawID
   }
   deriving (Eq, Ord, Show)
 
--- | Indicates an error that occurred while parsing an identification number.
+--------------------------------------------------------------------------------
+-- Construction
+--------------------------------------------------------------------------------
+
+-- | Attempts to construct a 'RawID' from 'Text'.
+--
+-- The input must be exactly 10 characters in length and of the form
+-- __@A123456789@__.
+--
+-- More precisely, the input must match the regular expression
+-- __@^[A-Z][1289][0-9]{8}$@__.
+--
+-- This function satisfies the following law:
+--
+-- @
+-- 'fromText' ('toText' i) '==' 'Right' i
+-- @
+--
+fromText :: Text -> Either FromTextError RawID
+fromText text = do
+    unchecked <- first fromUncheckedError $ U.fromText text
+    guard InvalidChecksum $ fromUnchecked unchecked
+  where
+    fromUncheckedError :: U.FromTextError -> FromTextError
+    fromUncheckedError = \case
+      U.TextTooShort ->
+        TextTooShort
+      U.TextTooLong ->
+        TextTooLong
+      U.InvalidChar i r ->
+        InvalidChar i r
+
+-- | Indicates an error that occurred while constructing a 'RawId' from 'Text'.
 --
 data FromTextError
 
@@ -96,46 +146,56 @@ data FromTextError
 
   deriving (Eq, Ord, Show)
 
--- | Attempts to parse a 'RawID' using the specified 'Text' as input.
---
--- The input must be exactly 10 characters in length and of the form
--- __@A123456789@__.
---
--- More precisely, the input must match the regular expression
--- __@^[A-Z][1289][0-9]{8}$@__.
---
-fromText :: Text -> Either FromTextError RawID
-fromText text = do
-    unchecked <- first fromUncheckedError $ U.fromText text
-    guard InvalidChecksum $ fromUnchecked unchecked
-  where
-    fromUncheckedError :: U.FromTextError -> FromTextError
-    fromUncheckedError = \case
-      U.TextTooShort ->
-        TextTooShort
-      U.TextTooLong ->
-        TextTooLong
-      U.InvalidChar i r ->
-        InvalidChar i r
-
--- | Prints the specified 'RawID'.
---
--- The output is of the form __@A123456789@__.
---
-toText :: RawID -> Text
-toText = U.toText . toUnchecked
-
 -- | Constructs a 'RawID' from a tuple.
+--
+-- This function satisfies the following laws:
+--
+-- @
+-- 'fromTuple' ('toTuple' i) '==' i
+-- @
+-- @
+-- 'toTuple' ('fromTuple' t) '==' t
+-- @
 --
 fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> RawID
 fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
   RawID c0 c1 c2 c3 c4 c5 c6 c7 c8
 
+--------------------------------------------------------------------------------
+-- Conversion
+--------------------------------------------------------------------------------
+
+-- | Converts a 'RawID' to 'Text'.
+--
+-- The output is of the form __@A123456789@__.
+--
+-- This function satisfies the following law:
+--
+-- @
+-- 'fromText' ('toText' i) '==' 'Right' i
+-- @
+--
+toText :: RawID -> Text
+toText = U.toText . toUnchecked
+
 -- | Converts a 'RawID' to a tuple.
+--
+-- This function satisfies the following laws:
+--
+-- @
+-- 'fromTuple' ('toTuple' i) '==' i
+-- @
+-- @
+-- 'toTuple' ('fromTuple' t) '==' t
+-- @
 --
 toTuple :: Digit ~ d => RawID -> (Letter, Digit1289, d, d, d, d, d, d, d)
 toTuple (RawID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
   (c0, c1, c2, c3, c4, c5, c6, c7, c8)
+
+--------------------------------------------------------------------------------
+-- Verification
+--------------------------------------------------------------------------------
 
 -- | Computes the checksum digit for a 'RawID'.
 --
@@ -161,6 +221,10 @@ checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
       L -> (2, 0); Y -> (3, 1)
       M -> (2, 1); Z -> (3, 3)
 
+--------------------------------------------------------------------------------
+-- Generation
+--------------------------------------------------------------------------------
+
 -- | Generates a random 'RawID'.
 --
 generate :: MonadRandom m => m RawID
@@ -176,30 +240,38 @@ generate =
     <*> Digit.generate
     <*> Digit.generate
 
+--------------------------------------------------------------------------------
+-- Inspection
+--------------------------------------------------------------------------------
+
 -- | Decodes the 'Gender' component of a 'RawID'.
 --
 getGender :: RawID -> Gender
 getGender RawID {c1} = fst $ decodeC1 c1
-
--- | Updates the 'Gender' component of a 'RawID'.
---
-setGender :: Gender -> RawID -> RawID
-setGender gender i = i {c1 = encodeC1 (gender, getNationality i)}
 
 -- | Decodes the 'Location' component of a 'RawID'.
 --
 getLocation :: RawID -> Location
 getLocation RawID {c0} = Location.fromLetter c0
 
--- | Updates the 'Location' component of a 'RawID'.
---
-setLocation :: Location -> RawID -> RawID
-setLocation location i = i {c0 = Location.toLetter location}
-
 -- | Decodes the 'Nationality' component of a 'RawID'.
 --
 getNationality :: RawID -> Nationality
 getNationality RawID {c1} = snd $ decodeC1 c1
+
+--------------------------------------------------------------------------------
+-- Modification
+--------------------------------------------------------------------------------
+
+-- | Updates the 'Gender' component of a 'RawID'.
+--
+setGender :: Gender -> RawID -> RawID
+setGender gender i = i {c1 = encodeC1 (gender, getNationality i)}
+
+-- | Updates the 'Location' component of a 'RawID'.
+--
+setLocation :: Location -> RawID -> RawID
+setLocation location i = i {c0 = Location.toLetter location}
 
 -- | Updates the 'Nationality' component of a 'RawID'.
 --
@@ -207,7 +279,7 @@ setNationality :: Nationality -> RawID -> RawID
 setNationality nationality i = i {c1 = encodeC1 (getGender i, nationality)}
 
 --------------------------------------------------------------------------------
--- Internal functions
+-- Internal
 --------------------------------------------------------------------------------
 
 decodeC1 :: Digit1289 -> (Gender, Nationality)
