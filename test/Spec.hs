@@ -171,10 +171,10 @@ main = hspec $ do
         ID.fromText invalidID `shouldBe` Left ID.InvalidChecksum
 
     it "reports invalid characters even when input is too short" $
-      property $ \(identity :: ID) ->
+      property $ \(i :: ID) ->
       forAll (choose (1, 9)) $ \truncatedLength ->
       forAll (choose (0, truncatedLength - 1)) $ \invalidCharIndex -> do
-        let textTruncated = T.take truncatedLength (ID.toText identity)
+        let textTruncated = T.take truncatedLength (ID.toText i)
         let textInvalid = replaceCharAt invalidCharIndex 'x' textTruncated
         ID.fromText textInvalid `shouldSatisfy` \case
           Left (ID.InvalidChar (CharIndex index) _)
@@ -182,10 +182,10 @@ main = hspec $ do
           _ -> False
 
     it "does not report invalid characters if input is too long" $
-      property $ \(identity :: ID) (NonEmpty trailingExcess) ->
+      property $ \(i :: ID) (NonEmpty trailingExcess) ->
       forAll (choose (0, 9)) $ \invalidCharIndex -> do
         let textInvalid =
-              replaceCharAt invalidCharIndex 'x' (ID.toText identity)
+              replaceCharAt invalidCharIndex 'x' (ID.toText i)
               <>
               T.pack trailingExcess
         ID.fromText textInvalid `shouldBe` Left ID.TextTooLong
