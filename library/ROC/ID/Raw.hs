@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE ViewPatterns #-}
 
 module ROC.ID.Raw
@@ -12,6 +13,8 @@ module ROC.ID.Raw
   , fromUnchecked
   , toText
   , toUnchecked
+  , fromTuple
+  , toTuple
   , checksum
   , generate
   , getGender
@@ -116,6 +119,14 @@ fromUnchecked (UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
 toUnchecked :: RawID -> UncheckedRawID
 toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
+
+fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> RawID
+fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
+  RawID c0 c1 c2 c3 c4 c5 c6 c7 c8
+
+toTuple :: Digit ~ d => RawID -> (Letter, Digit1289, d, d, d, d, d, d, d)
+toTuple (RawID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
+  (c0, c1, c2, c3, c4, c5, c6, c7, c8)
 
 checksum :: RawID -> Digit
 checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =

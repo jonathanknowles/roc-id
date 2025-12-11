@@ -15,8 +15,8 @@ import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
 import Data.Text
   ( Text )
-import ROC.ID
-  ( CharSet (CharSet), CharIndex (CharIndex), ID (..) )
+import ROC.ID.Raw
+  ( CharSet (CharSet), CharIndex (CharIndex), RawID (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Gender
