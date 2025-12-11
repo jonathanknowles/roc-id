@@ -25,16 +25,16 @@ import ROC.ID.Digit1289
   ( Digit1289 (..) )
 import ROC.ID.Letter
   ( Letter (..) )
-import ROC.ID.Number.Unchecked
+import ROC.ID.Raw.Unchecked
   ( CharIndex (..)
   , CharSet (..)
-  , UncheckedIdentityNumber (UncheckedIdentityNumber)
+  , UncheckedRawID (UncheckedRawID)
   )
 import ROC.ID.Utilities
   ( guard )
 
 import qualified ROC.ID.Digit1289 as Digit1289
-import qualified ROC.ID.Number.Unchecked as U
+import qualified ROC.ID.Raw.Unchecked as U
 
 data RawID = RawID
   { c0 :: !Letter
@@ -87,16 +87,16 @@ fromText text = do
 toText :: RawID -> Text
 toText = U.toText . toUnchecked
 
-fromUnchecked :: UncheckedIdentityNumber -> Maybe RawID
-fromUnchecked (UncheckedIdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
+fromUnchecked :: UncheckedRawID -> Maybe RawID
+fromUnchecked (UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
     | checksum i == u9 = Just i
     | otherwise = Nothing
   where
     i = RawID u0 u1 u2 u3 u4 u5 u6 u7 u8
 
-toUnchecked :: RawID -> UncheckedIdentityNumber
+toUnchecked :: RawID -> UncheckedRawID
 toUnchecked i@(RawID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
-  UncheckedIdentityNumber u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
+  UncheckedRawID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
 
 checksum :: RawID -> Digit
 checksum (RawID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =

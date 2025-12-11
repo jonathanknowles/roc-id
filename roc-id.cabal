@@ -77,7 +77,7 @@ library
       ROC.ID.Digit1289
       ROC.ID.Location.Internal
       ROC.ID.Raw
-      ROC.ID.Number.Unchecked
+      ROC.ID.Raw.Unchecked
       ROC.ID.Serial.Internal
       ROC.ID.Utilities
   hs-source-dirs:
