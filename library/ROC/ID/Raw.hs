@@ -14,6 +14,8 @@ module ROC.ID.Raw
   , toUnchecked
   , checksum
   , generate
+  , getGender
+  , setGender
   , getLocation
   , setLocation
   )
@@ -29,6 +31,8 @@ import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
   ( Digit1289 (..) )
+import ROC.ID.Gender
+  ( Gender (..) )
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Location
@@ -145,6 +149,27 @@ generate =
     <*> Digit.generate
     <*> Digit.generate
     <*> Digit.generate
+
+getGender :: RawID -> Gender
+getGender RawID {c1} =
+  case c1 of
+    D1289_1 -> Male
+    D1289_2 -> Female
+    D1289_8 -> Male
+    D1289_9 -> Female
+
+setGender :: Gender -> RawID -> RawID
+setGender gender i = i {c1 = c1'}
+  where
+    c1' = case (c1 i, gender) of
+      (D1289_1,   Male) -> D1289_1
+      (D1289_1, Female) -> D1289_2
+      (D1289_2,   Male) -> D1289_1
+      (D1289_2, Female) -> D1289_2
+      (D1289_8,   Male) -> D1289_8
+      (D1289_8, Female) -> D1289_9
+      (D1289_9,   Male) -> D1289_8
+      (D1289_9, Female) -> D1289_9
 
 getLocation :: RawID -> Location
 getLocation RawID {c0} = Location.fromLetter c0
