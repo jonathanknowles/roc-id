@@ -80,6 +80,8 @@ import qualified ROC.ID.Unchecked as U
 -- By construction, invalid identification numbers are __not representable__ by
 -- this type.
 --
+-- To calculate the checksum digit of an 'ID', use the 'checksum' function.
+--
 data ID = ID
   { c0 :: !Letter
   , c1 :: !Digit1289
