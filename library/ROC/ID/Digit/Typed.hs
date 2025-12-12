@@ -7,6 +7,7 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# OPTIONS_GHC -Wno-unused-foralls #-}
 
 module ROC.ID.Digit.Typed where
 
@@ -88,17 +89,59 @@ type IdChecksum l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
 -- Constraint that ensures checksum is divisible by 10
 type IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
   Assert (Mod (IdChecksum l d0 d1 d2 d3 d4 d5 d6 d7 d8) 10 == 0)
-         (TypeError (Text "Invalid ROC ID checksum"))
+         (TypeError (Text "Invalid checksum"))
 
 ----------------------------
 -- Existential wrapper
 ----------------------------
 
 data AnyId where
-  MkAnyId :: (Digit1289 d0, Digit d1, Digit d2, Digit d3, Digit d4,
-              Digit d5, Digit d6, Digit d7, Digit d8,
-              IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8)
-          => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8 -> AnyId
+  AnyId ::
+    ( Digit1289 d0
+    , Digit d1
+    , Digit d2
+    , Digit d3
+    , Digit d4
+    , Digit d5
+    , Digit d6
+    , Digit d7
+    , Digit d8
+    , IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8
+    )
+    => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8
+    -> AnyId
+
+data AnyIdRep = AnyIdRep
+  { idLetterR :: Letter
+  , idD1289R  :: AnyDigit1289
+  , idDigitsR :: (AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit)
+  }
+  deriving (Eq, Show)
+
+-- Convert existential AnyId to runtime representation
+anyIdRep :: AnyId -> AnyIdRep
+anyIdRep (AnyId (Id :: Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)) =
+  AnyIdRep
+    { idLetterR = anyLetter @l
+    , idD1289R  = anyDigit1289 (Proxy @d0)
+    , idDigitsR = ( anyDigit (Proxy @d1)
+                  , anyDigit (Proxy @d2)
+                  , anyDigit (Proxy @d3)
+                  , anyDigit (Proxy @d4)
+                  , anyDigit (Proxy @d5)
+                  , anyDigit (Proxy @d6)
+                  , anyDigit (Proxy @d7)
+                  , anyDigit (Proxy @d8)
+                  )
+    }
+
+-- Show instance
+instance Show AnyId where
+  show = show . anyIdRep
+
+-- Eq instance
+instance Eq AnyId where
+  a == b = anyIdRep a == anyIdRep b
 
 ----------------------------
 -- Convert to runtime representation
@@ -123,12 +166,12 @@ toAnyId :: forall l d0 d1 d2 d3 d4 d5 d6 d7 d8.
            (Digit1289 d0, Digit d1, Digit d2, Digit d3, Digit d4,
             Digit d5, Digit d6, Digit d7, Digit d8)
          => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8 -> AnyId
-toAnyId _ = MkAnyId (Id :: Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)
+toAnyId _ = AnyId (Id :: Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)
 -}
 ----------------------------
 -- Example usage
 ----------------------------
 
 exampleId :: AnyId
-exampleId = MkAnyId (Id :: Id A 1 2 3 4 5 6 7 8 9)
+exampleId = AnyId (Id :: Id A 1 2 3 4 5 6 7 8 9)
 -- The above will only compile if the checksum is correct
