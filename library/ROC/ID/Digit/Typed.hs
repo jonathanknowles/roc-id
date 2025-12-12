@@ -1,13 +1,14 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE GADTs #-}
 {-# OPTIONS_GHC -Wno-unused-foralls #-}
+
 
 module ROC.ID.Digit.Typed where
 
@@ -17,11 +18,8 @@ import ROC.ID.Letter (Letter(..))
 import Data.Type.Bool (type (&&))
 import GHC.TypeError
 import Data.Type.Equality (type (==))
-import qualified GHC.TypeNats
 
-----------------------------
--- Digits
-----------------------------
+import qualified GHC.TypeNats as T
 
 data AnyDigit = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
   deriving (Bounded, Enum, Eq, Ord, Show)
@@ -29,9 +27,19 @@ data AnyDigit = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
 data AnyDigit1289 = D1289_1 | D1289_2 | D1289_8 | D1289_9
   deriving (Bounded, Enum, Eq, Ord, Show)
 
--- Constraints on type-level digits
-type Digit n = (KnownNat n, Assert (0 <=? n && n <=? 9) (TypeError (Text "Digit out of range [0..9]")))
-type Digit1289 n = (KnownNat n, Assert (Elem n '[1,2,8,9]) (TypeError (Text "Digit must be in {1,2,8,9}")))
+type Digit n =
+  ( KnownNat n
+  , Assert
+    (0 <=? n && n <=? 9)
+    (TypeError (Text "Digit must be in the range [0 .. 9]"))
+  )
+
+type Digit1289 n =
+  ( KnownNat n
+  , Assert
+    (Elem n '[1, 2, 8, 9])
+    (TypeError (Text "Digit must be in {1, 2, 8, 9}"))
+  )
 
 type family Elem (x :: k) (xs :: [k]) :: Bool where
   Elem x '[]       = 'False
@@ -47,56 +55,60 @@ data Id (l :: Letter)
            (d4 :: Nat) (d5 :: Nat) (d6 :: Nat) (d7 :: Nat) (d8 :: Nat)
   = Id
 
-----------------------------
--- ROC ID checksum at type level
-----------------------------
+type family LetterValues (l :: Letter) :: (Nat, Nat) where
+  LetterValues 'A = '(1, 0); LetterValues 'B = '(1, 1)
+  LetterValues 'C = '(1, 2); LetterValues 'D = '(1, 3)
+  LetterValues 'E = '(1, 4); LetterValues 'F = '(1, 5)
+  LetterValues 'G = '(1, 6); LetterValues 'H = '(1, 7)
+  LetterValues 'I = '(3, 4); LetterValues 'J = '(1, 8)
+  LetterValues 'K = '(1, 9); LetterValues 'L = '(2, 0)
+  LetterValues 'M = '(2, 1); LetterValues 'N = '(2, 2)
+  LetterValues 'O = '(3, 5); LetterValues 'P = '(2, 3)
+  LetterValues 'Q = '(2, 4); LetterValues 'R = '(2, 5)
+  LetterValues 'S = '(2, 6); LetterValues 'T = '(2, 7)
+  LetterValues 'U = '(2, 8); LetterValues 'V = '(2, 9)
+  LetterValues 'W = '(3, 2); LetterValues 'X = '(3, 0)
+  LetterValues 'Y = '(3, 1); LetterValues 'Z = '(3, 3)
 
--- Map first letter to number according to ROC ID rules
-type family LetterValue (l :: Letter) :: Nat where
-  LetterValue 'A = 10; LetterValue 'B = 11; LetterValue 'C = 12; LetterValue 'D = 13
-  LetterValue 'E = 14; LetterValue 'F = 15; LetterValue 'G = 16; LetterValue 'H = 17
-  LetterValue 'I = 34; LetterValue 'J = 18; LetterValue 'K = 19; LetterValue 'L = 20
-  LetterValue 'M = 21; LetterValue 'N = 22; LetterValue 'O = 35; LetterValue 'P = 23
-  LetterValue 'Q = 24; LetterValue 'R = 25; LetterValue 'S = 26; LetterValue 'T = 27
-  LetterValue 'U = 28; LetterValue 'V = 29; LetterValue 'W = 32; LetterValue 'X = 30
-  LetterValue 'Y = 31; LetterValue 'Z = 33
+type family LetterValue0 letter :: Nat where
+  LetterValue0 x = Fst (LetterValues x)
 
--- Split a two-digit number into tens and ones
+type family LetterValue1 letter :: Nat where
+  LetterValue1 x = Snd (LetterValues x)
 
-type family Tens (n :: Nat) :: Nat where
-  Tens n = Div n 10
+type family Fst (t :: (T.Nat, T.Nat)) :: T.Nat where
+  Fst '(x, _) = x
 
-type family Ones (n :: Nat) :: Nat where
-  Ones n = Mod n 10
+type family Snd (t :: (T.Nat, T.Nat)) :: T.Nat where
+  Snd '(_, y) = y
 
--- ROC ID checksum calculation
--- c0..c9 are the weights for each position
+type Checksum letter d0 d1 d2 d3 d4 d5 d6 d7 d8
+  = LastDigit
+    (     (LetterValue0 letter T.* 1)
+      T.+ (LetterValue1 letter T.* 9)
+      T.+ (d0                  T.* 8)
+      T.+ (d1                  T.* 7)
+      T.+ (d2                  T.* 6)
+      T.+ (d3                  T.* 5)
+      T.+ (d4                  T.* 4)
+      T.+ (d5                  T.* 3)
+      T.+ (d6                  T.* 2)
+      T.+ (d7                  T.* 1)
+      T.+ (d8                  T.* 1)
+    )
 
+type family LastDigit (n :: Nat) where
+  LastDigit n = Mod n 10
 
-type IdChecksum l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
-      (Tens (LetterValue l) GHC.TypeNats.* 1)
-    GHC.TypeNats.+ (Ones (LetterValue l) GHC.TypeNats.* 9)
-    GHC.TypeNats.+ (d0 GHC.TypeNats.* 8)
-    GHC.TypeNats.+ (d1 GHC.TypeNats.* 7)
-    GHC.TypeNats.+ (d2 GHC.TypeNats.* 6)
-    GHC.TypeNats.+ (d3 GHC.TypeNats.* 5)
-    GHC.TypeNats.+ (d4 GHC.TypeNats.* 4)
-    GHC.TypeNats.+ (d5 GHC.TypeNats.* 3)
-    GHC.TypeNats.+ (d6 GHC.TypeNats.* 2)
-    GHC.TypeNats.+ (d7 GHC.TypeNats.* 1)
-    GHC.TypeNats.+ (d8 GHC.TypeNats.* 1)
-
--- Constraint that ensures checksum is divisible by 10
-type IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
-  Assert (Mod (IdChecksum l d0 d1 d2 d3 d4 d5 d6 d7 d8) 10 == 0)
+type ChecksumValid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
+  Assert (Checksum l d0 d1 d2 d3 d4 d5 d6 d7 d8 == 0)
          (TypeError (Text "Invalid checksum"))
 
 ----------------------------
 -- Existential wrapper
 ----------------------------
 
-data AnyId where
-  AnyId ::
+type Valid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
     ( Digit1289 d0
     , Digit d1
     , Digit d2
@@ -106,8 +118,12 @@ data AnyId where
     , Digit d6
     , Digit d7
     , Digit d8
-    , IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8
+    , ChecksumValid l d0 d1 d2 d3 d4 d5 d6 d7 d8
     )
+
+data AnyId where
+  AnyId ::
+    Valid l d0 d1 d2 d3 d4 d5 d6 d7 d8
     => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8
     -> AnyId
 
@@ -160,14 +176,7 @@ anyDigit1289 _ = case natVal (Proxy @n) of
   8 -> D1289_8
   9 -> D1289_9
   _ -> error "Impossible: ensured by Digit1289"
-{-
--- Convert Id to runtime AnyId
-toAnyId :: forall l d0 d1 d2 d3 d4 d5 d6 d7 d8.
-           (Digit1289 d0, Digit d1, Digit d2, Digit d3, Digit d4,
-            Digit d5, Digit d6, Digit d7, Digit d8)
-         => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8 -> AnyId
-toAnyId _ = AnyId (Id :: Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)
--}
+
 ----------------------------
 -- Example usage
 ----------------------------
