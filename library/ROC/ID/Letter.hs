@@ -1,16 +1,22 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module ROC.ID.Letter
   ( Letter (..)
   , fromChar
   , toChar
   , generate
+  , FromChar
   ) where
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
 import GHC.Generics
   ( Generic )
+import GHC.TypeError
+  ( ErrorMessage (Text), TypeError )
 import ROC.ID.Utilities
   ( randomBoundedEnum )
 import Text.Read
@@ -42,3 +48,19 @@ toChar letter = case show letter of
 --
 generate :: MonadRandom m => m Letter
 generate = randomBoundedEnum
+
+type family FromChar (c :: Char) :: Letter where
+  FromChar 'A' = A; FromChar 'N' = N
+  FromChar 'B' = B; FromChar 'O' = O
+  FromChar 'C' = C; FromChar 'P' = P
+  FromChar 'D' = D; FromChar 'Q' = Q
+  FromChar 'E' = E; FromChar 'R' = R
+  FromChar 'F' = F; FromChar 'S' = S
+  FromChar 'G' = G; FromChar 'T' = T
+  FromChar 'H' = H; FromChar 'U' = U
+  FromChar 'I' = I; FromChar 'V' = V
+  FromChar 'J' = J; FromChar 'W' = W
+  FromChar 'K' = K; FromChar 'X' = X
+  FromChar 'L' = L; FromChar 'Y' = Y
+  FromChar 'M' = M; FromChar 'Z' = Z
+  FromChar _ = TypeError (Text "Expected uppercase letter.")

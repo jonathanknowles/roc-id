@@ -1,6 +1,9 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
@@ -10,6 +13,7 @@ module ROC.ID
     ID (..)
 
   -- * Construction
+  , fromSymbol
   , fromText
   , FromTextError (..)
   , CharIndex (..)
@@ -42,8 +46,12 @@ import Control.Monad.Random.Class
   ( MonadRandom )
 import Data.Bifunctor
   ( Bifunctor (first) )
+import Data.Proxy
+  ( Proxy (Proxy) )
 import Data.Text
   ( Text )
+import GHC.TypeLits
+  ( Symbol, symbolVal )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -60,10 +68,12 @@ import ROC.ID.Unchecked
   ( CharIndex (..)
   , CharSet (..)
   , UncheckedID (UncheckedID)
+  , ValidID
   )
 import ROC.ID.Utilities
   ( guard )
 
+import qualified Data.Text as T
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
@@ -98,6 +108,11 @@ data ID = ID
 --------------------------------------------------------------------------------
 -- Construction
 --------------------------------------------------------------------------------
+
+-- | Constructs an 'ID' from a type-level symbol.
+--
+fromSymbol :: forall (s :: Symbol). ValidID s => ID
+fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
 
 -- | Attempts to construct an 'ID' from 'Text'.
 --
