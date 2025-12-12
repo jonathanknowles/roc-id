@@ -1,92 +1,134 @@
-{-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE PolyKinds #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module ROC.ID.Digit.Typed where
 
-import GHC.TypeLits (TypeError, KnownNat, natVal, type (<=?))
-import Data.Proxy (Proxy (Proxy))
+import GHC.TypeLits
+import Data.Proxy
+import ROC.ID.Letter (Letter(..))
 import Data.Type.Bool (type (&&))
-import GHC.TypeError (Assert, ErrorMessage (Text))
-import ROC.ID.Letter (Letter (..))
-import GHC.TypeNats (Nat)
+import GHC.TypeError
+import Data.Type.Equality (type (==))
+import qualified GHC.TypeNats
+
+----------------------------
+-- Digits
+----------------------------
 
 data AnyDigit = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
-  deriving (Bounded, Enum, Eq, Ord, Read, Show)
+  deriving (Bounded, Enum, Eq, Ord, Show)
 
 data AnyDigit1289 = D1289_1 | D1289_2 | D1289_8 | D1289_9
-  deriving (Bounded, Enum, Eq, Ord, Read, Show)
+  deriving (Bounded, Enum, Eq, Ord, Show)
 
-type Digit n = (KnownNat n, Assert (DigitRange n) DigitError)
-type DigitRange n = (0 <=? n && n <=? 9)
-type DigitError = TypeError (Text "Must be a digit in the range [0 .. 9]")
+-- Constraints on type-level digits
+type Digit n = (KnownNat n, Assert (0 <=? n && n <=? 9) (TypeError (Text "Digit out of range [0..9]")))
+type Digit1289 n = (KnownNat n, Assert (Elem n '[1,2,8,9]) (TypeError (Text "Digit must be in {1,2,8,9}")))
 
-type Digit1289 n = (KnownNat n, Assert (Digit1289Range n) Digit1289Error)
-type Digit1289Range n = Elem n '[1, 2, 8, 9]
-type Digit1289Error = TypeError (Text "Must be a digit in the set {1, 2, 8, 9}")
+type family Elem (x :: k) (xs :: [k]) :: Bool where
+  Elem x '[]       = 'False
+  Elem x (x ': xs) = 'True
+  Elem x (_ ': xs) = Elem x xs
 
-data AnyId = AnyId
-  { idLetter :: Letter
-  , idD1289  :: AnyDigit1289
-  , idDigits :: ( AnyDigit, AnyDigit, AnyDigit, AnyDigit
-                , AnyDigit, AnyDigit, AnyDigit, AnyDigit )
-  } deriving Show
+----------------------------
+-- Phantom ROC ID type
+----------------------------
 
-data Id
-  (l :: Letter)
-  (d0 :: Nat)
-  (d1 :: Nat)
-  (d2 :: Nat)
-  (d3 :: Nat)
-  (d4 :: Nat)
-  (d5 :: Nat)
-  (d6 :: Nat)
-  (d7 :: Nat)
-  (d8 :: Nat)
+data Id (l :: Letter)
+           (d0 :: Nat) (d1 :: Nat) (d2 :: Nat) (d3 :: Nat)
+           (d4 :: Nat) (d5 :: Nat) (d6 :: Nat) (d7 :: Nat) (d8 :: Nat)
   = Id
 
-anyLetter :: forall l. Proxy l -> Letter
-anyLetter _ = toEnum $ fromEnum (Proxy @l)  -- simple if Letter is Enum
+----------------------------
+-- ROC ID checksum at type level
+----------------------------
 
-mkAnyId
-  :: forall l d0 d1 d2 d3 d4 d5 d6 d7 d8.
-     ( Digit1289 d0
-     , Digit d1, Digit d2, Digit d3, Digit d4
-     , Digit d5, Digit d6, Digit d7, Digit d8
-     )
-  => Proxy (Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)
-  -> AnyId
-mkAnyId _ = AnyId
-  { idLetter = anyLetter (Proxy @l)
-  , idD1289  = anyDigit1289 (Proxy @d0)
-  , idDigits = ( anyDigit (Proxy @d1), anyDigit (Proxy @d2)
-               , anyDigit (Proxy @d3), anyDigit (Proxy @d4)
-               , anyDigit (Proxy @d5), anyDigit (Proxy @d6)
-               , anyDigit (Proxy @d7), anyDigit (Proxy @d8)
-               )
-  }
+-- Map first letter to number according to ROC ID rules
+type family LetterValue (l :: Letter) :: Nat where
+  LetterValue 'A = 10; LetterValue 'B = 11; LetterValue 'C = 12; LetterValue 'D = 13
+  LetterValue 'E = 14; LetterValue 'F = 15; LetterValue 'G = 16; LetterValue 'H = 17
+  LetterValue 'I = 34; LetterValue 'J = 18; LetterValue 'K = 19; LetterValue 'L = 20
+  LetterValue 'M = 21; LetterValue 'N = 22; LetterValue 'O = 35; LetterValue 'P = 23
+  LetterValue 'Q = 24; LetterValue 'R = 25; LetterValue 'S = 26; LetterValue 'T = 27
+  LetterValue 'U = 28; LetterValue 'V = 29; LetterValue 'W = 32; LetterValue 'X = 30
+  LetterValue 'Y = 31; LetterValue 'Z = 33
+
+-- Split a two-digit number into tens and ones
+
+type family Tens (n :: Nat) :: Nat where
+  Tens n = Div n 10
+
+type family Ones (n :: Nat) :: Nat where
+  Ones n = Mod n 10
+
+-- ROC ID checksum calculation
+-- c0..c9 are the weights for each position
 
 
-exampleId :: AnyId
-exampleId = mkAnyId (Proxy @(Id A 1 0 2 3 4 5 6 7 8))
+type IdChecksum l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
+      (Tens (LetterValue l) GHC.TypeNats.* 1)
+    GHC.TypeNats.+ (Ones (LetterValue l) GHC.TypeNats.* 9)
+    GHC.TypeNats.+ (d0 GHC.TypeNats.* 8)
+    GHC.TypeNats.+ (d1 GHC.TypeNats.* 7)
+    GHC.TypeNats.+ (d2 GHC.TypeNats.* 6)
+    GHC.TypeNats.+ (d3 GHC.TypeNats.* 5)
+    GHC.TypeNats.+ (d4 GHC.TypeNats.* 4)
+    GHC.TypeNats.+ (d5 GHC.TypeNats.* 3)
+    GHC.TypeNats.+ (d6 GHC.TypeNats.* 2)
+    GHC.TypeNats.+ (d7 GHC.TypeNats.* 1)
+    GHC.TypeNats.+ (d8 GHC.TypeNats.* 1)
 
+-- Constraint that ensures checksum is divisible by 10
+type IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
+  Assert (Mod (IdChecksum l d0 d1 d2 d3 d4 d5 d6 d7 d8) 10 == 0)
+         (TypeError (Text "Invalid ROC ID checksum"))
 
-anyDigit :: forall n. Digit n => Proxy n -> AnyDigit
-anyDigit _ = toEnum $ fromInteger (natVal (Proxy @n))
+----------------------------
+-- Existential wrapper
+----------------------------
 
-anyDigit1289 :: forall n. Digit1289 n => Proxy n -> AnyDigit1289
+data AnyId where
+  MkAnyId :: (Digit1289 d0, Digit d1, Digit d2, Digit d3, Digit d4,
+              Digit d5, Digit d6, Digit d7, Digit d8,
+              IdValid l d0 d1 d2 d3 d4 d5 d6 d7 d8)
+          => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8 -> AnyId
+
+----------------------------
+-- Convert to runtime representation
+----------------------------
+
+anyLetter :: forall l. Letter
+anyLetter = toEnum (fromEnum (Proxy @l))
+
+anyDigit :: forall n. KnownNat n => Proxy n -> AnyDigit
+anyDigit _ = toEnum (fromInteger (natVal (Proxy @n)))
+
+anyDigit1289 :: forall n. KnownNat n => Proxy n -> AnyDigit1289
 anyDigit1289 _ = case natVal (Proxy @n) of
   1 -> D1289_1
   2 -> D1289_2
   8 -> D1289_8
   9 -> D1289_9
-  _ -> error "Impossible: IsDigit1289 ensures n ∈ {1, 2, 8, 9}"
+  _ -> error "Impossible: ensured by Digit1289"
+{-
+-- Convert Id to runtime AnyId
+toAnyId :: forall l d0 d1 d2 d3 d4 d5 d6 d7 d8.
+           (Digit1289 d0, Digit d1, Digit d2, Digit d3, Digit d4,
+            Digit d5, Digit d6, Digit d7, Digit d8)
+         => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8 -> AnyId
+toAnyId _ = MkAnyId (Id :: Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)
+-}
+----------------------------
+-- Example usage
+----------------------------
 
-type family Elem (x :: k) (xs :: [k]) :: Bool where
-  Elem x '[]       = False
-  Elem x (x ': xs) = True
-  Elem x (_ ': xs) = Elem x xs
+exampleId :: AnyId
+exampleId = MkAnyId (Id :: Id A 1 2 3 4 5 6 7 8 9)
+-- The above will only compile if the checksum is correct
