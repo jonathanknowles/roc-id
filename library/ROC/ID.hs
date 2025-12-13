@@ -1,9 +1,12 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE ExplicitForAll #-}
 
 module ROC.ID
   (
@@ -11,6 +14,8 @@ module ROC.ID
     ID (..)
 
   -- * Construction
+  , fromSymbol
+  , ValidSymbol
   , fromText
   , FromTextError (..)
   , CharIndex (..)
@@ -70,6 +75,8 @@ import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Unchecked as U
+import GHC.TypeLits (KnownSymbol, Symbol)
+import Data.Kind (Constraint)
 
 --------------------------------------------------------------------------------
 -- Type
@@ -99,6 +106,11 @@ data ID = ID
 --------------------------------------------------------------------------------
 -- Construction
 --------------------------------------------------------------------------------
+
+type ValidSymbol (t :: Symbol) = KnownSymbol t :: Constraint
+
+fromSymbol :: forall t. ValidSymbol t => ID
+fromSymbol = undefined
 
 -- | Attempts to construct an 'ID' from 'Text'.
 --

@@ -2,7 +2,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -13,20 +12,74 @@
 module ROC.ID.Digit.Typed where
 
 import GHC.TypeLits
-import Data.Proxy
+--import Data.Proxy
 import ROC.ID.Letter (Letter(..))
-import Data.Type.Bool (type (&&))
+--import Data.Type.Bool (type (&&))
 import GHC.TypeError
 import Data.Type.Equality (type (==))
+import ROC.ID.Digit
+import ROC.ID.Digit1289
 
 import qualified GHC.TypeNats as T
+import Data.Kind (Constraint)
 
-data AnyDigit = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
-  deriving (Bounded, Enum, Eq, Ord, Show)
+type family NatIsDigit (n :: Nat) :: Constraint where
+  NatIsDigit 0 = ()
+  NatIsDigit 1 = ()
+  NatIsDigit 2 = ()
+  NatIsDigit 3 = ()
+  NatIsDigit 4 = ()
+  NatIsDigit 5 = ()
+  NatIsDigit 6 = ()
+  NatIsDigit 7 = ()
+  NatIsDigit 8 = ()
+  NatIsDigit 9 = ()
+  NatIsDigit _ = DigitTypeError
 
-data AnyDigit1289 = D1289_1 | D1289_2 | D1289_8 | D1289_9
-  deriving (Bounded, Enum, Eq, Ord, Show)
+type family NatToDigit (n :: Nat) :: Digit where
+  NatToDigit 0 = D0
+  NatToDigit 1 = D1
+  NatToDigit 2 = D2
+  NatToDigit 3 = D3
+  NatToDigit 4 = D4
+  NatToDigit 5 = D5
+  NatToDigit 6 = D6
+  NatToDigit 7 = D7
+  NatToDigit 8 = D8
+  NatToDigit 9 = D9
+  NatToDigit _ = DigitTypeError
 
+type DigitTypeError =
+  TypeError (Text "Digit must be in the range [0 .. 9]")
+
+type family DigitToNat (d :: Digit) :: Nat where
+  DigitToNat D0 = 0
+  DigitToNat D1 = 1
+  DigitToNat D2 = 2
+  DigitToNat D3 = 3
+  DigitToNat D4 = 4
+  DigitToNat D5 = 5
+  DigitToNat D6 = 6
+  DigitToNat D7 = 7
+  DigitToNat D8 = 8
+  DigitToNat D9 = 9
+
+type family NatToDigit1289 (n :: Nat) :: Digit1289 where
+  NatToDigit1289 1 = D1289_1
+  NatToDigit1289 2 = D1289_2
+  NatToDigit1289 8 = D1289_8
+  NatToDigit1289 9 = D1289_9
+  NatToDigit1289 _ = TypeError (Text "Digit must be in {1, 2, 8, 9}")
+
+type family Digit1289ToNat (d :: Digit1289) :: Nat where
+  Digit1289ToNat D1289_1 = 1
+  Digit1289ToNat D1289_2 = 2
+  Digit1289ToNat D1289_8 = 8
+  Digit1289ToNat D1289_9 = 9
+
+
+
+{-
 type Digit n =
   ( KnownNat n
   , Assert
@@ -40,97 +93,106 @@ type Digit1289 n =
     (Elem n '[1, 2, 8, 9])
     (TypeError (Text "Digit must be in {1, 2, 8, 9}"))
   )
-
-type family Elem (x :: k) (xs :: [k]) :: Bool where
-  Elem x '[]       = 'False
-  Elem x (x ': xs) = 'True
-  Elem x (_ ': xs) = Elem x xs
-
-----------------------------
--- Phantom ROC ID type
-----------------------------
-
-data Id (l :: Letter)
-           (d0 :: Nat) (d1 :: Nat) (d2 :: Nat) (d3 :: Nat)
-           (d4 :: Nat) (d5 :: Nat) (d6 :: Nat) (d7 :: Nat) (d8 :: Nat)
+-}
+data Id
+  (c0 :: Letter)
+  (c1 :: Digit1289)
+  (c2 :: Digit)
+  (c3 :: Digit)
+  (c4 :: Digit)
+  (c5 :: Digit)
+  (c6 :: Digit)
+  (c7 :: Digit)
+  (c8 :: Digit)
+  (c9 :: Digit)
   = Id
 
-type family LetterValues (l :: Letter) :: (Nat, Nat) where
-  LetterValues 'A = '(1, 0); LetterValues 'B = '(1, 1)
-  LetterValues 'C = '(1, 2); LetterValues 'D = '(1, 3)
-  LetterValues 'E = '(1, 4); LetterValues 'F = '(1, 5)
-  LetterValues 'G = '(1, 6); LetterValues 'H = '(1, 7)
-  LetterValues 'I = '(3, 4); LetterValues 'J = '(1, 8)
-  LetterValues 'K = '(1, 9); LetterValues 'L = '(2, 0)
-  LetterValues 'M = '(2, 1); LetterValues 'N = '(2, 2)
-  LetterValues 'O = '(3, 5); LetterValues 'P = '(2, 3)
-  LetterValues 'Q = '(2, 4); LetterValues 'R = '(2, 5)
-  LetterValues 'S = '(2, 6); LetterValues 'T = '(2, 7)
-  LetterValues 'U = '(2, 8); LetterValues 'V = '(2, 9)
-  LetterValues 'W = '(3, 2); LetterValues 'X = '(3, 0)
-  LetterValues 'Y = '(3, 1); LetterValues 'Z = '(3, 3)
+data MkId
+  (c0 :: Letter)
+  (c1 :: Digit1289)
+  (c2 :: Digit)
+  (c3 :: Digit)
+  (c4 :: Digit)
+  (c5 :: Digit)
+  (c6 :: Digit)
+  (c7 :: Digit)
+  (c8 :: Digit)
+  (c9 :: Digit)
+  = MkId
 
-type family LetterValue0 letter :: Nat where
-  LetterValue0 x = Fst (LetterValues x)
+type family LetterToNatPair (l :: Letter) :: (Nat, Nat) where
+  LetterToNatPair 'A = '(1, 0); LetterToNatPair 'B = '(1, 1)
+  LetterToNatPair 'C = '(1, 2); LetterToNatPair 'D = '(1, 3)
+  LetterToNatPair 'E = '(1, 4); LetterToNatPair 'F = '(1, 5)
+  LetterToNatPair 'G = '(1, 6); LetterToNatPair 'H = '(1, 7)
+  LetterToNatPair 'I = '(3, 4); LetterToNatPair 'J = '(1, 8)
+  LetterToNatPair 'K = '(1, 9); LetterToNatPair 'L = '(2, 0)
+  LetterToNatPair 'M = '(2, 1); LetterToNatPair 'N = '(2, 2)
+  LetterToNatPair 'O = '(3, 5); LetterToNatPair 'P = '(2, 3)
+  LetterToNatPair 'Q = '(2, 4); LetterToNatPair 'R = '(2, 5)
+  LetterToNatPair 'S = '(2, 6); LetterToNatPair 'T = '(2, 7)
+  LetterToNatPair 'U = '(2, 8); LetterToNatPair 'V = '(2, 9)
+  LetterToNatPair 'W = '(3, 2); LetterToNatPair 'X = '(3, 0)
+  LetterToNatPair 'Y = '(3, 1); LetterToNatPair 'Z = '(3, 3)
 
-type family LetterValue1 letter :: Nat where
-  LetterValue1 x = Snd (LetterValues x)
+type family LetterToNat0 letter :: Nat where
+  LetterToNat0 x = Fst (LetterToNatPair x)
 
-type family Fst (t :: (T.Nat, T.Nat)) :: T.Nat where
-  Fst '(x, _) = x
+type family LetterToNat1 letter :: Nat where
+  LetterToNat1 x = Snd (LetterToNatPair x)
 
-type family Snd (t :: (T.Nat, T.Nat)) :: T.Nat where
-  Snd '(_, y) = y
-
-type Checksum letter d0 d1 d2 d3 d4 d5 d6 d7 d8
-  = LastDigit
-    (     (LetterValue0 letter T.* 1)
-      T.+ (LetterValue1 letter T.* 9)
-      T.+ (d0                  T.* 8)
-      T.+ (d1                  T.* 7)
-      T.+ (d2                  T.* 6)
-      T.+ (d3                  T.* 5)
-      T.+ (d4                  T.* 4)
-      T.+ (d5                  T.* 3)
-      T.+ (d6                  T.* 2)
-      T.+ (d7                  T.* 1)
-      T.+ (d8                  T.* 1)
+type family Checksum id :: Nat where
+  Checksum (Id c0 c1 c2 c3 c4 c5 c6 c7 c8 c9) =
+    (     (LetterToNat0    c0 T.* 1)
+      T.+ (LetterToNat1    c0 T.* 9)
+      T.+ (Digit1289ToNat  c1 T.* 8)
+      T.+ (DigitToNat      c2 T.* 7)
+      T.+ (DigitToNat      c3 T.* 6)
+      T.+ (DigitToNat      c4 T.* 5)
+      T.+ (DigitToNat      c5 T.* 4)
+      T.+ (DigitToNat      c6 T.* 3)
+      T.+ (DigitToNat      c7 T.* 2)
+      T.+ (DigitToNat      c8 T.* 1)
+      T.+ (DigitToNat      c9 T.* 1)
     )
 
-type family LastDigit (n :: Nat) where
-  LastDigit n = Mod n 10
+type family ChecksumDigit id :: Digit where
+  ChecksumDigit id = NatToDigit (Mod (Checksum id) 10)
 
-type ChecksumValid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
-  Assert (Checksum l d0 d1 d2 d3 d4 d5 d6 d7 d8 == 0)
-         (TypeError (Text "Invalid checksum"))
+type family ChecksumValid id :: Constraint where
+  ChecksumValid id =
+    Assert (ChecksumDigit id == D0) (TypeError (Text "Invalid checksum"))
 
 ----------------------------
 -- Existential wrapper
 ----------------------------
-
-type Valid l d0 d1 d2 d3 d4 d5 d6 d7 d8 =
-    ( Digit1289 d0
-    , Digit d1
-    , Digit d2
-    , Digit d3
-    , Digit d4
-    , Digit d5
-    , Digit d6
-    , Digit d7
-    , Digit d8
-    , ChecksumValid l d0 d1 d2 d3 d4 d5 d6 d7 d8
+{-
+type Valid c0 c1 c2 c3 c4 c5 c6 c7 c8 c9 =
+    ( ChecksumValid
+      (Id
+        c0
+        (NatToDigit1289 c1)
+        (NatToDigit c2)
+        (NatToDigit c2)
+        (NatToDigit c2)
+        (NatToDigit c2)
+        (NatToDigit c2)
+        (NatToDigit c2)
+        (NatToDigit c2)
+        (NatToDigit c2)
+      )
     )
 
-data AnyId where
-  AnyId ::
+data Id where
+  Id ::
     Valid l d0 d1 d2 d3 d4 d5 d6 d7 d8
-    => Id l d0 d1 d2 d3 d4 d5 d6 d7 d8
+    => MkId l d0 d1 d2 d3 d4 d5 d6 d7 d8
     -> AnyId
 
 data AnyIdRep = AnyIdRep
   { idLetterR :: Letter
-  , idD1289R  :: AnyDigit1289
-  , idDigitsR :: (AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit, AnyDigit)
+  , idD1289R  :: Digit1289
+  , idDigitsR :: (Digit, Digit, Digit, Digit, Digit, Digit, Digit, Digit)
   }
   deriving (Eq, Show)
 
@@ -151,6 +213,8 @@ anyIdRep (AnyId (Id :: Id l d0 d1 d2 d3 d4 d5 d6 d7 d8)) =
                   )
     }
 
+
+
 -- Show instance
 instance Show AnyId where
   show = show . anyIdRep
@@ -166,10 +230,10 @@ instance Eq AnyId where
 anyLetter :: forall l. Letter
 anyLetter = toEnum (fromEnum (Proxy @l))
 
-anyDigit :: forall n. KnownNat n => Proxy n -> AnyDigit
+anyDigit :: forall n. KnownNat n => Proxy n -> Digit
 anyDigit _ = toEnum (fromInteger (natVal (Proxy @n)))
 
-anyDigit1289 :: forall n. KnownNat n => Proxy n -> AnyDigit1289
+anyDigit1289 :: forall n. KnownNat n => Proxy n -> Digit1289
 anyDigit1289 _ = case natVal (Proxy @n) of
   1 -> D1289_1
   2 -> D1289_2
@@ -181,6 +245,26 @@ anyDigit1289 _ = case natVal (Proxy @n) of
 -- Example usage
 ----------------------------
 
-exampleId :: AnyId
-exampleId = AnyId (Id :: Id A 1 2 3 4 5 6 7 8 9)
+exampleId :: Id
+exampleId = Id (MkId :: MkId A 1 2 3 4 5 6 7 8 9)
 -- The above will only compile if the checksum is correct
+
+-}
+
+--------------------------------------------------------------------------------
+-- Utilities
+--------------------------------------------------------------------------------
+
+type family Elem (x :: k) (xs :: [k]) :: Bool where
+  Elem x '[]       = 'False
+  Elem x (x ': xs) = 'True
+  Elem x (_ ': xs) = Elem x xs
+
+type family Fst (t :: (a, a)) :: a where
+  Fst '(x, _) = x
+
+type family Snd (t :: (a, a)) :: a where
+  Snd '(_, y) = y
+
+type family Seq (a :: k) (b :: l) :: Constraint where
+  Seq _ b = ()
