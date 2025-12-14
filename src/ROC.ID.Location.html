@@ -100,7 +100,7 @@
 </span><span id="line-100"></span><span class="hs-comment">-- To generate a random 'Location', use the 'generate' function.</span><span>
 </span><span id="line-101"></span><span class="hs-comment">--</span><span>
 </span><span id="line-102"></span><span class="hs-keyword">newtype</span><span> </span><span id="Location"><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-var">Location</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Location"><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-var">Location</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.Letter.html#Letter"><span class="hs-identifier hs-type">Letter</span></a></span><span>
-</span><span id="line-103"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679111008"><span id="local-6989586621679111012"><span class="annot"><span class="annottext">Location -&gt; Location -&gt; Bool
+</span><span id="line-103"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679111042"><span id="local-6989586621679111046"><span class="annot"><span class="annottext">Location -&gt; Location -&gt; Bool
 (Location -&gt; Location -&gt; Bool)
 -&gt; (Location -&gt; Location -&gt; Bool) -&gt; Eq Location
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -108,7 +108,7 @@ $c== :: Location -&gt; Location -&gt; Bool
 == :: Location -&gt; Location -&gt; Bool
 $c/= :: Location -&gt; Location -&gt; Bool
 /= :: Location -&gt; Location -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111017"><span id="local-6989586621679111019"><span class="annot"><span class="annottext">(forall x. Location -&gt; Rep Location x)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111051"><span id="local-6989586621679111053"><span class="annot"><span class="annottext">(forall x. Location -&gt; Rep Location x)
 -&gt; (forall x. Rep Location x -&gt; Location) -&gt; Generic Location
 forall x. Rep Location x -&gt; Location
 forall x. Location -&gt; Rep Location x
@@ -118,7 +118,7 @@ $cfrom :: forall x. Location -&gt; Rep Location x
 from :: forall x. Location -&gt; Rep Location x
 $cto :: forall x. Rep Location x -&gt; Location
 to :: forall x. Rep Location x -&gt; Location
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111027"><span id="local-6989586621679111031"><span id="local-6989586621679111034"><span id="local-6989586621679111038"><span id="local-6989586621679111041"><span id="local-6989586621679111044"><span id="local-6989586621679111047"><span class="annot"><span class="annottext">Eq Location
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Generic</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111061"><span id="local-6989586621679111065"><span id="local-6989586621679111068"><span id="local-6989586621679111072"><span id="local-6989586621679111075"><span id="local-6989586621679111078"><span id="local-6989586621679111081"><span class="annot"><span class="annottext">Eq Location
 Eq Location =&gt;
 (Location -&gt; Location -&gt; Ordering)
 -&gt; (Location -&gt; Location -&gt; Bool)
@@ -156,14 +156,14 @@ max :: Location -&gt; Location -&gt; Location
 $cmin :: Location -&gt; Location -&gt; Location
 min :: Location -&gt; Location -&gt; Location
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-104"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">newtype</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679111055"><span id="local-6989586621679111060"><span class="annot"><span class="annottext">Location
+</span><span id="line-104"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">newtype</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679111089"><span id="local-6989586621679111094"><span class="annot"><span class="annottext">Location
 Location -&gt; Location -&gt; Bounded Location
 forall a. a -&gt; a -&gt; Bounded a
 $cminBound :: Location
 minBound :: Location
 $cmaxBound :: Location
 maxBound :: Location
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111068"><span id="local-6989586621679111073"><span id="local-6989586621679111077"><span id="local-6989586621679111081"><span id="local-6989586621679111085"><span id="local-6989586621679111089"><span id="local-6989586621679111093"><span id="local-6989586621679111097"><span class="annot"><span class="annottext">Int -&gt; Location
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111102"><span id="local-6989586621679111107"><span id="local-6989586621679111111"><span id="local-6989586621679111115"><span id="local-6989586621679111119"><span id="local-6989586621679111123"><span id="local-6989586621679111127"><span id="local-6989586621679111131"><span class="annot"><span class="annottext">Int -&gt; Location
 Location -&gt; Int
 Location -&gt; [Location]
 Location -&gt; Location
@@ -206,8 +206,8 @@ $cenumFromThenTo :: Location -&gt; Location -&gt; Location -&gt; [Location]
 enumFromThenTo :: Location -&gt; Location -&gt; Location -&gt; [Location]
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-105"></span><span>
-</span><span id="line-106"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679111107"><span id="local-6989586621679111111"><span id="local-6989586621679111115"><span class="annot"><span class="hs-identifier hs-type">Read</span></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-107"></span><span>  </span><span id="local-6989586621679111141"><span class="annot"><span class="annottext">readPrec :: ReadPrec Location
+</span><span id="line-106"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679111141"><span id="local-6989586621679111145"><span id="local-6989586621679111149"><span class="annot"><span class="hs-identifier hs-type">Read</span></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-107"></span><span>  </span><span id="local-6989586621679111175"><span class="annot"><span class="annottext">readPrec :: ReadPrec Location
 </span><span class="hs-identifier hs-var hs-var hs-var">readPrec</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReadPrec Location -&gt; ReadPrec Location
 forall a. ReadPrec a -&gt; ReadPrec a
 </span><span class="hs-identifier hs-var">parens</span></span><span> </span><span class="annot"><span class="annottext">(ReadPrec Location -&gt; ReadPrec Location)
@@ -220,11 +220,11 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-110"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Ident</span></span><span> </span><span class="annot"><span class="hs-string">&quot;fromLetter&quot;</span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="hs-identifier hs-type">lexP</span></span><span>
 </span><span id="line-111"></span><span>    </span><span class="annot"><a href="ROC.ID.Location.html#fromLetter"><span class="hs-identifier hs-type">fromLetter</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">readPrec</span></span><span>
 </span><span id="line-112"></span><span>
-</span><span id="line-113"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679111145"><span id="local-6989586621679111149"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-114"></span><span>  </span><span id="local-6989586621679111154"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; Location -&gt; String -&gt; String
-</span><a href="#local-6989586621679111154"><span class="hs-identifier hs-var hs-var hs-var">showsPrec</span></a></span></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679111156"><span class="annot"><span class="annottext">Location
-</span><a href="#local-6989586621679111156"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-113"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679111179"><span id="local-6989586621679111183"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-114"></span><span>  </span><span id="local-6989586621679111188"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; Location -&gt; String -&gt; String
+</span><a href="#local-6989586621679111188"><span class="hs-identifier hs-var hs-var hs-var">showsPrec</span></a></span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679111190"><span class="annot"><span class="annottext">Location
+</span><a href="#local-6989586621679111190"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-115"></span><span>    </span><span class="annot"><span class="annottext">String -&gt; String -&gt; String
 </span><span class="hs-identifier hs-var">showString</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Location.fromLetter &quot;</span></span><span> </span><span class="annot"><span class="annottext">(String -&gt; String) -&gt; (String -&gt; String) -&gt; String -&gt; String
@@ -233,7 +233,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall a. Show a =&gt; a -&gt; String -&gt; String
 </span><span class="hs-identifier hs-var">shows</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Location -&gt; Letter
 </span><a href="ROC.ID.Location.html#toLetter"><span class="hs-identifier hs-var">toLetter</span></a></span><span> </span><span class="annot"><span class="annottext">Location
-</span><a href="#local-6989586621679111156"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679111190"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-116"></span><span>
 </span><span id="line-117"></span><span class="hs-comment">-- | Constructs a 'Location' from its corresponding letter code.</span><span>
 </span><span id="line-118"></span><span class="hs-comment">--</span><span>
@@ -246,9 +246,9 @@ forall a. Show a =&gt; a -&gt; String -&gt; String
 </span><span id="line-123"></span><span class="hs-comment">--</span><span>
 </span><span id="line-124"></span><span class="annot"><a href="ROC.ID.Location.html#toLetter"><span class="hs-identifier hs-type">toLetter</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Letter.html#Letter"><span class="hs-identifier hs-type">Letter</span></a></span><span>
 </span><span id="line-125"></span><span id="toLetter"><span class="annot"><span class="annottext">toLetter :: Location -&gt; Letter
-</span><a href="ROC.ID.Location.html#toLetter"><span class="hs-identifier hs-var hs-var">toLetter</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span id="local-6989586621679111160"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679111160"><span class="hs-identifier hs-var">letter</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679111160"><span class="hs-identifier hs-var">letter</span></a></span><span>
+</span><a href="ROC.ID.Location.html#toLetter"><span class="hs-identifier hs-var hs-var">toLetter</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span id="local-6989586621679111194"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679111194"><span class="hs-identifier hs-var">letter</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679111194"><span class="hs-identifier hs-var">letter</span></a></span><span>
 </span><span id="line-126"></span><span>
 </span><span id="line-127"></span><span class="annot"><span class="hs-comment">-- | Prints the specified 'Location'.</span></span><span>
 </span><span id="line-128"></span><span class="annot"><a href="ROC.ID.Location.html#toText"><span class="hs-identifier hs-type">toText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier hs-type">Language</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
@@ -263,9 +263,9 @@ forall a. Show a =&gt; a -&gt; String -&gt; String
 </span><span id="line-132"></span><span>
 </span><span id="line-133"></span><span class="annot"><a href="ROC.ID.Location.html#toTextChinese"><span class="hs-identifier hs-type">toTextChinese</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
 </span><span id="line-134"></span><span id="toTextChinese"><span class="annot"><span class="annottext">toTextChinese :: Location -&gt; Text
-</span><a href="ROC.ID.Location.html#toTextChinese"><span class="hs-identifier hs-var hs-var">toTextChinese</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span id="local-6989586621679111165"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679111165"><span class="hs-identifier hs-var">letter</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679111165"><span class="hs-identifier hs-var">letter</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="ROC.ID.Location.html#toTextChinese"><span class="hs-identifier hs-var hs-var">toTextChinese</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span id="local-6989586621679111199"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679111199"><span class="hs-identifier hs-var">letter</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679111199"><span class="hs-identifier hs-var">letter</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-135"></span><span>  </span><span class="annot"><span class="annottext">Letter
 </span><a href="ROC.ID.Letter.html#A"><span class="hs-identifier hs-var">A</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;&#33274;&#21271;&#24066;&quot;</span></span><span>
@@ -347,9 +347,9 @@ forall a. Show a =&gt; a -&gt; String -&gt; String
 </span><span id="line-161"></span><span>
 </span><span id="line-162"></span><span class="annot"><a href="ROC.ID.Location.html#toTextEnglish"><span class="hs-identifier hs-type">toTextEnglish</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
 </span><span id="line-163"></span><span id="toTextEnglish"><span class="annot"><span class="annottext">toTextEnglish :: Location -&gt; Text
-</span><a href="ROC.ID.Location.html#toTextEnglish"><span class="hs-identifier hs-var hs-var">toTextEnglish</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span id="local-6989586621679111192"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679111192"><span class="hs-identifier hs-var">letter</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679111192"><span class="hs-identifier hs-var">letter</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="ROC.ID.Location.html#toTextEnglish"><span class="hs-identifier hs-var hs-var">toTextEnglish</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span id="local-6989586621679111226"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679111226"><span class="hs-identifier hs-var">letter</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679111226"><span class="hs-identifier hs-var">letter</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-164"></span><span>  </span><span class="annot"><span class="annottext">Letter
 </span><a href="ROC.ID.Letter.html#A"><span class="hs-identifier hs-var">A</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;Taipei City&quot;</span></span><span>
@@ -431,7 +431,7 @@ forall a. Show a =&gt; a -&gt; String -&gt; String
 </span><span id="line-190"></span><span>
 </span><span id="line-191"></span><span class="hs-comment">-- | Generates a random 'Location'.</span><span>
 </span><span id="line-192"></span><span class="hs-comment">--</span><span>
-</span><span id="line-193"></span><span id="local-6989586621679110937"><span class="annot"><a href="ROC.ID.Location.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679110937"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679110937"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span><span>
+</span><span id="line-193"></span><span id="local-6989586621679110971"><span class="annot"><a href="ROC.ID.Location.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679110971"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679110971"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span></span><span>
 </span><span id="line-194"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Location
 </span><a href="ROC.ID.Location.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter -&gt; Location
 </span><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-var">Location</span></a></span><span> </span><span class="annot"><span class="annottext">(Letter -&gt; Location) -&gt; m Letter -&gt; m Location
