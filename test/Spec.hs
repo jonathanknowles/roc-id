@@ -7,6 +7,8 @@
 
 module Main where
 
+import Control.Monad
+  ( forM_ )
 import Data.Bifunctor
   ( Bifunctor (second) )
 import Data.Char
@@ -126,10 +128,8 @@ main = hspec $ do
   describe "ID.fromText" $ do
 
     it "successfully parses known-valid identification numbers" $
-      do
-        let i = ID.fromText "A123456789"
-        i `shouldBe` Right (ID A D1289_1 2 3 4 5 6 7 8)
-        fmap ID.checksum i `shouldBe` Right 9
+      forM_ knownValidIdNumbers $ \t ->
+          fmap ID.toText (ID.fromText t) `shouldBe` Right t
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: ID) ->
@@ -198,3 +198,39 @@ replaceCharAt i c t
     | otherwise = prefix <> T.singleton c <> suffix
   where
     (prefix, suffix) = second (T.drop 1) (T.splitAt i t)
+
+-- | A set of known-valid ID numbers.
+--
+-- Generated with 身分證字號產生器.
+--
+-- See: https://www.csie.ntu.edu.tw/~b90057/use/ROCid.html
+--
+knownValidIdNumbers :: [Text]
+knownValidIdNumbers =
+  [ "A123961383"
+  , "B210742224"
+  , "C120930548"
+  , "D257991149"
+  , "E127379116"
+  , "F235628112"
+  , "G105851924"
+  , "H247910878"
+  , "I118949082"
+  , "J218475156"
+  , "K150252170"
+  , "L298479266"
+  , "M114415878"
+  , "N242846162"
+  , "O184333688"
+  , "P257366789"
+  , "Q163999855"
+  , "R275744925"
+  , "S158047168"
+  , "T296696104"
+  , "U108929984"
+  , "V245356279"
+  , "W127612989"
+  , "X234128072"
+  , "Y140531128"
+  , "Z250358466"
+  ]
