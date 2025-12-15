@@ -16,6 +16,8 @@ module ROC.ID.Unchecked
   , fromText
   , toText
   , checksum
+  , checksumValidity
+  , ChecksumValidity (..)
   )
   where
 
@@ -142,6 +144,17 @@ checksumLetterToDigitPair = \case
   K -> (1, 9); X -> (3, 0)
   L -> (2, 0); Y -> (3, 1)
   M -> (2, 1); Z -> (3, 3)
+
+data ChecksumValidity
+  = ChecksumValid
+  | ChecksumInvalid
+  deriving (Eq, Show)
+
+checksumValidity :: UncheckedID -> ChecksumValidity
+checksumValidity u =
+  case checksum u of
+    0 -> ChecksumValid
+    _ -> ChecksumInvalid
 
 listToTuple8 :: [a] -> Maybe (a, a, a, a, a, a, a, a)
 listToTuple8 = \case
