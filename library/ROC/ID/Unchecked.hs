@@ -125,21 +125,23 @@ checksum (UncheckedID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8 u9) =
     [ 1,  9,  8,  7,  6,  5,  4,  3,  2,  1,  1]
     [a0, a1, u1, u2, u3, u4, u5, u6, u7, u8, u9]
   where
-    a0, a1 :: Digit
-    (a0, a1) = case u0 of
-      A -> (1, 0); N -> (2, 2)
-      B -> (1, 1); O -> (3, 5)
-      C -> (1, 2); P -> (2, 3)
-      D -> (1, 3); Q -> (2, 4)
-      E -> (1, 4); R -> (2, 5)
-      F -> (1, 5); S -> (2, 6)
-      G -> (1, 6); T -> (2, 7)
-      H -> (1, 7); U -> (2, 8)
-      I -> (3, 4); V -> (2, 9)
-      J -> (1, 8); W -> (3, 2)
-      K -> (1, 9); X -> (3, 0)
-      L -> (2, 0); Y -> (3, 1)
-      M -> (2, 1); Z -> (3, 3)
+    (a0, a1) = checksumLetterToDigitPair u0
+
+checksumLetterToDigitPair :: Letter -> (Digit, Digit)
+checksumLetterToDigitPair = \case
+  A -> (1, 0); N -> (2, 2)
+  B -> (1, 1); O -> (3, 5)
+  C -> (1, 2); P -> (2, 3)
+  D -> (1, 3); Q -> (2, 4)
+  E -> (1, 4); R -> (2, 5)
+  F -> (1, 5); S -> (2, 6)
+  G -> (1, 6); T -> (2, 7)
+  H -> (1, 7); U -> (2, 8)
+  I -> (3, 4); V -> (2, 9)
+  J -> (1, 8); W -> (3, 2)
+  K -> (1, 9); X -> (3, 0)
+  L -> (2, 0); Y -> (3, 1)
+  M -> (2, 1); Z -> (3, 3)
 
 listToTuple8 :: [a] -> Maybe (a, a, a, a, a, a, a, a)
 listToTuple8 = \case
