@@ -21,7 +21,7 @@ module ROC.ID
   , toTuple
 
   -- * Verification
-  , checksum
+  , checksumDigit
 
   -- * Generation
   , generate
@@ -201,8 +201,8 @@ toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
 
 -- | Computes the checksum digit for an 'ID'.
 --
-checksum :: ID -> Digit
-checksum (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+checksumDigit :: ID -> Digit
+checksumDigit (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   negate $ U.checksum (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 0)
 
 --------------------------------------------------------------------------------
@@ -281,12 +281,13 @@ encodeC1 = \case
   (Female, NonNational) -> D1289_9
 
 fromUnchecked :: UncheckedID -> Maybe ID
-fromUnchecked (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
-    | checksum i == u9 = Just i
-    | otherwise = Nothing
+fromUnchecked u@(UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 _) =
+    case U.checksumValidity u of
+      U.ChecksumValid   -> Just i
+      U.ChecksumInvalid -> Nothing
   where
     i = ID u0 u1 u2 u3 u4 u5 u6 u7 u8
 
 toUnchecked :: ID -> UncheckedID
 toUnchecked i@(ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
-  UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
+  UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksumDigit i)

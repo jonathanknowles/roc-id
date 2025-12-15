@@ -164,10 +164,10 @@ main = hspec $ do
 
     it "does not parse identification numbers with invalid checksums" $
       property $ \(i :: ID) (c :: Int) -> do
-        let invalidChecksum = intToDigit $
-              ((c `mod` 9) + fromEnum (ID.checksum i) + 1) `mod` 10
+        let invalidChecksumDigit = intToDigit $
+              ((c `mod` 9) + fromEnum (ID.checksumDigit i) + 1) `mod` 10
         let invalidID =
-              T.take 9 (ID.toText i) <> T.pack [invalidChecksum]
+              T.take 9 (ID.toText i) <> T.pack [invalidChecksumDigit]
         ID.fromText invalidID `shouldBe` Left ID.InvalidChecksum
 
     it "reports invalid characters even when input is too short" $
