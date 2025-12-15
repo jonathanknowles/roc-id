@@ -281,9 +281,10 @@ encodeC1 = \case
   (Female, NonNational) -> D1289_9
 
 fromUnchecked :: UncheckedID -> Maybe ID
-fromUnchecked (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 u9)
-    | checksumDigit i == u9 = Just i
-    | otherwise = Nothing
+fromUnchecked u@(UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 _) =
+    case U.checksumValidity u of
+      U.ChecksumValid   -> Just i
+      U.ChecksumInvalid -> Nothing
   where
     i = ID u0 u1 u2 u3 u4 u5 u6 u7 u8
 
