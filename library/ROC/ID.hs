@@ -3,7 +3,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE ViewPatterns #-}
 
 module ROC.ID
   (
@@ -203,26 +202,8 @@ toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
 -- | Computes the checksum digit for an 'ID'.
 --
 checksum :: ID -> Digit
-checksum (ID u0 (Digit1289.toDigit -> u1) u2 u3 u4 u5 u6 u7 u8) =
-    negate $ sum $ zipWith (*)
-      [ 1,  9,  8,  7,  6,  5,  4,  3,  2,  1]
-      [a0, a1, u1, u2, u3, u4, u5, u6, u7, u8]
-  where
-    a0, a1 :: Digit
-    (a0, a1) = case u0 of
-      A -> (1, 0); N -> (2, 2)
-      B -> (1, 1); O -> (3, 5)
-      C -> (1, 2); P -> (2, 3)
-      D -> (1, 3); Q -> (2, 4)
-      E -> (1, 4); R -> (2, 5)
-      F -> (1, 5); S -> (2, 6)
-      G -> (1, 6); T -> (2, 7)
-      H -> (1, 7); U -> (2, 8)
-      I -> (3, 4); V -> (2, 9)
-      J -> (1, 8); W -> (3, 2)
-      K -> (1, 9); X -> (3, 0)
-      L -> (2, 0); Y -> (3, 1)
-      M -> (2, 1); Z -> (3, 3)
+checksum (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+  negate $ U.checksum (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 0)
 
 --------------------------------------------------------------------------------
 -- Generation
