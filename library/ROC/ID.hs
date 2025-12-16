@@ -135,6 +135,17 @@ instance Show ID where
 -- Using a symbol that does not satisfy these constraints will result in
 -- a compile-time error.
 --
+-- === Requirements
+--
+-- >>> :set -XDataKinds
+-- >>> :set -XTypeApplications
+-- >>> import qualified ROC.ID as ID
+--
+-- === Usage
+--
+-- >>> ID.fromSymbol @"A123456789"
+-- ID.fromSymbol @"A123456789"
+--
 fromSymbol :: forall (s :: Symbol). ValidID s => ID
 fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
 
