@@ -142,6 +142,12 @@ fromText text = do
       U.InvalidChar i r ->
         InvalidChar i r
 
+unsafeFromText :: Text -> ID
+unsafeFromText t =
+  case fromText t of
+    Left _ -> error "unsafeFromText"
+    Right i -> i
+
 -- | Indicates an error that occurred while constructing an 'ID' from 'Text'.
 --
 data FromTextError
