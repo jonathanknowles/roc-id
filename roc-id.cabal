@@ -40,7 +40,7 @@ extra-doc-files:
   README.md
 
 common dependency-base
-    build-depends:base                      >= 4.7          && < 4.22
+    build-depends:base                      >= 4.17.2.1     && < 4.22
 common dependency-hspec
     build-depends:hspec                     >= 2.5.5        && < 2.12
 common dependency-MonadRandom
