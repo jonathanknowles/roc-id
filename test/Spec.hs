@@ -1,3 +1,4 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -7,8 +8,6 @@
 
 module Main where
 
-import Control.Monad
-  ( forM_ )
 import Data.Bifunctor
   ( Bifunctor (second) )
 import Data.Char
@@ -128,8 +127,8 @@ main = hspec $ do
   describe "ID.fromText" $ do
 
     it "successfully parses known-valid identification numbers" $
-      forM_ knownValidIdNumbers $ \t ->
-          fmap ID.toText (ID.fromText t) `shouldBe` Right t
+      forAll (elements knownValidIDs) $ \i ->
+        ID.fromText (ID.toText i) `shouldBe` Right i
 
     it "successfully parses valid identification numbers" $
       property $ \(i :: ID) ->
@@ -205,32 +204,32 @@ replaceCharAt i c t
 --
 -- See: https://www.csie.ntu.edu.tw/~b90057/use/ROCid.html
 --
-knownValidIdNumbers :: [Text]
-knownValidIdNumbers =
-  [ "A123961383"
-  , "B210742224"
-  , "C120930548"
-  , "D257991149"
-  , "E127379116"
-  , "F235628112"
-  , "G105851924"
-  , "H247910878"
-  , "I118949082"
-  , "J218475156"
-  , "K150252170"
-  , "L298479266"
-  , "M114415878"
-  , "N242846162"
-  , "O184333688"
-  , "P257366789"
-  , "Q163999855"
-  , "R275744925"
-  , "S158047168"
-  , "T296696104"
-  , "U108929984"
-  , "V245356279"
-  , "W127612989"
-  , "X234128072"
-  , "Y140531128"
-  , "Z250358466"
+knownValidIDs :: [ID]
+knownValidIDs =
+  [ ID.fromSymbol @"A123961383"
+  , ID.fromSymbol @"B210742224"
+  , ID.fromSymbol @"C120930548"
+  , ID.fromSymbol @"D257991149"
+  , ID.fromSymbol @"E127379116"
+  , ID.fromSymbol @"F235628112"
+  , ID.fromSymbol @"G105851924"
+  , ID.fromSymbol @"H247910878"
+  , ID.fromSymbol @"I118949082"
+  , ID.fromSymbol @"J218475156"
+  , ID.fromSymbol @"K150252170"
+  , ID.fromSymbol @"L298479266"
+  , ID.fromSymbol @"M114415878"
+  , ID.fromSymbol @"N242846162"
+  , ID.fromSymbol @"O184333688"
+  , ID.fromSymbol @"P257366789"
+  , ID.fromSymbol @"Q163999855"
+  , ID.fromSymbol @"R275744925"
+  , ID.fromSymbol @"S158047168"
+  , ID.fromSymbol @"T296696104"
+  , ID.fromSymbol @"U108929984"
+  , ID.fromSymbol @"V245356279"
+  , ID.fromSymbol @"W127612989"
+  , ID.fromSymbol @"X234128072"
+  , ID.fromSymbol @"Y140531128"
+  , ID.fromSymbol @"Z250358466"
   ]
