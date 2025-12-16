@@ -24,7 +24,7 @@ module ROC.ID
   , toText
   , toTuple
 
-  -- * Verification
+  -- * Validity
   , checksumDigit
 
   -- * Generation
@@ -90,9 +90,12 @@ import qualified ROC.ID.Unchecked as U
 -- (中華民國統一證號) of the form __@A123456789@__.
 --
 -- By construction, invalid identification numbers are __not representable__ by
--- this type.
+-- this data type.
 --
--- To calculate the checksum digit of an 'ID', use the 'checksum' function.
+-- To guarantee correctness, an 'ID' value does __not__ store the terminal
+-- checksum digit of the identification number it represents.
+--
+-- To compute the checksum digit, use 'checksumDigit'.
 --
 data ID = ID
   { c0 :: !Letter
@@ -231,10 +234,10 @@ toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
   (c0, c1, c2, c3, c4, c5, c6, c7, c8)
 
 --------------------------------------------------------------------------------
--- Verification
+-- Validity
 --------------------------------------------------------------------------------
 
--- | Computes the checksum digit for an 'ID'.
+-- | Computes the terminal checksum digit of an 'ID'.
 --
 checksumDigit :: ID -> Digit
 checksumDigit (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
