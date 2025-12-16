@@ -103,7 +103,11 @@ data ID = ID
   , c7 :: !Digit
   , c8 :: !Digit
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord)
+
+instance Show ID where
+  showsPrec _ s =
+    showString "ID.fromSymbol @" . shows (toText s)
 
 --------------------------------------------------------------------------------
 -- Construction
