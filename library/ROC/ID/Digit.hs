@@ -18,8 +18,6 @@ import Control.Monad.Random
   ( MonadRandom )
 import GHC.Generics
   ( Generic )
-import GHC.TypeError
-  ( ErrorMessage (Text), TypeError )
 import GHC.TypeNats
   ( Nat )
 import ROC.ID.Utilities
@@ -77,34 +75,31 @@ fromIntegral i = toEnum (Prelude.fromIntegral (i `mod` 10))
 generate :: MonadRandom m => m Digit
 generate = randomBoundedEnum
 
-type RangeError =
-  TypeError (Text "Digit must be in the range [0 .. 9].")
+type family FromChar (c :: Char) :: Maybe Digit where
+  FromChar '0' = Just D0
+  FromChar '1' = Just D1
+  FromChar '2' = Just D2
+  FromChar '3' = Just D3
+  FromChar '4' = Just D4
+  FromChar '5' = Just D5
+  FromChar '6' = Just D6
+  FromChar '7' = Just D7
+  FromChar '8' = Just D8
+  FromChar '9' = Just D9
+  FromChar _   = Nothing
 
-type family FromChar (c :: Char) :: Digit where
-  FromChar '0' = D0
-  FromChar '1' = D1
-  FromChar '2' = D2
-  FromChar '3' = D3
-  FromChar '4' = D4
-  FromChar '5' = D5
-  FromChar '6' = D6
-  FromChar '7' = D7
-  FromChar '8' = D8
-  FromChar '9' = D9
-  FromChar _ = RangeError
-
-type family FromNat (n :: Nat) :: Digit where
-  FromNat 0 = D0
-  FromNat 1 = D1
-  FromNat 2 = D2
-  FromNat 3 = D3
-  FromNat 4 = D4
-  FromNat 5 = D5
-  FromNat 6 = D6
-  FromNat 7 = D7
-  FromNat 8 = D8
-  FromNat 9 = D9
-  FromNat _ = RangeError
+type family FromNat (n :: Nat) :: Maybe Digit where
+  FromNat 0 = Just D0
+  FromNat 1 = Just D1
+  FromNat 2 = Just D2
+  FromNat 3 = Just D3
+  FromNat 4 = Just D4
+  FromNat 5 = Just D5
+  FromNat 6 = Just D6
+  FromNat 7 = Just D7
+  FromNat 8 = Just D8
+  FromNat 9 = Just D9
+  FromNat _ = Nothing
 
 type family ToNat (d :: Digit) :: Nat where
   ToNat D0 = 0

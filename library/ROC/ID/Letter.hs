@@ -15,8 +15,6 @@ import Control.Monad.Random.Class
   ( MonadRandom (..) )
 import GHC.Generics
   ( Generic )
-import GHC.TypeError
-  ( ErrorMessage (Text), TypeError )
 import ROC.ID.Utilities
   ( randomBoundedEnum )
 import Text.Read
@@ -49,18 +47,18 @@ toChar letter = case show letter of
 generate :: MonadRandom m => m Letter
 generate = randomBoundedEnum
 
-type family FromChar (c :: Char) :: Letter where
-  FromChar 'A' = A; FromChar 'N' = N
-  FromChar 'B' = B; FromChar 'O' = O
-  FromChar 'C' = C; FromChar 'P' = P
-  FromChar 'D' = D; FromChar 'Q' = Q
-  FromChar 'E' = E; FromChar 'R' = R
-  FromChar 'F' = F; FromChar 'S' = S
-  FromChar 'G' = G; FromChar 'T' = T
-  FromChar 'H' = H; FromChar 'U' = U
-  FromChar 'I' = I; FromChar 'V' = V
-  FromChar 'J' = J; FromChar 'W' = W
-  FromChar 'K' = K; FromChar 'X' = X
-  FromChar 'L' = L; FromChar 'Y' = Y
-  FromChar 'M' = M; FromChar 'Z' = Z
-  FromChar _ = TypeError (Text "Expected uppercase letter.")
+type family FromChar (c :: Char) :: Maybe Letter where
+  FromChar 'A' = Just A; FromChar 'N' = Just N
+  FromChar 'B' = Just B; FromChar 'O' = Just O
+  FromChar 'C' = Just C; FromChar 'P' = Just P
+  FromChar 'D' = Just D; FromChar 'Q' = Just Q
+  FromChar 'E' = Just E; FromChar 'R' = Just R
+  FromChar 'F' = Just F; FromChar 'S' = Just S
+  FromChar 'G' = Just G; FromChar 'T' = Just T
+  FromChar 'H' = Just H; FromChar 'U' = Just U
+  FromChar 'I' = Just I; FromChar 'V' = Just V
+  FromChar 'J' = Just J; FromChar 'W' = Just W
+  FromChar 'K' = Just K; FromChar 'X' = Just X
+  FromChar 'L' = Just L; FromChar 'Y' = Just Y
+  FromChar 'M' = Just M; FromChar 'Z' = Just Z
+  FromChar _ = Nothing

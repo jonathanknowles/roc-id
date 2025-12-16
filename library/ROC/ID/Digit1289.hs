@@ -22,8 +22,6 @@ import GHC.Generics
   ( Generic )
 import GHC.TypeNats
   ( Nat )
-import GHC.TypeError
-  ( ErrorMessage (Text), TypeError )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Utilities
@@ -73,22 +71,19 @@ toDigit = \case
 generate :: MonadRandom m => m Digit1289
 generate = randomBoundedEnum
 
-type RangeError =
-  TypeError (Text "Digit must be one of {1, 2, 8, 9}.")
+type family FromChar (c :: Char) :: Maybe Digit1289 where
+  FromChar '1' = Just D1289_1
+  FromChar '2' = Just D1289_2
+  FromChar '8' = Just D1289_8
+  FromChar '9' = Just D1289_9
+  FromChar _   = Nothing
 
-type family FromChar (c :: Char) :: Digit1289 where
-  FromChar '1' = D1289_1
-  FromChar '2' = D1289_2
-  FromChar '8' = D1289_8
-  FromChar '9' = D1289_9
-  FromChar _ = RangeError
-
-type family FromNat (n :: Nat) :: Digit1289 where
-  FromNat 1 = D1289_1
-  FromNat 2 = D1289_2
-  FromNat 8 = D1289_8
-  FromNat 9 = D1289_9
-  FromNat _ = RangeError
+type family FromNat (n :: Nat) :: Maybe Digit1289 where
+  FromNat 1 = Just D1289_1
+  FromNat 2 = Just D1289_2
+  FromNat 8 = Just D1289_8
+  FromNat 9 = Just D1289_9
+  FromNat _ = Nothing
 
 type family ToNat (d :: Digit1289) :: Nat where
   ToNat D1289_1 = 1

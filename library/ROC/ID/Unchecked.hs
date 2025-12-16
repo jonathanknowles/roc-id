@@ -51,7 +51,7 @@ import ROC.ID.Digit1289
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Utilities
-  ( Fst, Snd, SymbolToCharList, guard )
+  ( FromJust, Fst, Snd, SymbolToCharList, guard )
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
@@ -200,7 +200,7 @@ type family ChecksumValid id :: Constraint where
       (TypeError (TypeError.Text "ID has invalid checksum."))
 
 type family ChecksumDigit id :: Digit where
-  ChecksumDigit id = Digit.FromNat (Mod (Checksum id) 10)
+  ChecksumDigit id = DigitFromNat (Mod (Checksum id) 10)
 
 type family Checksum (id :: UncheckedIDTuple) :: Nat where
   Checksum '(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9) =
@@ -244,19 +244,40 @@ type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
 
 type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
   IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-    '( Letter.FromChar    c0
-     , Digit1289.FromChar c1
-     , Digit.FromChar     c2
-     , Digit.FromChar     c3
-     , Digit.FromChar     c4
-     , Digit.FromChar     c5
-     , Digit.FromChar     c6
-     , Digit.FromChar     c7
-     , Digit.FromChar     c8
-     , Digit.FromChar     c9
+    '( LetterFromChar    c0
+     , Digit1289FromChar c1
+     , DigitFromChar     c2
+     , DigitFromChar     c3
+     , DigitFromChar     c4
+     , DigitFromChar     c5
+     , DigitFromChar     c6
+     , DigitFromChar     c7
+     , DigitFromChar     c8
+     , DigitFromChar     c9
      )
   IdFromCharList _ =
     TypeError (TypeError.Text "An ID must have exactly 10 characters.")
+
+type family DigitFromChar (c :: Char) :: Digit where
+  DigitFromChar c = FromJust DigitTypeError (Digit.FromChar c)
+
+type family DigitFromNat (n :: Nat) :: Digit where
+  DigitFromNat c = FromJust DigitTypeError (Digit.FromNat c)
+
+type DigitTypeError =
+  TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
+
+type family Digit1289FromChar (c :: Char) :: Digit1289 where
+  Digit1289FromChar c = FromJust Digit1289TypeError (Digit1289.FromChar c)
+
+type Digit1289TypeError =
+  TypeError (TypeError.Text "Digit must be one of {1, 2, 8, 9}.")
+
+type family LetterFromChar (c :: Char) :: Letter where
+  LetterFromChar c = FromJust LetterTypeError (Letter.FromChar c)
+
+type LetterTypeError =
+  TypeError (TypeError.Text "Expected uppercase letter.")
 
 type ValidID s =
   ( KnownSymbol s
