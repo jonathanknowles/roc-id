@@ -244,7 +244,7 @@ type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
 
 type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
   IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-    '( Letter.FromChar   c0
+    '( LetterFromChar    c0
      , Digit1289FromChar c1
      , DigitFromChar     c2
      , DigitFromChar     c3
@@ -272,6 +272,12 @@ type family Digit1289FromChar (c :: Char) :: Digit1289 where
 
 type Digit1289TypeError =
   TypeError (TypeError.Text "Digit must be one of {1, 2, 8, 9}.")
+
+type family LetterFromChar (c :: Char) :: Letter where
+  LetterFromChar c = FromJust LetterTypeError (Letter.FromChar c)
+
+type LetterTypeError =
+  TypeError (TypeError.Text "Expected uppercase letter.")
 
 type ValidID s =
   ( KnownSymbol s
