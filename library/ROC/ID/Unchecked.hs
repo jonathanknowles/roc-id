@@ -1,15 +1,19 @@
+{-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE ViewPatterns #-}
 
 module ROC.ID.Unchecked
   ( UncheckedID (..)
+  , UncheckedIDTuple
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
@@ -18,28 +22,41 @@ module ROC.ID.Unchecked
   , checksum
   , checksumValidity
   , ChecksumValidity (..)
+  , ValidID
   )
   where
 
 import Control.Monad
   ( when )
+import Data.Kind
+  ( Constraint )
 import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
 import Data.Set.NonEmpty
   ( NESet )
 import Data.Text
   ( Text )
+import Data.Type.Equality
+  ( type (==) )
+import GHC.TypeError
+  ( Assert, TypeError )
+import GHC.TypeLits
+  ( KnownSymbol, Symbol )
+import GHC.TypeNats
+  ( Mod, Nat )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
-  ( Digit1289 )
+  ( Digit1289 (..) )
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Utilities
-  ( guard )
+  ( Fst, Snd, SymbolToCharList, guard )
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
+import qualified GHC.TypeError as TypeError
+import qualified GHC.TypeNats as N
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
@@ -57,6 +74,19 @@ data UncheckedID = UncheckedID
   , c9 :: !Digit
   }
   deriving stock (Eq, Ord, Show)
+
+type UncheckedIDTuple =
+  ( Letter
+  , Digit1289
+  , Digit
+  , Digit
+  , Digit
+  , Digit
+  , Digit
+  , Digit
+  , Digit
+  , Digit
+  )
 
 -- | Specifies the zero-based position of a character within a string.
 --
@@ -162,3 +192,73 @@ listToTuple8 = \case
     Just (a0, a1, a2, a3, a4, a5, a6, a7)
   _ ->
     Nothing
+
+type family ChecksumValid id :: Constraint where
+  ChecksumValid id =
+    Assert
+      (ChecksumDigit id == D0)
+      (TypeError (TypeError.Text "ID has invalid checksum."))
+
+type family ChecksumDigit id :: Digit where
+  ChecksumDigit id = Digit.FromNat (Mod (Checksum id) 10)
+
+type family Checksum (id :: UncheckedIDTuple) :: Nat where
+  Checksum '(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9) =
+    (     (ChecksumLetterToNat0 c0 N.* 1)
+      N.+ (ChecksumLetterToNat1 c0 N.* 9)
+      N.+ (Digit1289.ToNat      c1 N.* 8)
+      N.+ (Digit.ToNat          c2 N.* 7)
+      N.+ (Digit.ToNat          c3 N.* 6)
+      N.+ (Digit.ToNat          c4 N.* 5)
+      N.+ (Digit.ToNat          c5 N.* 4)
+      N.+ (Digit.ToNat          c6 N.* 3)
+      N.+ (Digit.ToNat          c7 N.* 2)
+      N.+ (Digit.ToNat          c8 N.* 1)
+      N.+ (Digit.ToNat          c9 N.* 1)
+    )
+
+type family ChecksumLetterToNat0 (letter :: Letter) :: Nat where
+  ChecksumLetterToNat0 x = Fst (ChecksumLetterToNatPair x)
+
+type family ChecksumLetterToNat1 (letter :: Letter) :: Nat where
+  ChecksumLetterToNat1 x = Snd (ChecksumLetterToNatPair x)
+
+type family ChecksumLetterToNatPair (l :: Letter) :: (Nat, Nat) where
+  ChecksumLetterToNatPair A = '(1, 0); ChecksumLetterToNatPair B = '(1, 1)
+  ChecksumLetterToNatPair C = '(1, 2); ChecksumLetterToNatPair D = '(1, 3)
+  ChecksumLetterToNatPair E = '(1, 4); ChecksumLetterToNatPair F = '(1, 5)
+  ChecksumLetterToNatPair G = '(1, 6); ChecksumLetterToNatPair H = '(1, 7)
+  ChecksumLetterToNatPair I = '(3, 4); ChecksumLetterToNatPair J = '(1, 8)
+  ChecksumLetterToNatPair K = '(1, 9); ChecksumLetterToNatPair L = '(2, 0)
+  ChecksumLetterToNatPair M = '(2, 1); ChecksumLetterToNatPair N = '(2, 2)
+  ChecksumLetterToNatPair O = '(3, 5); ChecksumLetterToNatPair P = '(2, 3)
+  ChecksumLetterToNatPair Q = '(2, 4); ChecksumLetterToNatPair R = '(2, 5)
+  ChecksumLetterToNatPair S = '(2, 6); ChecksumLetterToNatPair T = '(2, 7)
+  ChecksumLetterToNatPair U = '(2, 8); ChecksumLetterToNatPair V = '(2, 9)
+  ChecksumLetterToNatPair W = '(3, 2); ChecksumLetterToNatPair X = '(3, 0)
+  ChecksumLetterToNatPair Y = '(3, 1); ChecksumLetterToNatPair Z = '(3, 3)
+
+type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
+  SymbolToId s =
+    IdFromCharList (SymbolToCharList s)
+
+type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
+  IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
+    '( Letter.FromChar    c0
+     , Digit1289.FromChar c1
+     , Digit.FromChar     c2
+     , Digit.FromChar     c3
+     , Digit.FromChar     c4
+     , Digit.FromChar     c5
+     , Digit.FromChar     c6
+     , Digit.FromChar     c7
+     , Digit.FromChar     c8
+     , Digit.FromChar     c9
+     )
+  IdFromCharList _ =
+    TypeError (TypeError.Text "An ID must have exactly 10 characters.")
+
+type ValidID s =
+  ( KnownSymbol s
+  , ChecksumValid (SymbolToId s)
+  ) :: Constraint

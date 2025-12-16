@@ -1,8 +1,10 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeOperators #-}
 
 module ROC.ID
   (
@@ -10,17 +12,16 @@ module ROC.ID
     ID (..)
 
   -- * Construction
+  , fromSymbol
   , fromText
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
-  , fromTuple
 
   -- * Conversion
   , toText
-  , toTuple
 
-  -- * Verification
+  -- * Validity
   , checksumDigit
 
   -- * Generation
@@ -42,8 +43,12 @@ import Control.Monad.Random.Class
   ( MonadRandom )
 import Data.Bifunctor
   ( Bifunctor (first) )
+import Data.Proxy
+  ( Proxy (Proxy) )
 import Data.Text
   ( Text )
+import GHC.TypeLits
+  ( Symbol, symbolVal )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -60,10 +65,14 @@ import ROC.ID.Unchecked
   ( CharIndex (..)
   , CharSet (..)
   , UncheckedID (UncheckedID)
+  , ValidID
   )
 import ROC.ID.Utilities
   ( guard )
+import Text.Read
+  ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens )
 
+import qualified Data.Text as T
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
 import qualified ROC.ID.Letter as Letter
@@ -78,9 +87,12 @@ import qualified ROC.ID.Unchecked as U
 -- (中華民國統一證號) of the form __@A123456789@__.
 --
 -- By construction, invalid identification numbers are __not representable__ by
--- this type.
+-- this data type.
 --
--- To calculate the checksum digit of an 'ID', use the 'checksum' function.
+-- To guarantee correctness, an 'ID' value does __not__ store the terminal
+-- checksum digit of the identification number it represents.
+--
+-- To compute the checksum digit, use 'checksumDigit'.
 --
 data ID = ID
   { c0 :: !Letter
@@ -93,11 +105,49 @@ data ID = ID
   , c7 :: !Digit
   , c8 :: !Digit
   }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord)
+
+instance Read ID where
+  readPrec = parens $ do
+    Ident  "ID"         <- lexP
+    Symbol "."          <- lexP
+    Ident  "fromSymbol" <- lexP
+    Punc   "@"          <- lexP
+    unsafeFromText <$> readPrec
+
+instance Show ID where
+  showsPrec _ s =
+    showString "ID.fromSymbol @" . shows (toText s)
 
 --------------------------------------------------------------------------------
 -- Construction
 --------------------------------------------------------------------------------
+
+-- | Constructs an 'ID' from a type-level textual symbol.
+--
+-- The symbol must be exactly 10 characters in length and of the form
+-- __@A123456789@__.
+--
+-- More precisely, the symbol must match the regular expression
+-- __@^[A-Z][1289][0-9]{8}$@__, and the resultant ID must have a valid
+-- checksum.
+--
+-- Using a symbol that does not satisfy these constraints will result in
+-- a compile-time error.
+--
+-- === Requirements
+--
+-- >>> :set -XDataKinds
+-- >>> :set -XTypeApplications
+-- >>> import qualified ROC.ID as ID
+--
+-- === Usage
+--
+-- >>> ID.fromSymbol @"A123456789"
+-- ID.fromSymbol @"A123456789"
+--
+fromSymbol :: forall (s :: Symbol). ValidID s => ID
+fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
 
 -- | Attempts to construct an 'ID' from 'Text'.
 --
@@ -105,7 +155,8 @@ data ID = ID
 -- __@A123456789@__.
 --
 -- More precisely, the input must match the regular expression
--- __@^[A-Z][1289][0-9]{8}$@__.
+-- __@^[A-Z][1289][0-9]{8}$@__, and the resultant ID must have a valid
+-- checksum.
 --
 -- This function satisfies the following law:
 --
@@ -126,6 +177,12 @@ fromText text = do
         TextTooLong
       U.InvalidChar i r ->
         InvalidChar i r
+
+unsafeFromText :: Text -> ID
+unsafeFromText t =
+  case fromText t of
+    Left _ -> error "unsafeFromText"
+    Right i -> i
 
 -- | Indicates an error that occurred while constructing an 'ID' from 'Text'.
 --
@@ -148,21 +205,6 @@ data FromTextError
 
   deriving (Eq, Ord, Show)
 
--- | Constructs an 'ID' from a tuple.
---
--- This function satisfies the following laws:
---
--- @
--- 'fromTuple' ('toTuple' i) '==' i
--- @
--- @
--- 'toTuple' ('fromTuple' t) '==' t
--- @
---
-fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> ID
-fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
-  ID c0 c1 c2 c3 c4 c5 c6 c7 c8
-
 --------------------------------------------------------------------------------
 -- Conversion
 --------------------------------------------------------------------------------
@@ -180,26 +222,11 @@ fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
 toText :: ID -> Text
 toText = U.toText . toUnchecked
 
--- | Converts an 'ID' to a tuple.
---
--- This function satisfies the following laws:
---
--- @
--- 'fromTuple' ('toTuple' i) '==' i
--- @
--- @
--- 'toTuple' ('fromTuple' t) '==' t
--- @
---
-toTuple :: Digit ~ d => ID -> (Letter, Digit1289, d, d, d, d, d, d, d)
-toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
-  (c0, c1, c2, c3, c4, c5, c6, c7, c8)
-
 --------------------------------------------------------------------------------
--- Verification
+-- Validity
 --------------------------------------------------------------------------------
 
--- | Computes the checksum digit for an 'ID'.
+-- | Computes the terminal checksum digit of an 'ID'.
 --
 checksumDigit :: ID -> Digit
 checksumDigit (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =

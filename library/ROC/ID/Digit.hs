@@ -1,16 +1,27 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module ROC.ID.Digit
   ( Digit (..)
   , fromChar
   , toChar
   , generate
+  , FromChar
+  , FromNat
+  , ToNat
   ) where
 
 import Control.Monad.Random
   ( MonadRandom )
 import GHC.Generics
   ( Generic )
+import GHC.TypeError
+  ( ErrorMessage (Text), TypeError )
+import GHC.TypeNats
+  ( Nat )
 import ROC.ID.Utilities
   ( maybeBoundedEnum, randomBoundedEnum )
 import Text.Read
@@ -65,3 +76,44 @@ fromIntegral i = toEnum (Prelude.fromIntegral (i `mod` 10))
 --
 generate :: MonadRandom m => m Digit
 generate = randomBoundedEnum
+
+type RangeError =
+  TypeError (Text "Digit must be in the range [0 .. 9].")
+
+type family FromChar (c :: Char) :: Digit where
+  FromChar '0' = D0
+  FromChar '1' = D1
+  FromChar '2' = D2
+  FromChar '3' = D3
+  FromChar '4' = D4
+  FromChar '5' = D5
+  FromChar '6' = D6
+  FromChar '7' = D7
+  FromChar '8' = D8
+  FromChar '9' = D9
+  FromChar _ = RangeError
+
+type family FromNat (n :: Nat) :: Digit where
+  FromNat 0 = D0
+  FromNat 1 = D1
+  FromNat 2 = D2
+  FromNat 3 = D3
+  FromNat 4 = D4
+  FromNat 5 = D5
+  FromNat 6 = D6
+  FromNat 7 = D7
+  FromNat 8 = D8
+  FromNat 9 = D9
+  FromNat _ = RangeError
+
+type family ToNat (d :: Digit) :: Nat where
+  ToNat D0 = 0
+  ToNat D1 = 1
+  ToNat D2 = 2
+  ToNat D3 = 3
+  ToNat D4 = 4
+  ToNat D5 = 5
+  ToNat D6 = 6
+  ToNat D7 = 7
+  ToNat D8 = 8
+  ToNat D9 = 9
