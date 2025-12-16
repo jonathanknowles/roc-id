@@ -123,7 +123,17 @@ instance Show ID where
 -- Construction
 --------------------------------------------------------------------------------
 
--- | Constructs an 'ID' from a type-level symbol.
+-- | Constructs an 'ID' from a type-level textual symbol.
+--
+-- The symbol must be exactly 10 characters in length and of the form
+-- __@A123456789@__.
+--
+-- More precisely, the symbol must match the regular expression
+-- __@^[A-Z][1289][0-9]{8}$@__, and the resultant ID must have a valid
+-- checksum.
+--
+-- Using a symbol that does not satisfy these constraints will result in
+-- a compile-time error.
 --
 fromSymbol :: forall (s :: Symbol). ValidID s => ID
 fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
@@ -134,7 +144,8 @@ fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
 -- __@A123456789@__.
 --
 -- More precisely, the input must match the regular expression
--- __@^[A-Z][1289][0-9]{8}$@__.
+-- __@^[A-Z][1289][0-9]{8}$@__, and the resultant ID must have a valid
+-- checksum.
 --
 -- This function satisfies the following law:
 --
