@@ -244,16 +244,16 @@ type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
 
 type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
   IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-    '( Letter.FromChar    c0
-     , Digit1289.FromChar c1
-     , DigitFromChar      c2
-     , DigitFromChar      c3
-     , DigitFromChar      c4
-     , DigitFromChar      c5
-     , DigitFromChar      c6
-     , DigitFromChar      c7
-     , DigitFromChar      c8
-     , DigitFromChar      c9
+    '( Letter.FromChar   c0
+     , Digit1289FromChar c1
+     , DigitFromChar     c2
+     , DigitFromChar     c3
+     , DigitFromChar     c4
+     , DigitFromChar     c5
+     , DigitFromChar     c6
+     , DigitFromChar     c7
+     , DigitFromChar     c8
+     , DigitFromChar     c9
      )
   IdFromCharList _ =
     TypeError (TypeError.Text "An ID must have exactly 10 characters.")
@@ -266,6 +266,12 @@ type family DigitFromNat (n :: Nat) :: Digit where
 
 type DigitTypeError =
   TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
+
+type family Digit1289FromChar (c :: Char) :: Digit1289 where
+  Digit1289FromChar c = FromJust Digit1289TypeError (Digit1289.FromChar c)
+
+type Digit1289TypeError =
+  TypeError (TypeError.Text "Digit must be one of {1, 2, 8, 9}.")
 
 type ValidID s =
   ( KnownSymbol s
