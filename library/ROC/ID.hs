@@ -5,7 +5,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeOperators #-}
 
 module ROC.ID
   (
@@ -18,11 +17,9 @@ module ROC.ID
   , FromTextError (..)
   , CharIndex (..)
   , CharSet (..)
-  , fromTuple
 
   -- * Conversion
   , toText
-  , toTuple
 
   -- * Validity
   , checksumDigit
@@ -186,21 +183,6 @@ data FromTextError
 
   deriving (Eq, Ord, Show)
 
--- | Constructs an 'ID' from a tuple.
---
--- This function satisfies the following laws:
---
--- @
--- 'fromTuple' ('toTuple' i) '==' i
--- @
--- @
--- 'toTuple' ('fromTuple' t) '==' t
--- @
---
-fromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> ID
-fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
-  ID c0 c1 c2 c3 c4 c5 c6 c7 c8
-
 --------------------------------------------------------------------------------
 -- Conversion
 --------------------------------------------------------------------------------
@@ -217,21 +199,6 @@ fromTuple (c0, c1, c2, c3, c4, c5, c6, c7, c8) =
 --
 toText :: ID -> Text
 toText = U.toText . toUnchecked
-
--- | Converts an 'ID' to a tuple.
---
--- This function satisfies the following laws:
---
--- @
--- 'fromTuple' ('toTuple' i) '==' i
--- @
--- @
--- 'toTuple' ('fromTuple' t) '==' t
--- @
---
-toTuple :: Digit ~ d => ID -> (Letter, Digit1289, d, d, d, d, d, d, d)
-toTuple (ID c0 c1 c2 c3 c4 c5 c6 c7 c8) =
-  (c0, c1, c2, c3, c4, c5, c6, c7, c8)
 
 --------------------------------------------------------------------------------
 -- Validity

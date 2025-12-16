@@ -3,6 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeOperators #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {- HLINT ignore "Redundant bracket" -}
 
@@ -69,8 +70,8 @@ instance Arbitrary Letter where
   shrink = shrinkBoundedEnum
 
 instance Arbitrary ID where
-  arbitrary = ID.fromTuple <$> arbitrary
-  shrink = shrinkMap ID.fromTuple ID.toTuple
+  arbitrary = idFromTuple <$> arbitrary
+  shrink = shrinkMap idFromTuple idToTuple
 
 instance Arbitrary Location where
   arbitrary = arbitraryBoundedEnum
@@ -234,3 +235,11 @@ knownValidIDs =
   , ID.fromSymbol @"Y140531128"
   , ID.fromSymbol @"Z250358466"
   ]
+
+idFromTuple :: Digit ~ d => (Letter, Digit1289, d, d, d, d, d, d, d) -> ID
+idFromTuple (x0, x1, x2, x3, x4, x5, x6, x7, x8) =
+  ID x0 x1 x2 x3 x4 x5 x6 x7 x8
+
+idToTuple :: Digit ~ d => ID -> (Letter, Digit1289, d, d, d, d, d, d, d)
+idToTuple (ID x0 x1 x2 x3 x4 x5 x6 x7 x8) =
+  (x0, x1, x2, x3, x4, x5, x6, x7, x8)
