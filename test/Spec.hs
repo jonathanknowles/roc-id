@@ -106,6 +106,7 @@ main = hspec $ do
         [ eqLaws
         , ordLaws
         , showLaws
+        , showReadLaws
         ]
 
     testLawsMany @Location

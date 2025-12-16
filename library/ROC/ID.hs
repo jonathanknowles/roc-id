@@ -72,6 +72,8 @@ import ROC.ID.Unchecked
   )
 import ROC.ID.Utilities
   ( guard )
+import Text.Read
+  ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens )
 
 import qualified Data.Text as T
 import qualified ROC.ID.Digit as Digit
@@ -104,6 +106,14 @@ data ID = ID
   , c8 :: !Digit
   }
   deriving (Eq, Ord)
+
+instance Read ID where
+  readPrec = parens $ do
+    Ident  "ID"         <- lexP
+    Symbol "."          <- lexP
+    Ident  "fromSymbol" <- lexP
+    Punc   "@"          <- lexP
+    unsafeFromText <$> readPrec
 
 instance Show ID where
   showsPrec _ s =
