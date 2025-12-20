@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679111609"><span id="local-6989586621679111610"></span></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html"><span class="hs-identifier">ROC.ID.Nationality</span></a></span><span>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679111777"><span id="local-6989586621679111778"></span></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html"><span class="hs-identifier">ROC.ID.Nationality</span></a></span><span>
 </span><span id="line-2"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html#Nationality"><span class="hs-identifier">Nationality</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
 </span><span id="line-3"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html#generate"><span class="hs-identifier">generate</span></a></span><span>
 </span><span id="line-4"></span><span>  </span><span class="hs-special">)</span><span>
@@ -12,14 +12,14 @@
 </span><span id="line-12"></span><span class="hs-comment">-- | Specifies a person's nationality.</span><span>
 </span><span id="line-13"></span><span class="hs-comment">--</span><span>
 </span><span id="line-14"></span><span class="hs-keyword">data</span><span> </span><span id="Nationality"><span class="annot"><a href="ROC.ID.Nationality.html#Nationality"><span class="hs-identifier hs-var">Nationality</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="National"><span class="annot"><a href="ROC.ID.Nationality.html#National"><span class="hs-identifier hs-var">National</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="NonNational"><span class="annot"><a href="ROC.ID.Nationality.html#NonNational"><span class="hs-identifier hs-var">NonNational</span></a></span></span><span>
-</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679111616"><span id="local-6989586621679111618"><span class="annot"><span class="annottext">Nationality
+</span><span id="line-15"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679111784"><span id="local-6989586621679111786"><span class="annot"><span class="annottext">Nationality
 Nationality -&gt; Nationality -&gt; Bounded Nationality
 forall a. a -&gt; a -&gt; Bounded a
 $cminBound :: Nationality
 minBound :: Nationality
 $cmaxBound :: Nationality
 maxBound :: Nationality
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111624"><span id="local-6989586621679111632"><span id="local-6989586621679111637"><span id="local-6989586621679111643"><span id="local-6989586621679111646"><span id="local-6989586621679111651"><span id="local-6989586621679111658"><span id="local-6989586621679111662"><span class="annot"><span class="annottext">Int -&gt; Nationality
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Bounded</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111792"><span id="local-6989586621679111800"><span id="local-6989586621679111805"><span id="local-6989586621679111811"><span id="local-6989586621679111814"><span id="local-6989586621679111819"><span id="local-6989586621679111826"><span id="local-6989586621679111830"><span class="annot"><span class="annottext">Int -&gt; Nationality
 Nationality -&gt; Int
 Nationality -&gt; [Nationality]
 Nationality -&gt; Nationality
@@ -60,7 +60,7 @@ $cenumFromTo :: Nationality -&gt; Nationality -&gt; [Nationality]
 enumFromTo :: Nationality -&gt; Nationality -&gt; [Nationality]
 $cenumFromThenTo :: Nationality -&gt; Nationality -&gt; Nationality -&gt; [Nationality]
 enumFromThenTo :: Nationality -&gt; Nationality -&gt; Nationality -&gt; [Nationality]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111670"><span id="local-6989586621679111674"><span class="annot"><span class="annottext">Nationality -&gt; Nationality -&gt; Bool
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Enum</span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111838"><span id="local-6989586621679111842"><span class="annot"><span class="annottext">Nationality -&gt; Nationality -&gt; Bool
 (Nationality -&gt; Nationality -&gt; Bool)
 -&gt; (Nationality -&gt; Nationality -&gt; Bool) -&gt; Eq Nationality
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -68,7 +68,7 @@ $c== :: Nationality -&gt; Nationality -&gt; Bool
 == :: Nationality -&gt; Nationality -&gt; Bool
 $c/= :: Nationality -&gt; Nationality -&gt; Bool
 /= :: Nationality -&gt; Nationality -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111681"><span id="local-6989586621679111683"><span id="local-6989586621679111685"><span id="local-6989586621679111689"><span id="local-6989586621679111692"><span id="local-6989586621679111695"><span id="local-6989586621679111698"><span class="annot"><span class="annottext">Eq Nationality
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111849"><span id="local-6989586621679111851"><span id="local-6989586621679111853"><span id="local-6989586621679111857"><span id="local-6989586621679111860"><span id="local-6989586621679111863"><span id="local-6989586621679111866"><span class="annot"><span class="annottext">Eq Nationality
 Eq Nationality =&gt;
 (Nationality -&gt; Nationality -&gt; Ordering)
 -&gt; (Nationality -&gt; Nationality -&gt; Bool)
@@ -105,7 +105,7 @@ $cmax :: Nationality -&gt; Nationality -&gt; Nationality
 max :: Nationality -&gt; Nationality -&gt; Nationality
 $cmin :: Nationality -&gt; Nationality -&gt; Nationality
 min :: Nationality -&gt; Nationality -&gt; Nationality
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111706"><span id="local-6989586621679111710"><span id="local-6989586621679111713"><span id="local-6989586621679111718"><span class="annot"><span class="annottext">ReadPrec [Nationality]
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111874"><span id="local-6989586621679111878"><span id="local-6989586621679111881"><span id="local-6989586621679111886"><span class="annot"><span class="annottext">ReadPrec [Nationality]
 ReadPrec Nationality
 Int -&gt; ReadS Nationality
 ReadS [Nationality]
@@ -125,7 +125,7 @@ $creadPrec :: ReadPrec Nationality
 readPrec :: ReadPrec Nationality
 $creadListPrec :: ReadPrec [Nationality]
 readListPrec :: ReadPrec [Nationality]
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Read</span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111725"><span id="local-6989586621679111727"><span id="local-6989586621679111731"><span class="annot"><span class="annottext">Int -&gt; Nationality -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Read</span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679111893"><span id="local-6989586621679111895"><span id="local-6989586621679111899"><span class="annot"><span class="annottext">Int -&gt; Nationality -&gt; ShowS
 [Nationality] -&gt; ShowS
 Nationality -&gt; String
 (Int -&gt; Nationality -&gt; ShowS)
@@ -144,7 +144,7 @@ showList :: [Nationality] -&gt; ShowS
 </span><span id="line-16"></span><span>
 </span><span id="line-17"></span><span class="hs-comment">-- | Generates a random 'Nationality'.</span><span>
 </span><span id="line-18"></span><span class="hs-comment">--</span><span>
-</span><span id="line-19"></span><span id="local-6989586621679111604"><span class="annot"><a href="ROC.ID.Nationality.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679111604"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679111604"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html#Nationality"><span class="hs-identifier hs-type">Nationality</span></a></span></span><span>
+</span><span id="line-19"></span><span id="local-6989586621679111772"><span class="annot"><a href="ROC.ID.Nationality.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679111772"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679111772"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html#Nationality"><span class="hs-identifier hs-type">Nationality</span></a></span></span><span>
 </span><span id="line-20"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Nationality
 </span><a href="ROC.ID.Nationality.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m Nationality
 forall (m :: * -&gt; *) a. (MonadRandom m, Bounded a, Enum a) =&gt; m a
