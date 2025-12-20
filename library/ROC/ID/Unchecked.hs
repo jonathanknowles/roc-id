@@ -269,26 +269,35 @@ type family
 type family
     DigitFromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Digit
   where
-    DigitFromChar id index c = FromJust DigitTypeError (Digit.FromChar c)
-
-type DigitTypeError =
-  TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
+    DigitFromChar id index c =
+      FromJust
+        (InvalidCharError id index DigitTypeError)
+        (Digit.FromChar c)
 
 type family
     Digit1289FromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Digit1289
   where
-    Digit1289FromChar d n c = FromJust Digit1289TypeError (Digit1289.FromChar c)
-
-type Digit1289TypeError =
-  TypeError (TypeError.Text "Digit must be one of {1, 2, 8, 9}.")
+    Digit1289FromChar id index c =
+      FromJust
+        (InvalidCharError id index Digit1289TypeError)
+        (Digit1289.FromChar c)
 
 type family
     LetterFromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Letter
   where
-    LetterFromChar id index c = FromJust LetterTypeError (Letter.FromChar c)
+    LetterFromChar id index c =
+      FromJust
+        (InvalidCharError id index LetterTypeError)
+        (Letter.FromChar c)
+
+type DigitTypeError =
+  "Character at indicated position must be a digit within the range [0 .. 9]."
+
+type Digit1289TypeError =
+  "Character at indicated position must be a digit from the set {1, 2, 8, 9}."
 
 type LetterTypeError =
-  TypeError (TypeError.Text "Expected uppercase letter.")
+  "Character at indicated position must be an uppercase letter."
 
 type family InvalidCharError
     (invalidId :: Symbol) (charIndex :: Nat) (message :: Symbol)
