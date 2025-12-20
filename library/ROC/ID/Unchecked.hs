@@ -193,13 +193,13 @@ listToTuple8 = \case
   _ ->
     Nothing
 
-type family ChecksumValid id :: Constraint where
+type family ChecksumValid (id :: UncheckedIDTuple) :: Constraint where
   ChecksumValid id =
     Assert
       (ChecksumDigit id == D0)
       (TypeError (TypeError.Text "ID has invalid checksum."))
 
-type family ChecksumDigit id :: Digit where
+type family ChecksumDigit (id :: UncheckedIDTuple) :: Digit where
   ChecksumDigit id = ChecksumDigitFromNat (Mod (Checksum id) 10)
 
 type family ChecksumDigitFromNat (n :: Nat) :: Digit where
