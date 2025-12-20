@@ -240,23 +240,25 @@ type family ChecksumLetterToNatPair (l :: Letter) :: (Nat, Nat) where
 
 type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
   SymbolToId s =
-    IdFromCharList (SymbolToCharList s)
+    IdFromCharList s (SymbolToCharList s)
 
-type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
-  IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-    '( LetterFromChar    0 c0
-     , Digit1289FromChar 1 c1
-     , DigitFromChar     2 c2
-     , DigitFromChar     3 c3
-     , DigitFromChar     4 c4
-     , DigitFromChar     5 c5
-     , DigitFromChar     6 c6
-     , DigitFromChar     7 c7
-     , DigitFromChar     8 c8
-     , DigitFromChar     9 c9
-     )
-  IdFromCharList _ =
-    TypeError (TypeError.Text "An ID must have exactly 10 characters.")
+type family
+    IdFromCharList (s :: Symbol) (xs :: [Char]) :: UncheckedIDTuple
+  where
+    IdFromCharList s '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
+      '( LetterFromChar    0 c0
+       , Digit1289FromChar 1 c1
+       , DigitFromChar     2 c2
+       , DigitFromChar     3 c3
+       , DigitFromChar     4 c4
+       , DigitFromChar     5 c5
+       , DigitFromChar     6 c6
+       , DigitFromChar     7 c7
+       , DigitFromChar     8 c8
+       , DigitFromChar     9 c9
+       )
+    IdFromCharList _ _ =
+      TypeError (TypeError.Text "An ID must have exactly 10 characters.")
 
 type family DigitFromChar (index :: Nat) (c :: Char) :: Digit where
   DigitFromChar index c = FromJust DigitTypeError (Digit.FromChar c)
