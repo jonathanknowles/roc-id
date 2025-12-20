@@ -41,9 +41,9 @@ import Data.Type.Equality
 import GHC.TypeError
   ( Assert, TypeError )
 import GHC.TypeLits
-  ( KnownSymbol, Symbol )
+  ( AppendSymbol, KnownSymbol, Symbol )
 import GHC.TypeNats
-  ( Mod, Nat )
+  ( Mod, Nat, type (+) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -51,7 +51,7 @@ import ROC.ID.Digit1289
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Utilities
-  ( FromJust, Fst, Snd, SymbolToCharList, guard )
+  ( FromJust, Fst, ReplicateChar, Snd, SymbolToCharList, guard )
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
@@ -193,14 +193,20 @@ listToTuple8 = \case
   _ ->
     Nothing
 
-type family ChecksumValid id :: Constraint where
+type family ChecksumValid (id :: UncheckedIDTuple) :: Constraint where
   ChecksumValid id =
     Assert
       (ChecksumDigit id == D0)
       (TypeError (TypeError.Text "ID has invalid checksum."))
 
-type family ChecksumDigit id :: Digit where
-  ChecksumDigit id = DigitFromNat (Mod (Checksum id) 10)
+type family ChecksumDigit (id :: UncheckedIDTuple) :: Digit where
+  ChecksumDigit id = ChecksumDigitFromNat (Mod (Checksum id) 10)
+
+type family ChecksumDigitFromNat (n :: Nat) :: Digit where
+  ChecksumDigitFromNat n =
+    FromJust
+      (Digit.FromNat n)
+      (TypeError (TypeError.Text "Expected natural number between 0 and 9."))
 
 type family Checksum (id :: UncheckedIDTuple) :: Nat where
   Checksum '(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9) =
@@ -240,44 +246,70 @@ type family ChecksumLetterToNatPair (l :: Letter) :: (Nat, Nat) where
 
 type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
   SymbolToId s =
-    IdFromCharList (SymbolToCharList s)
+    IdFromCharList s (SymbolToCharList s)
 
-type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
-  IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-    '( LetterFromChar    c0
-     , Digit1289FromChar c1
-     , DigitFromChar     c2
-     , DigitFromChar     c3
-     , DigitFromChar     c4
-     , DigitFromChar     c5
-     , DigitFromChar     c6
-     , DigitFromChar     c7
-     , DigitFromChar     c8
-     , DigitFromChar     c9
-     )
-  IdFromCharList _ =
-    TypeError (TypeError.Text "An ID must have exactly 10 characters.")
+type family
+    IdFromCharList (id :: Symbol) (xs :: [Char]) :: UncheckedIDTuple
+  where
+    IdFromCharList id '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
+      '( LetterFromChar    id 0 c0
+       , Digit1289FromChar id 1 c1
+       , DigitFromChar     id 2 c2
+       , DigitFromChar     id 3 c3
+       , DigitFromChar     id 4 c4
+       , DigitFromChar     id 5 c5
+       , DigitFromChar     id 6 c6
+       , DigitFromChar     id 7 c7
+       , DigitFromChar     id 8 c8
+       , DigitFromChar     id 9 c9
+       )
+    IdFromCharList _ _ =
+      TypeError (TypeError.Text "An ID must have exactly 10 characters.")
 
-type family DigitFromChar (c :: Char) :: Digit where
-  DigitFromChar c = FromJust DigitTypeError (Digit.FromChar c)
+type family
+    DigitFromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Digit
+  where
+    DigitFromChar id index c =
+      FromJust
+        (Digit.FromChar c)
+        (InvalidCharError id index DigitTypeError)
 
-type family DigitFromNat (n :: Nat) :: Digit where
-  DigitFromNat c = FromJust DigitTypeError (Digit.FromNat c)
+type family
+    Digit1289FromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Digit1289
+  where
+    Digit1289FromChar id index c =
+      FromJust
+        (Digit1289.FromChar c)
+        (InvalidCharError id index Digit1289TypeError)
+
+type family
+    LetterFromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Letter
+  where
+    LetterFromChar id index c =
+      FromJust
+        (Letter.FromChar c)
+        (InvalidCharError id index LetterTypeError)
 
 type DigitTypeError =
-  TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
-
-type family Digit1289FromChar (c :: Char) :: Digit1289 where
-  Digit1289FromChar c = FromJust Digit1289TypeError (Digit1289.FromChar c)
+  "Character at indicated position must be a digit within the range [0 .. 9]."
 
 type Digit1289TypeError =
-  TypeError (TypeError.Text "Digit must be one of {1, 2, 8, 9}.")
-
-type family LetterFromChar (c :: Char) :: Letter where
-  LetterFromChar c = FromJust LetterTypeError (Letter.FromChar c)
+  "Character at indicated position must be a digit from the set {1, 2, 8, 9}."
 
 type LetterTypeError =
-  TypeError (TypeError.Text "Expected uppercase letter.")
+  "Character at indicated position must be an uppercase letter."
+
+type family InvalidCharError
+    (invalidId :: Symbol) (charIndex :: Nat) (message :: Symbol)
+  where
+    InvalidCharError invalidId charIndex message =
+      TypeError
+        ( TypeError.ShowType invalidId
+          TypeError.:$$:
+          TypeError.Text (ReplicateChar (charIndex + 1) ' ' `AppendSymbol` "^")
+          TypeError.:$$:
+          TypeError.Text message
+        )
 
 type ValidID s =
   ( KnownSymbol s
