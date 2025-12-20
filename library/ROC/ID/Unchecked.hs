@@ -205,8 +205,8 @@ type family ChecksumDigit (id :: UncheckedIDTuple) :: Digit where
 type family ChecksumDigitFromNat (n :: Nat) :: Digit where
   ChecksumDigitFromNat n =
     FromJust
-      (TypeError (TypeError.Text "Expected natural number between 0 and 9."))
       (Digit.FromNat n)
+      (TypeError (TypeError.Text "Expected natural number between 0 and 9."))
 
 type family Checksum (id :: UncheckedIDTuple) :: Nat where
   Checksum '(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9) =
@@ -271,24 +271,24 @@ type family
   where
     DigitFromChar id index c =
       FromJust
-        (InvalidCharError id index DigitTypeError)
         (Digit.FromChar c)
+        (InvalidCharError id index DigitTypeError)
 
 type family
     Digit1289FromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Digit1289
   where
     Digit1289FromChar id index c =
       FromJust
-        (InvalidCharError id index Digit1289TypeError)
         (Digit1289.FromChar c)
+        (InvalidCharError id index Digit1289TypeError)
 
 type family
     LetterFromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Letter
   where
     LetterFromChar id index c =
       FromJust
-        (InvalidCharError id index LetterTypeError)
         (Letter.FromChar c)
+        (InvalidCharError id index LetterTypeError)
 
 type DigitTypeError =
   "Character at indicated position must be a digit within the range [0 .. 9]."

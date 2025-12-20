@@ -27,9 +27,9 @@ randomBoundedEnum :: forall m a. (MonadRandom m, Bounded a, Enum a) => m a
 randomBoundedEnum =
   toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
 
-type family FromJust e a where
-  FromJust e  Nothing = e
-  FromJust _ (Just a) = a
+type family FromJust a e where
+  FromJust Nothing e = e
+  FromJust (Just a) _ = a
 
 type family Fst (t :: (a, a)) :: a where
   Fst '(x, _) = x
