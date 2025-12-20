@@ -200,7 +200,13 @@ type family ChecksumValid id :: Constraint where
       (TypeError (TypeError.Text "ID has invalid checksum."))
 
 type family ChecksumDigit id :: Digit where
-  ChecksumDigit id = DigitFromNat (Mod (Checksum id) 10)
+  ChecksumDigit id = ChecksumDigitFromNat (Mod (Checksum id) 10)
+
+type family ChecksumDigitFromNat (n :: Nat) :: Digit where
+  ChecksumDigitFromNat n =
+    FromJust
+      (TypeError (TypeError.Text "Expected natural number between 0 and 9."))
+      (Digit.FromNat n)
 
 type family Checksum (id :: UncheckedIDTuple) :: Nat where
   Checksum '(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9) =
@@ -264,9 +270,6 @@ type family
     DigitFromChar (id :: Symbol) (index :: Nat) (c :: Char) :: Digit
   where
     DigitFromChar id index c = FromJust DigitTypeError (Digit.FromChar c)
-
-type family DigitFromNat (n :: Nat) :: Digit where
-  DigitFromNat n = FromJust DigitTypeError (Digit.FromNat n)
 
 type DigitTypeError =
   TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
