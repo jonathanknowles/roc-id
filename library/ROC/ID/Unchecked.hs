@@ -41,9 +41,9 @@ import Data.Type.Equality
 import GHC.TypeError
   ( Assert, TypeError )
 import GHC.TypeLits
-  ( KnownSymbol, Symbol )
+  ( AppendSymbol, KnownSymbol, Symbol )
 import GHC.TypeNats
-  ( Mod, Nat )
+  ( Mod, Nat, type (+) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -51,7 +51,7 @@ import ROC.ID.Digit1289
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Utilities
-  ( FromJust, Fst, Snd, SymbolToCharList, guard )
+  ( FromJust, Fst, ReplicateChar, Snd, SymbolToCharList, guard )
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
@@ -278,6 +278,18 @@ type family LetterFromChar (c :: Char) :: Letter where
 
 type LetterTypeError =
   TypeError (TypeError.Text "Expected uppercase letter.")
+
+type family InvalidCharError
+    (invalidId :: Symbol) (charIndex :: Nat) (message :: Symbol)
+  where
+    InvalidCharError invalidId charIndex message =
+      TypeError
+        ( TypeError.ShowType invalidId
+          TypeError.:$$:
+          TypeError.Text (ReplicateChar (charIndex + 1) ' ' `AppendSymbol` "^")
+          TypeError.:$$:
+          TypeError.Text message
+        )
 
 type ValidID s =
   ( KnownSymbol s
