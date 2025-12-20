@@ -249,19 +249,19 @@ type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
     IdFromCharList s (SymbolToCharList s)
 
 type family
-    IdFromCharList (s :: Symbol) (xs :: [Char]) :: UncheckedIDTuple
+    IdFromCharList (id :: Symbol) (xs :: [Char]) :: UncheckedIDTuple
   where
-    IdFromCharList s '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-      '( LetterFromChar    s 0 c0
-       , Digit1289FromChar s 1 c1
-       , DigitFromChar     s 2 c2
-       , DigitFromChar     s 3 c3
-       , DigitFromChar     s 4 c4
-       , DigitFromChar     s 5 c5
-       , DigitFromChar     s 6 c6
-       , DigitFromChar     s 7 c7
-       , DigitFromChar     s 8 c8
-       , DigitFromChar     s 9 c9
+    IdFromCharList id '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
+      '( LetterFromChar    id 0 c0
+       , Digit1289FromChar id 1 c1
+       , DigitFromChar     id 2 c2
+       , DigitFromChar     id 3 c3
+       , DigitFromChar     id 4 c4
+       , DigitFromChar     id 5 c5
+       , DigitFromChar     id 6 c6
+       , DigitFromChar     id 7 c7
+       , DigitFromChar     id 8 c8
+       , DigitFromChar     id 9 c9
        )
     IdFromCharList _ _ =
       TypeError (TypeError.Text "An ID must have exactly 10 characters.")
