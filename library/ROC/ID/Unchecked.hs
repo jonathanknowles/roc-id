@@ -244,22 +244,22 @@ type family SymbolToId (s :: Symbol) :: UncheckedIDTuple where
 
 type family IdFromCharList (xs :: [Char]) :: UncheckedIDTuple where
   IdFromCharList '[c0, c1, c2, c3, c4, c5, c6, c7, c8, c9] =
-    '( LetterFromChar    c0
-     , Digit1289FromChar c1
-     , DigitFromChar     c2
-     , DigitFromChar     c3
-     , DigitFromChar     c4
-     , DigitFromChar     c5
-     , DigitFromChar     c6
-     , DigitFromChar     c7
-     , DigitFromChar     c8
-     , DigitFromChar     c9
+    '( LetterFromChar    0 c0
+     , Digit1289FromChar 1 c1
+     , DigitFromChar     2 c2
+     , DigitFromChar     3 c3
+     , DigitFromChar     4 c4
+     , DigitFromChar     5 c5
+     , DigitFromChar     6 c6
+     , DigitFromChar     7 c7
+     , DigitFromChar     8 c8
+     , DigitFromChar     9 c9
      )
   IdFromCharList _ =
     TypeError (TypeError.Text "An ID must have exactly 10 characters.")
 
-type family DigitFromChar (c :: Char) :: Digit where
-  DigitFromChar c = FromJust DigitTypeError (Digit.FromChar c)
+type family DigitFromChar (index :: Nat) (c :: Char) :: Digit where
+  DigitFromChar index c = FromJust DigitTypeError (Digit.FromChar c)
 
 type family DigitFromNat (n :: Nat) :: Digit where
   DigitFromNat n = FromJust DigitTypeError (Digit.FromNat n)
@@ -267,14 +267,14 @@ type family DigitFromNat (n :: Nat) :: Digit where
 type DigitTypeError =
   TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
 
-type family Digit1289FromChar (c :: Char) :: Digit1289 where
-  Digit1289FromChar c = FromJust Digit1289TypeError (Digit1289.FromChar c)
+type family Digit1289FromChar (index :: Nat) (c :: Char) :: Digit1289 where
+  Digit1289FromChar n c = FromJust Digit1289TypeError (Digit1289.FromChar c)
 
 type Digit1289TypeError =
   TypeError (TypeError.Text "Digit must be one of {1, 2, 8, 9}.")
 
-type family LetterFromChar (c :: Char) :: Letter where
-  LetterFromChar c = FromJust LetterTypeError (Letter.FromChar c)
+type family LetterFromChar (index :: Nat) (c :: Char) :: Letter where
+  LetterFromChar index c = FromJust LetterTypeError (Letter.FromChar c)
 
 type LetterTypeError =
   TypeError (TypeError.Text "Expected uppercase letter.")
