@@ -9,7 +9,10 @@ module ROC.ID.Utilities where
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
-import GHC.TypeLits (Symbol, UnconsSymbol)
+import GHC.TypeLits
+  ( Symbol, UnconsSymbol, ConsSymbol )
+import GHC.TypeNats
+  ( Nat, type (-) )
 
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right
@@ -45,3 +48,10 @@ type family
   where
     MaybeCharSymbolToCharList ('Just '(c, rest)) = c ': SymbolToCharList rest
     MaybeCharSymbolToCharList 'Nothing = '[]
+
+type family ReplicateChar (n :: Nat) (c :: Char) :: Symbol where
+  ReplicateChar n c = ReplicateChar' "" n c
+
+type family ReplicateChar' (s :: Symbol) (n :: Nat) (c :: Char) :: Symbol where
+  ReplicateChar' s 0 _ = s
+  ReplicateChar' s n c = ReplicateChar' (ConsSymbol c s) (n - 1) c
