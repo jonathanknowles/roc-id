@@ -262,7 +262,7 @@ type family DigitFromChar (c :: Char) :: Digit where
   DigitFromChar c = FromJust DigitTypeError (Digit.FromChar c)
 
 type family DigitFromNat (n :: Nat) :: Digit where
-  DigitFromNat c = FromJust DigitTypeError (Digit.FromNat c)
+  DigitFromNat n = FromJust DigitTypeError (Digit.FromNat n)
 
 type DigitTypeError =
   TypeError (TypeError.Text "Digit must be in the range [0 .. 9].")
