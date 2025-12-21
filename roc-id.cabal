@@ -114,6 +114,7 @@ test-suite roc-id-test-documentation
     , dependency-doctest
   build-depends:
     , roc-id
+  x-doctest-options: --verbose
   type: exitcode-stdio-1.0
   main-is: TestDocumentation.hs
   hs-source-dirs:
