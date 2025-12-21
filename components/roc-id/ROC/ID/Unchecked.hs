@@ -14,7 +14,6 @@ module ROC.ID.Unchecked
   ( UncheckedID (..)
   , UncheckedIDTuple
   , FromTextError (..)
-  , CharSet (..)
   , fromText
   , toText
   , checksum
@@ -30,8 +29,6 @@ import Data.Kind
   ( Constraint )
 import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
-import Data.Set.NonEmpty
-  ( NESet )
 import Data.Text
   ( Text )
 import Data.Type.Equality
@@ -44,6 +41,8 @@ import GHC.TypeNats
   ( Mod, Nat, type (+) )
 import ROC.ID.CharIndex
   ( CharIndex (..) )
+import ROC.ID.CharSet
+  ( CharSet (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -87,15 +86,6 @@ type UncheckedIDTuple =
   , Digit
   , Digit
   )
-
--- | Specifies a set of characters.
---
-data CharSet
-  = CharSet (NESet Char)
-  -- ^ An explicit set of characters.
-  | CharRange Char Char
-  -- ^ An inclusive range of characters.
-  deriving stock (Eq, Ord, Read, Show)
 
 data FromTextError
   = TextTooShort

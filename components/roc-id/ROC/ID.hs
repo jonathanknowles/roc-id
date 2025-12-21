@@ -51,6 +51,8 @@ import GHC.TypeLits
   ( Symbol, symbolVal )
 import ROC.ID.CharIndex
   ( CharIndex (..) )
+import ROC.ID.CharSet
+  ( CharSet (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -64,8 +66,7 @@ import ROC.ID.Location
 import ROC.ID.Nationality
   ( Nationality (..) )
 import ROC.ID.Unchecked
-  ( CharSet (..)
-  , UncheckedID (UncheckedID)
+  ( UncheckedID (UncheckedID)
   , ValidID
   )
 import ROC.ID.Utilities
