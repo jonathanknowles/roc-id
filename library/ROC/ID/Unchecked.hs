@@ -291,13 +291,13 @@ type family
         (InvalidCharError id index LetterTypeError)
 
 type DigitTypeError =
-  "Character at indicated position must be a digit within the range [0 .. 9]."
+  "Character at this position must be a digit in the range [0 .. 9]."
 
 type Digit1289TypeError =
-  "Character at indicated position must be a digit from the set {1, 2, 8, 9}."
+  "Character at this position must be a digit from the set {1, 2, 8, 9}."
 
 type LetterTypeError =
-  "Character at indicated position must be an uppercase letter."
+  "Character at this position must be an uppercase letter."
 
 type family InvalidCharError
     (invalidId :: Symbol) (charIndex :: Nat) (message :: Symbol)
