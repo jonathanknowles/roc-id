@@ -73,6 +73,7 @@ library
     , dependency-text
   exposed-modules:
       ROC.ID
+      ROC.ID.CharIndex
       ROC.ID.Digit
       ROC.ID.Digit1289
       ROC.ID.Gender

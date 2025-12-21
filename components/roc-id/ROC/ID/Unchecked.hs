@@ -1,7 +1,6 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE PolyKinds #-}
@@ -15,7 +14,6 @@ module ROC.ID.Unchecked
   ( UncheckedID (..)
   , UncheckedIDTuple
   , FromTextError (..)
-  , CharIndex (..)
   , CharSet (..)
   , fromText
   , toText
@@ -44,6 +42,8 @@ import GHC.TypeLits
   ( AppendSymbol, KnownSymbol, Symbol )
 import GHC.TypeNats
   ( Mod, Nat, type (+) )
+import ROC.ID.CharIndex
+  ( CharIndex (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -87,12 +87,6 @@ type UncheckedIDTuple =
   , Digit
   , Digit
   )
-
--- | Specifies the zero-based position of a character within a string.
---
-newtype CharIndex = CharIndex Int
-  deriving stock (Read, Show)
-  deriving newtype (Enum, Eq, Num, Ord)
 
 -- | Specifies a set of characters.
 --
