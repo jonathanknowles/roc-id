@@ -102,7 +102,7 @@ test-suite roc-id-test
   other-modules:
       Test.QuickCheck.Classes.Hspec
   hs-source-dirs:
-      test
+      components/roc-id-test
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
     , roc-id
