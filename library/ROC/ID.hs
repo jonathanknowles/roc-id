@@ -79,6 +79,13 @@ import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Unchecked as U
 
+-- |
+-- $setup
+-- >>> :set -XDataKinds
+-- >>> :set -XTypeApplications
+-- >>> import ROC.ID
+-- >>> import qualified ROC.ID as ID
+
 --------------------------------------------------------------------------------
 -- Type
 --------------------------------------------------------------------------------
@@ -126,25 +133,59 @@ instance Show ID where
 -- | Constructs an 'ID' from a type-level textual symbol.
 --
 -- The symbol must be exactly 10 characters in length and of the form
--- __@A123456789@__.
---
--- More precisely, the symbol must match the regular expression
--- __@^[A-Z][1289][0-9]{8}$@__, and the resultant ID must have a valid
--- checksum.
---
--- Using a symbol that does not satisfy these constraints will result in
--- a compile-time error.
---
--- === Requirements
---
--- >>> :set -XDataKinds
--- >>> :set -XTypeApplications
--- >>> import qualified ROC.ID as ID
---
--- === Usage
+-- __@A123456789@__:
 --
 -- >>> ID.fromSymbol @"A123456789"
 -- ID.fromSymbol @"A123456789"
+--
+-- More precisely:
+--
+--  - the symbol must match the regular expression __@^[A-Z][1289][0-9]{8}$@__
+--  - the resultant ID must have a valid checksum.
+--
+-- Failure to satisfy these constraints will result in one of the following
+-- __type errors__:
+--
+-- === Invalid lengths
+--
+-- >>> ID.fromSymbol @"A12345678"
+-- ...
+-- ... An ID must have exactly 10 characters.
+-- ...
+--
+-- === Invalid checksums
+--
+-- >>> ID.fromSymbol @"A123456780"
+-- ...
+-- ... ID has invalid checksum.
+-- ...
+--
+-- === Invalid characters
+--
+-- On detection of an invalid character, the resulting type error reports
+-- both the position of the character and the set of characters permitted
+-- at that position.
+--
+-- >>> ID.fromSymbol @"_123456789"
+-- ...
+--     • "_123456789"
+--        ^
+--       Character at this position must be an uppercase letter.
+-- ...
+--
+-- >>> ID.fromSymbol @"A_23456789"
+-- ...
+--     • "A_23456789"
+--         ^
+--       Character at this position must be a digit from the set {1, 2, 8, 9}.
+-- ...
+--
+-- >>> ID.fromSymbol @"A1_3456789"
+-- ...
+--     • "A1_3456789"
+--          ^
+--       Character at this position must be a digit in the range [0 .. 9].
+-- ...
 --
 fromSymbol :: forall (s :: Symbol). ValidID s => ID
 fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
