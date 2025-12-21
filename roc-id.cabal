@@ -84,7 +84,7 @@ library
       ROC.ID.Unchecked
       ROC.ID.Utilities
   hs-source-dirs:
-      library
+      components/roc-id
   ghc-options: -Wall
   default-language: Haskell2010
 
