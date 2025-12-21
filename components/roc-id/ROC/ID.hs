@@ -15,8 +15,6 @@ module ROC.ID
   , fromSymbol
   , fromText
   , FromTextError (..)
-  , CharIndex (..)
-  , CharSet (..)
 
   -- * Conversion
   , toText
