@@ -18,7 +18,11 @@ import Data.List.NonEmpty
 import Data.Text
   ( Text )
 import ROC.ID
-  ( CharSet (CharSet), CharIndex (CharIndex), ID (..) )
+  ( ID (..) )
+import ROC.ID.CharIndex
+  ( CharIndex (CharIndex) )
+import ROC.ID.CharSet
+  ( CharSet (..) )
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Digit1289
@@ -152,7 +156,7 @@ main = hspec $ do
         let invalidLocationCode = intToDigit $ c `mod` 10
         let invalidID = replaceCharAt 0 invalidLocationCode $ ID.toText i
         ID.fromText invalidID `shouldBe`
-          Left (ID.InvalidChar 0 (ID.CharRange 'A' 'Z'))
+          Left (ID.InvalidChar 0 (CharRange 'A' 'Z'))
 
     it "does not parse identification numbers with invalid initial digits" $
       property $ \(i :: ID) ->
