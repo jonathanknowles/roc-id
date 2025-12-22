@@ -1,7 +1,8 @@
-# Unreleased
+# 0.3.0.0
 
-- Updated the `Show` instance for `Identity` to produce a quoted string literal.
-- Added a corresponding `Read` instance for `Identity`.
+- Added support for ARC (Alien Residence Certificate) numbers.
+- Added support for type-checked ID literals.
+- Refined and reorganised the public API.
 
 # 0.2.0.6
 
