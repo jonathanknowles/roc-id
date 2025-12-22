@@ -2,11 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
--- |
--- Copyright: © 2022–2025 Jonathan Knowles
--- License: Apache-2.0
---
--- Provides testing functions to check that type class instances obey laws.
+-- | Provides testing functions to check that type class instances obey laws.
 module Test.QuickCheck.Classes.Hspec
     ( testLaws
     , testLawsMany
