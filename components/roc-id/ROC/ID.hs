@@ -238,7 +238,7 @@ data FromTextError
   | InvalidChar CharIndex CharSet
   -- ^ Indicates that the input text contains a character that is not allowed.
   --
-  --   - `CharIndex` specifies the position of the offending character.
+  --   - `CharIndex` specifies the position of the invalid character.
   --   - `CharSet` specifies the set of characters allowed at that position.
 
   | InvalidChecksum
