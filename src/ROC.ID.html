@@ -121,14 +121,14 @@
 </span><span id="line-113"></span><span>  </span><span class="hs-special">,</span><span> </span><span id="c8"><span class="annot"><span class="annottext">ID -&gt; Digit
 </span><a href="ROC.ID.html#c8"><span class="hs-identifier hs-var hs-var">c8</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
 </span><span id="line-114"></span><span>  </span><span class="hs-special">}</span><span>
-</span><span id="line-115"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114379"><span id="local-6989586621679114393"><span class="annot"><span class="annottext">ID -&gt; ID -&gt; Bool
+</span><span id="line-115"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114378"><span id="local-6989586621679114392"><span class="annot"><span class="annottext">ID -&gt; ID -&gt; Bool
 (ID -&gt; ID -&gt; Bool) -&gt; (ID -&gt; ID -&gt; Bool) -&gt; Eq ID
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
 $c== :: ID -&gt; ID -&gt; Bool
 == :: ID -&gt; ID -&gt; Bool
 $c/= :: ID -&gt; ID -&gt; Bool
 /= :: ID -&gt; ID -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114400"><span id="local-6989586621679114414"><span id="local-6989586621679114425"><span id="local-6989586621679114429"><span id="local-6989586621679114432"><span id="local-6989586621679114435"><span id="local-6989586621679114438"><span class="annot"><span class="annottext">Eq ID
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114399"><span id="local-6989586621679114413"><span id="local-6989586621679114424"><span id="local-6989586621679114428"><span id="local-6989586621679114431"><span id="local-6989586621679114434"><span id="local-6989586621679114437"><span class="annot"><span class="annottext">Eq ID
 Eq ID =&gt;
 (ID -&gt; ID -&gt; Ordering)
 -&gt; (ID -&gt; ID -&gt; Bool)
@@ -167,8 +167,8 @@ $cmin :: ID -&gt; ID -&gt; ID
 min :: ID -&gt; ID -&gt; ID
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">)</span><span>
 </span><span id="line-116"></span><span>
-</span><span id="line-117"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679114446"><span id="local-6989586621679114450"><span id="local-6989586621679114454"><span class="annot"><span class="hs-identifier hs-type">Read</span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-118"></span><span>  </span><span id="local-6989586621679114471"><span class="annot"><span class="annottext">readPrec :: ReadPrec ID
+</span><span id="line-117"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679114445"><span id="local-6989586621679114449"><span id="local-6989586621679114453"><span class="annot"><span class="hs-identifier hs-type">Read</span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-118"></span><span>  </span><span id="local-6989586621679114470"><span class="annot"><span class="annottext">readPrec :: ReadPrec ID
 </span><span class="hs-identifier hs-var hs-var hs-var">readPrec</span></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ReadPrec ID -&gt; ReadPrec ID
 forall a. ReadPrec a -&gt; ReadPrec a
 </span><span class="hs-identifier hs-var">parens</span></span><span> </span><span class="annot"><span class="annottext">(ReadPrec ID -&gt; ReadPrec ID) -&gt; ReadPrec ID -&gt; ReadPrec ID
@@ -181,11 +181,11 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-122"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Punc</span></span><span>   </span><span class="annot"><span class="hs-string">&quot;@&quot;</span></span><span>          </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="hs-identifier hs-type">lexP</span></span><span>
 </span><span id="line-123"></span><span>    </span><span class="annot"><a href="ROC.ID.html#unsafeFromText"><span class="hs-identifier hs-type">unsafeFromText</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">&lt;$&gt;</span></span><span> </span><span class="annot"><span class="hs-identifier hs-type">readPrec</span></span><span>
 </span><span id="line-124"></span><span>
-</span><span id="line-125"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679114476"><span id="local-6989586621679114480"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-126"></span><span>  </span><span id="local-6989586621679114485"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; ID -&gt; ShowS
-</span><a href="#local-6989586621679114485"><span class="hs-identifier hs-var hs-var hs-var">showsPrec</span></a></span></span><span> </span><span class="annot"><span class="annottext">Int
-</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679114487"><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114487"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><span id="line-125"></span><span class="hs-keyword">instance</span><span> </span><span id="local-6989586621679114475"><span id="local-6989586621679114479"><span class="annot"><span class="hs-identifier hs-type">Show</span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span></span></span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-126"></span><span>  </span><span id="local-6989586621679114484"><span class="annot"><span class="annottext">showsPrec :: Int -&gt; ID -&gt; ShowS
+</span><a href="#local-6989586621679114484"><span class="hs-identifier hs-var hs-var hs-var">showsPrec</span></a></span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679114486"><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114486"><span class="hs-identifier hs-var">s</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-127"></span><span>    </span><span class="annot"><span class="annottext">String -&gt; ShowS
 </span><span class="hs-identifier hs-var">showString</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;ID.fromSymbol @&quot;</span></span><span> </span><span class="annot"><span class="annottext">ShowS -&gt; ShowS -&gt; ShowS
@@ -194,7 +194,7 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 forall a. Show a =&gt; a -&gt; ShowS
 </span><span class="hs-identifier hs-var">shows</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ID -&gt; Text
 </span><a href="ROC.ID.html#toText"><span class="hs-identifier hs-var">toText</span></a></span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114487"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679114486"><span class="hs-identifier hs-var">s</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-128"></span><span>
 </span><span id="line-129"></span><span class="hs-comment">--------------------------------------------------------------------------------</span><span>
 </span><span id="line-130"></span><span class="hs-comment">-- Construction</span><span>
@@ -257,7 +257,7 @@ forall a. Show a =&gt; a -&gt; ShowS
 </span><span id="line-187"></span><span class="hs-comment">--       Character at this position must be a digit in the range [0 .. 9].</span><span>
 </span><span id="line-188"></span><span class="hs-comment">-- ...</span><span>
 </span><span id="line-189"></span><span class="hs-comment">--</span><span>
-</span><span id="line-190"></span><span class="annot"><a href="ROC.ID.html#fromSymbol"><span class="hs-identifier hs-type">fromSymbol</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114285"><span class="annot"><a href="#local-6989586621679114285"><span class="hs-identifier hs-type">s</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Symbol</span></span><span class="hs-special">)</span><span class="hs-operator">.</span><span> </span><span class="annot"><a href="ROC.ID.Unchecked.html#ValidID"><span class="hs-identifier hs-type">ValidID</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114285"><span class="hs-identifier hs-type">s</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
+</span><span id="line-190"></span><span class="annot"><a href="ROC.ID.html#fromSymbol"><span class="hs-identifier hs-type">fromSymbol</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114284"><span class="annot"><a href="#local-6989586621679114284"><span class="hs-identifier hs-type">s</span></a></span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Symbol</span></span><span class="hs-special">)</span><span class="hs-operator">.</span><span> </span><span class="annot"><a href="ROC.ID.Unchecked.html#ValidID"><span class="hs-identifier hs-type">ValidID</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114284"><span class="hs-identifier hs-type">s</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-191"></span><span id="fromSymbol"><span class="annot"><span class="annottext">fromSymbol :: forall (s :: Symbol). ValidID s =&gt; ID
 </span><a href="ROC.ID.html#fromSymbol"><span class="hs-identifier hs-var hs-var">fromSymbol</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; ID
 </span><a href="ROC.ID.html#unsafeFromText"><span class="hs-identifier hs-var">unsafeFromText</span></a></span><span> </span><span class="annot"><span class="annottext">(Text -&gt; ID) -&gt; Text -&gt; ID
@@ -273,7 +273,7 @@ proxy n -&gt; String
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall {k} (t :: k). Proxy t
 forall (t :: Symbol). Proxy t
-</span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="#local-6989586621679114285"><span class="hs-identifier hs-type">s</span></a></span><span>
+</span><span class="hs-identifier hs-var">Proxy</span></span><span> </span><span class="hs-glyph">@</span><span class="annot"><a href="#local-6989586621679114284"><span class="hs-identifier hs-type">s</span></a></span><span>
 </span><span id="line-192"></span><span>
 </span><span id="line-193"></span><span class="hs-comment">-- | Attempts to construct an 'ID' from 'Text'.</span><span>
 </span><span id="line-194"></span><span class="hs-comment">--</span><span>
@@ -292,9 +292,9 @@ forall (t :: Symbol). Proxy t
 </span><span id="line-207"></span><span class="hs-comment">--</span><span>
 </span><span id="line-208"></span><span class="annot"><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-type">fromText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Either</span></span><span> </span><span class="annot"><a href="ROC.ID.html#FromTextError"><span class="hs-identifier hs-type">FromTextError</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-209"></span><span id="fromText"><span class="annot"><span class="annottext">fromText :: Text -&gt; Either FromTextError ID
-</span><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-var hs-var">fromText</span></a></span></span><span> </span><span id="local-6989586621679114496"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679114496"><span class="hs-identifier hs-var">text</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-210"></span><span>    </span><span id="local-6989586621679114497"><span class="annot"><a href="#local-6989586621679114497"><span class="hs-identifier hs-var">unchecked</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">(FromTextError -&gt; FromTextError)
+</span><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-var hs-var">fromText</span></a></span></span><span> </span><span id="local-6989586621679114495"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679114495"><span class="hs-identifier hs-var">text</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-210"></span><span>    </span><span id="local-6989586621679114496"><span class="annot"><a href="#local-6989586621679114496"><span class="hs-identifier hs-var">unchecked</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">(FromTextError -&gt; FromTextError)
 -&gt; Either FromTextError UncheckedID
 -&gt; Either FromTextError UncheckedID
 forall a b c. (a -&gt; b) -&gt; Either a c -&gt; Either b c
@@ -302,19 +302,19 @@ forall (p :: * -&gt; * -&gt; *) a b c.
 Bifunctor p =&gt;
 (a -&gt; b) -&gt; p a c -&gt; p b c
 </span><span class="hs-identifier hs-var">first</span></span><span> </span><span class="annot"><span class="annottext">FromTextError -&gt; FromTextError
-</span><a href="#local-6989586621679114498"><span class="hs-identifier hs-var">fromUncheckedError</span></a></span><span> </span><span class="annot"><span class="annottext">(Either FromTextError UncheckedID
+</span><a href="#local-6989586621679114497"><span class="hs-identifier hs-var">fromUncheckedError</span></a></span><span> </span><span class="annot"><span class="annottext">(Either FromTextError UncheckedID
  -&gt; Either FromTextError UncheckedID)
 -&gt; Either FromTextError UncheckedID
 -&gt; Either FromTextError UncheckedID
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Either FromTextError UncheckedID
 </span><a href="ROC.ID.Unchecked.html#fromText"><span class="hs-identifier hs-var">U.fromText</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679114496"><span class="hs-identifier hs-var">text</span></a></span><span>
-</span><span id="line-211"></span><span>    </span><span class="annot"><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier hs-type">guard</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#InvalidChecksum"><span class="hs-identifier hs-type">InvalidChecksum</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">$</span></span><span> </span><span class="annot"><a href="ROC.ID.html#fromUnchecked"><span class="hs-identifier hs-type">fromUnchecked</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114497"><span class="hs-identifier hs-type">unchecked</span></a></span><span>
+</span><a href="#local-6989586621679114495"><span class="hs-identifier hs-var">text</span></a></span><span>
+</span><span id="line-211"></span><span>    </span><span class="annot"><a href="ROC.ID.Utilities.html#guard"><span class="hs-identifier hs-type">guard</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#InvalidChecksum"><span class="hs-identifier hs-type">InvalidChecksum</span></a></span><span> </span><span class="annot"><span class="hs-operator hs-type">$</span></span><span> </span><span class="annot"><a href="ROC.ID.html#fromUnchecked"><span class="hs-identifier hs-type">fromUnchecked</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114496"><span class="hs-identifier hs-type">unchecked</span></a></span><span>
 </span><span id="line-212"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-213"></span><span>    </span><span class="annot"><a href="#local-6989586621679114498"><span class="hs-identifier hs-type">fromUncheckedError</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Unchecked.html#FromTextError"><span class="hs-identifier hs-type">U.FromTextError</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#FromTextError"><span class="hs-identifier hs-type">FromTextError</span></a></span><span>
-</span><span id="line-214"></span><span>    </span><span id="local-6989586621679114498"><span class="annot"><span class="annottext">fromUncheckedError :: FromTextError -&gt; FromTextError
-</span><a href="#local-6989586621679114498"><span class="hs-identifier hs-var hs-var">fromUncheckedError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
+</span><span id="line-213"></span><span>    </span><span class="annot"><a href="#local-6989586621679114497"><span class="hs-identifier hs-type">fromUncheckedError</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Unchecked.html#FromTextError"><span class="hs-identifier hs-type">U.FromTextError</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#FromTextError"><span class="hs-identifier hs-type">FromTextError</span></a></span><span>
+</span><span id="line-214"></span><span>    </span><span id="local-6989586621679114497"><span class="annot"><span class="annottext">fromUncheckedError :: FromTextError -&gt; FromTextError
+</span><a href="#local-6989586621679114497"><span class="hs-identifier hs-var hs-var">fromUncheckedError</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
 </span><span id="line-215"></span><span>      </span><span class="annot"><span class="annottext">FromTextError
 </span><a href="ROC.ID.Unchecked.html#TextTooShort"><span class="hs-identifier hs-var">U.TextTooShort</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-216"></span><span>        </span><span class="annot"><span class="annottext">FromTextError
@@ -323,29 +323,29 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><a href="ROC.ID.Unchecked.html#TextTooLong"><span class="hs-identifier hs-var">U.TextTooLong</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-218"></span><span>        </span><span class="annot"><span class="annottext">FromTextError
 </span><a href="ROC.ID.html#TextTooLong"><span class="hs-identifier hs-var">TextTooLong</span></a></span><span>
-</span><span id="line-219"></span><span>      </span><span class="annot"><a href="ROC.ID.Unchecked.html#InvalidChar"><span class="hs-identifier hs-type">U.InvalidChar</span></a></span><span> </span><span id="local-6989586621679114507"><span class="annot"><span class="annottext">CharIndex
-</span><a href="#local-6989586621679114507"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span id="local-6989586621679114508"><span class="annot"><span class="annottext">CharSet
-</span><a href="#local-6989586621679114508"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-219"></span><span>      </span><span class="annot"><a href="ROC.ID.Unchecked.html#InvalidChar"><span class="hs-identifier hs-type">U.InvalidChar</span></a></span><span> </span><span id="local-6989586621679114506"><span class="annot"><span class="annottext">CharIndex
+</span><a href="#local-6989586621679114506"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span id="local-6989586621679114507"><span class="annot"><span class="annottext">CharSet
+</span><a href="#local-6989586621679114507"><span class="hs-identifier hs-var">r</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-220"></span><span>        </span><span class="annot"><span class="annottext">CharIndex -&gt; CharSet -&gt; FromTextError
 </span><a href="ROC.ID.html#InvalidChar"><span class="hs-identifier hs-var">InvalidChar</span></a></span><span> </span><span class="annot"><span class="annottext">CharIndex
-</span><a href="#local-6989586621679114507"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">CharSet
-</span><a href="#local-6989586621679114508"><span class="hs-identifier hs-var">r</span></a></span><span>
+</span><a href="#local-6989586621679114506"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="annot"><span class="annottext">CharSet
+</span><a href="#local-6989586621679114507"><span class="hs-identifier hs-var">r</span></a></span><span>
 </span><span id="line-221"></span><span>
 </span><span id="line-222"></span><span class="annot"><a href="ROC.ID.html#unsafeFromText"><span class="hs-identifier hs-type">unsafeFromText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-223"></span><span id="unsafeFromText"><span class="annot"><span class="annottext">unsafeFromText :: Text -&gt; ID
-</span><a href="ROC.ID.html#unsafeFromText"><span class="hs-identifier hs-var hs-var">unsafeFromText</span></a></span></span><span> </span><span id="local-6989586621679114510"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679114510"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="ROC.ID.html#unsafeFromText"><span class="hs-identifier hs-var hs-var">unsafeFromText</span></a></span></span><span> </span><span id="local-6989586621679114509"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679114509"><span class="hs-identifier hs-var">t</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-224"></span><span>  </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Either FromTextError ID
 </span><a href="ROC.ID.html#fromText"><span class="hs-identifier hs-var">fromText</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679114510"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679114509"><span class="hs-identifier hs-var">t</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-225"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span class="annot"><span class="annottext">FromTextError
 </span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">String -&gt; ID
 forall a. HasCallStack =&gt; String -&gt; a
 </span><span class="hs-identifier hs-var">error</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;unsafeFromText&quot;</span></span><span>
-</span><span id="line-226"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679114512"><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114512"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114512"><span class="hs-identifier hs-var">i</span></a></span><span>
+</span><span id="line-226"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679114511"><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114511"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114511"><span class="hs-identifier hs-var">i</span></a></span><span>
 </span><span id="line-227"></span><span>
 </span><span id="line-228"></span><span class="hs-comment">-- | Indicates an error that occurred while constructing an 'ID' from 'Text'.</span><span>
 </span><span id="line-229"></span><span class="hs-comment">--</span><span>
@@ -366,7 +366,7 @@ forall a. HasCallStack =&gt; String -&gt; a
 </span><span id="line-244"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="InvalidChecksum"><span class="annot"><a href="ROC.ID.html#InvalidChecksum"><span class="hs-identifier hs-var">InvalidChecksum</span></a></span></span><span>
 </span><span id="line-245"></span><span>  </span><span class="annot"><span class="hs-comment">-- ^ Indicates that the parsed identification number has an invalid checksum.</span></span><span>
 </span><span id="line-246"></span><span>
-</span><span id="line-247"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114516"><span id="local-6989586621679114525"><span class="annot"><span class="annottext">FromTextError -&gt; FromTextError -&gt; Bool
+</span><span id="line-247"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114515"><span id="local-6989586621679114524"><span class="annot"><span class="annottext">FromTextError -&gt; FromTextError -&gt; Bool
 (FromTextError -&gt; FromTextError -&gt; Bool)
 -&gt; (FromTextError -&gt; FromTextError -&gt; Bool) -&gt; Eq FromTextError
 forall a. (a -&gt; a -&gt; Bool) -&gt; (a -&gt; a -&gt; Bool) -&gt; Eq a
@@ -374,7 +374,7 @@ $c== :: FromTextError -&gt; FromTextError -&gt; Bool
 == :: FromTextError -&gt; FromTextError -&gt; Bool
 $c/= :: FromTextError -&gt; FromTextError -&gt; Bool
 /= :: FromTextError -&gt; FromTextError -&gt; Bool
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114531"><span id="local-6989586621679114539"><span id="local-6989586621679114543"><span id="local-6989586621679114546"><span id="local-6989586621679114549"><span id="local-6989586621679114552"><span id="local-6989586621679114555"><span class="annot"><span class="annottext">Eq FromTextError
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Eq</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114530"><span id="local-6989586621679114538"><span id="local-6989586621679114542"><span id="local-6989586621679114545"><span id="local-6989586621679114548"><span id="local-6989586621679114551"><span id="local-6989586621679114554"><span class="annot"><span class="annottext">Eq FromTextError
 Eq FromTextError =&gt;
 (FromTextError -&gt; FromTextError -&gt; Ordering)
 -&gt; (FromTextError -&gt; FromTextError -&gt; Bool)
@@ -411,7 +411,7 @@ $cmax :: FromTextError -&gt; FromTextError -&gt; FromTextError
 max :: FromTextError -&gt; FromTextError -&gt; FromTextError
 $cmin :: FromTextError -&gt; FromTextError -&gt; FromTextError
 min :: FromTextError -&gt; FromTextError -&gt; FromTextError
-</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114558"><span id="local-6989586621679114566"><span id="local-6989586621679114570"><span class="annot"><span class="annottext">Int -&gt; FromTextError -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Ord</span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679114557"><span id="local-6989586621679114565"><span id="local-6989586621679114569"><span class="annot"><span class="annottext">Int -&gt; FromTextError -&gt; ShowS
 [FromTextError] -&gt; ShowS
 FromTextError -&gt; String
 (Int -&gt; FromTextError -&gt; ShowS)
@@ -458,16 +458,16 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span id="line-271"></span><span class="hs-comment">--</span><span>
 </span><span id="line-272"></span><span class="annot"><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-type">checksumDigit</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
 </span><span id="line-273"></span><span id="checksumDigit"><span class="annot"><span class="annottext">checksumDigit :: ID -&gt; Digit
-</span><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-var hs-var">checksumDigit</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span id="local-6989586621679114574"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114574"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679114575"><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114575"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679114576"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114576"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679114577"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114577"><span class="hs-identifier hs-var">u3</span></a></span></span><span> </span><span id="local-6989586621679114578"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114578"><span class="hs-identifier hs-var">u4</span></a></span></span><span> </span><span id="local-6989586621679114579"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114579"><span class="hs-identifier hs-var">u5</span></a></span></span><span> </span><span id="local-6989586621679114580"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114580"><span class="hs-identifier hs-var">u6</span></a></span></span><span> </span><span id="local-6989586621679114581"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114581"><span class="hs-identifier hs-var">u7</span></a></span></span><span> </span><span id="local-6989586621679114582"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114582"><span class="hs-identifier hs-var">u8</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-var hs-var">checksumDigit</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span id="local-6989586621679114573"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679114573"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679114574"><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679114574"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679114575"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114575"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679114576"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114576"><span class="hs-identifier hs-var">u3</span></a></span></span><span> </span><span id="local-6989586621679114577"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114577"><span class="hs-identifier hs-var">u4</span></a></span></span><span> </span><span id="local-6989586621679114578"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114578"><span class="hs-identifier hs-var">u5</span></a></span></span><span> </span><span id="local-6989586621679114579"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114579"><span class="hs-identifier hs-var">u6</span></a></span></span><span> </span><span id="local-6989586621679114580"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114580"><span class="hs-identifier hs-var">u7</span></a></span></span><span> </span><span id="local-6989586621679114581"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114581"><span class="hs-identifier hs-var">u8</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-274"></span><span>  </span><span class="annot"><span class="annottext">Digit -&gt; Digit
 forall a. Num a =&gt; a -&gt; a
 </span><span class="hs-identifier hs-var">negate</span></span><span> </span><span class="annot"><span class="annottext">(Digit -&gt; Digit) -&gt; Digit -&gt; Digit
@@ -485,15 +485,15 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 -&gt; Digit
 -&gt; UncheckedID
 </span><a href="ROC.ID.Unchecked.html#UncheckedID"><span class="hs-identifier hs-var">UncheckedID</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114574"><span class="hs-identifier hs-var">u0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114575"><span class="hs-identifier hs-var">u1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114576"><span class="hs-identifier hs-var">u2</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114577"><span class="hs-identifier hs-var">u3</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114578"><span class="hs-identifier hs-var">u4</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114579"><span class="hs-identifier hs-var">u5</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114580"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114581"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114582"><span class="hs-identifier hs-var">u8</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114573"><span class="hs-identifier hs-var">u0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679114574"><span class="hs-identifier hs-var">u1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114575"><span class="hs-identifier hs-var">u2</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114576"><span class="hs-identifier hs-var">u3</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114577"><span class="hs-identifier hs-var">u4</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114578"><span class="hs-identifier hs-var">u5</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114579"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114580"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114581"><span class="hs-identifier hs-var">u8</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
 </span><span class="hs-number">0</span></span><span class="hs-special">)</span><span>
 </span><span id="line-275"></span><span>
 </span><span id="line-276"></span><span class="hs-comment">--------------------------------------------------------------------------------</span><span>
@@ -502,7 +502,7 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-279"></span><span>
 </span><span id="line-280"></span><span class="hs-comment">-- | Generates a random 'ID'.</span><span>
 </span><span id="line-281"></span><span class="hs-comment">--</span><span>
-</span><span id="line-282"></span><span id="local-6989586621679114318"><span class="annot"><a href="ROC.ID.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679114318"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679114318"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span></span><span>
+</span><span id="line-282"></span><span id="local-6989586621679114317"><span class="annot"><a href="ROC.ID.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679114317"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679114317"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span></span><span>
 </span><span id="line-283"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m ID
 </span><a href="ROC.ID.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-284"></span><span>  </span><span class="annot"><span class="annottext">Letter
@@ -615,7 +615,7 @@ forall (m :: * -&gt; *). MonadRandom m =&gt; m Digit
 </span><span id="line-300"></span><span class="hs-comment">--</span><span>
 </span><span id="line-301"></span><span class="annot"><a href="ROC.ID.html#getGender"><span class="hs-identifier hs-type">getGender</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span>
 </span><span id="line-302"></span><span id="getGender"><span class="annot"><span class="annottext">getGender :: ID -&gt; Gender
-</span><a href="ROC.ID.html#getGender"><span class="hs-identifier hs-var hs-var">getGender</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679114612"><span class="annot"><span class="annottext">Digit1289
+</span><a href="ROC.ID.html#getGender"><span class="hs-identifier hs-var hs-var">getGender</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679114611"><span class="annot"><span class="annottext">Digit1289
 c1 :: ID -&gt; Digit1289
 c1 :: Digit1289
 </span><a href="ROC.ID.html#c1"><span class="hs-identifier hs-var hs-var">c1</span></a></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Gender, Nationality) -&gt; Gender
@@ -625,24 +625,24 @@ forall a b. (a, b) -&gt; a
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; (Gender, Nationality)
 </span><a href="ROC.ID.html#decodeC1"><span class="hs-identifier hs-var">decodeC1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114612"><span class="hs-identifier hs-var">c1</span></a></span><span>
+</span><a href="#local-6989586621679114611"><span class="hs-identifier hs-var">c1</span></a></span><span>
 </span><span id="line-303"></span><span>
 </span><span id="line-304"></span><span class="hs-comment">-- | Decodes the 'Location' component of an 'ID'.</span><span>
 </span><span id="line-305"></span><span class="hs-comment">--</span><span>
 </span><span id="line-306"></span><span class="annot"><a href="ROC.ID.html#getLocation"><span class="hs-identifier hs-type">getLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span>
 </span><span id="line-307"></span><span id="getLocation"><span class="annot"><span class="annottext">getLocation :: ID -&gt; Location
-</span><a href="ROC.ID.html#getLocation"><span class="hs-identifier hs-var hs-var">getLocation</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679114615"><span class="annot"><span class="annottext">Letter
+</span><a href="ROC.ID.html#getLocation"><span class="hs-identifier hs-var hs-var">getLocation</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679114614"><span class="annot"><span class="annottext">Letter
 c0 :: ID -&gt; Letter
 c0 :: Letter
 </span><a href="ROC.ID.html#c0"><span class="hs-identifier hs-var hs-var">c0</span></a></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter -&gt; Location
 </span><a href="ROC.ID.Location.html#fromLetter"><span class="hs-identifier hs-var">Location.fromLetter</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114615"><span class="hs-identifier hs-var">c0</span></a></span><span>
+</span><a href="#local-6989586621679114614"><span class="hs-identifier hs-var">c0</span></a></span><span>
 </span><span id="line-308"></span><span>
 </span><span id="line-309"></span><span class="hs-comment">-- | Decodes the 'Nationality' component of an 'ID'.</span><span>
 </span><span id="line-310"></span><span class="hs-comment">--</span><span>
 </span><span id="line-311"></span><span class="annot"><a href="ROC.ID.html#getNationality"><span class="hs-identifier hs-type">getNationality</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html#Nationality"><span class="hs-identifier hs-type">Nationality</span></a></span><span>
 </span><span id="line-312"></span><span id="getNationality"><span class="annot"><span class="annottext">getNationality :: ID -&gt; Nationality
-</span><a href="ROC.ID.html#getNationality"><span class="hs-identifier hs-var hs-var">getNationality</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679114617"><span class="annot"><span class="annottext">Digit1289
+</span><a href="ROC.ID.html#getNationality"><span class="hs-identifier hs-var hs-var">getNationality</span></a></span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-special">{</span><span id="local-6989586621679114616"><span class="annot"><span class="annottext">Digit1289
 c1 :: ID -&gt; Digit1289
 c1 :: Digit1289
 </span><a href="ROC.ID.html#c1"><span class="hs-identifier hs-var hs-var">c1</span></a></span></span><span class="hs-special">}</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">(Gender, Nationality) -&gt; Nationality
@@ -652,7 +652,7 @@ forall a b. (a, b) -&gt; b
 forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Digit1289 -&gt; (Gender, Nationality)
 </span><a href="ROC.ID.html#decodeC1"><span class="hs-identifier hs-var">decodeC1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114617"><span class="hs-identifier hs-var">c1</span></a></span><span>
+</span><a href="#local-6989586621679114616"><span class="hs-identifier hs-var">c1</span></a></span><span>
 </span><span id="line-313"></span><span>
 </span><span id="line-314"></span><span class="hs-comment">--------------------------------------------------------------------------------</span><span>
 </span><span id="line-315"></span><span class="hs-comment">-- Modification</span><span>
@@ -662,28 +662,28 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-319"></span><span class="hs-comment">--</span><span>
 </span><span id="line-320"></span><span class="annot"><a href="ROC.ID.html#setGender"><span class="hs-identifier hs-type">setGender</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-321"></span><span id="setGender"><span class="annot"><span class="annottext">setGender :: Gender -&gt; ID -&gt; ID
-</span><a href="ROC.ID.html#setGender"><span class="hs-identifier hs-var hs-var">setGender</span></a></span></span><span> </span><span id="local-6989586621679114619"><span class="annot"><span class="annottext">Gender
-</span><a href="#local-6989586621679114619"><span class="hs-identifier hs-var">gender</span></a></span></span><span> </span><span id="local-6989586621679114620"><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114620"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114620"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><a href="ROC.ID.html#c1"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="ROC.ID.html#encodeC1"><span class="hs-identifier hs-type">encodeC1</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679114619"><span class="hs-identifier hs-type">gender</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.html#getNationality"><span class="hs-identifier hs-type">getNationality</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114620"><span class="hs-identifier hs-type">i</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
+</span><a href="ROC.ID.html#setGender"><span class="hs-identifier hs-var hs-var">setGender</span></a></span></span><span> </span><span id="local-6989586621679114618"><span class="annot"><span class="annottext">Gender
+</span><a href="#local-6989586621679114618"><span class="hs-identifier hs-var">gender</span></a></span></span><span> </span><span id="local-6989586621679114619"><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114619"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114619"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><a href="ROC.ID.html#c1"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="ROC.ID.html#encodeC1"><span class="hs-identifier hs-type">encodeC1</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679114618"><span class="hs-identifier hs-type">gender</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.html#getNationality"><span class="hs-identifier hs-type">getNationality</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114619"><span class="hs-identifier hs-type">i</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
 </span><span id="line-322"></span><span>
 </span><span id="line-323"></span><span class="hs-comment">-- | Updates the 'Location' component of an 'ID'.</span><span>
 </span><span id="line-324"></span><span class="hs-comment">--</span><span>
 </span><span id="line-325"></span><span class="annot"><a href="ROC.ID.html#setLocation"><span class="hs-identifier hs-type">setLocation</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#Location"><span class="hs-identifier hs-type">Location</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-326"></span><span id="setLocation"><span class="annot"><span class="annottext">setLocation :: Location -&gt; ID -&gt; ID
-</span><a href="ROC.ID.html#setLocation"><span class="hs-identifier hs-var hs-var">setLocation</span></a></span></span><span> </span><span id="local-6989586621679114622"><span class="annot"><span class="annottext">Location
-</span><a href="#local-6989586621679114622"><span class="hs-identifier hs-var">location</span></a></span></span><span> </span><span id="local-6989586621679114623"><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114623"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114623"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><a href="ROC.ID.html#c0"><span class="hs-identifier hs-var">c0</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#toLetter"><span class="hs-identifier hs-type">Location.toLetter</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114622"><span class="hs-identifier hs-type">location</span></a></span><span class="hs-special">}</span><span>
+</span><a href="ROC.ID.html#setLocation"><span class="hs-identifier hs-var hs-var">setLocation</span></a></span></span><span> </span><span id="local-6989586621679114621"><span class="annot"><span class="annottext">Location
+</span><a href="#local-6989586621679114621"><span class="hs-identifier hs-var">location</span></a></span></span><span> </span><span id="local-6989586621679114622"><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114622"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114622"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><a href="ROC.ID.html#c0"><span class="hs-identifier hs-var">c0</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="ROC.ID.Location.html#toLetter"><span class="hs-identifier hs-type">Location.toLetter</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114621"><span class="hs-identifier hs-type">location</span></a></span><span class="hs-special">}</span><span>
 </span><span id="line-327"></span><span>
 </span><span id="line-328"></span><span class="hs-comment">-- | Updates the 'Nationality' component of an 'ID'.</span><span>
 </span><span id="line-329"></span><span class="hs-comment">--</span><span>
 </span><span id="line-330"></span><span class="annot"><a href="ROC.ID.html#setNationality"><span class="hs-identifier hs-type">setNationality</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Nationality.html#Nationality"><span class="hs-identifier hs-type">Nationality</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-331"></span><span id="setNationality"><span class="annot"><span class="annottext">setNationality :: Nationality -&gt; ID -&gt; ID
-</span><a href="ROC.ID.html#setNationality"><span class="hs-identifier hs-var hs-var">setNationality</span></a></span></span><span> </span><span id="local-6989586621679114625"><span class="annot"><span class="annottext">Nationality
-</span><a href="#local-6989586621679114625"><span class="hs-identifier hs-var">nationality</span></a></span></span><span> </span><span id="local-6989586621679114626"><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114626"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114626"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><a href="ROC.ID.html#c1"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="ROC.ID.html#encodeC1"><span class="hs-identifier hs-type">encodeC1</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#getGender"><span class="hs-identifier hs-type">getGender</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114626"><span class="hs-identifier hs-type">i</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679114625"><span class="hs-identifier hs-type">nationality</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
+</span><a href="ROC.ID.html#setNationality"><span class="hs-identifier hs-var hs-var">setNationality</span></a></span></span><span> </span><span id="local-6989586621679114624"><span class="annot"><span class="annottext">Nationality
+</span><a href="#local-6989586621679114624"><span class="hs-identifier hs-var">nationality</span></a></span></span><span> </span><span id="local-6989586621679114625"><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114625"><span class="hs-identifier hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">ID
+</span><a href="#local-6989586621679114625"><span class="hs-identifier hs-var">i</span></a></span><span> </span><span class="hs-special">{</span><span class="annot"><a href="ROC.ID.html#c1"><span class="hs-identifier hs-var">c1</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><a href="ROC.ID.html#encodeC1"><span class="hs-identifier hs-type">encodeC1</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#getGender"><span class="hs-identifier hs-type">getGender</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679114625"><span class="hs-identifier hs-type">i</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679114624"><span class="hs-identifier hs-type">nationality</span></a></span><span class="hs-special">)</span><span class="hs-special">}</span><span>
 </span><span id="line-332"></span><span>
 </span><span id="line-333"></span><span class="hs-comment">--------------------------------------------------------------------------------</span><span>
 </span><span id="line-334"></span><span class="hs-comment">-- Internal</span><span>
@@ -731,33 +731,33 @@ forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span id="line-350"></span><span>
 </span><span id="line-351"></span><span class="annot"><a href="ROC.ID.html#fromUnchecked"><span class="hs-identifier hs-type">fromUnchecked</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Unchecked.html#UncheckedID"><span class="hs-identifier hs-type">UncheckedID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span>
 </span><span id="line-352"></span><span id="fromUnchecked"><span class="annot"><span class="annottext">fromUnchecked :: UncheckedID -&gt; Maybe ID
-</span><a href="ROC.ID.html#fromUnchecked"><span class="hs-identifier hs-var hs-var">fromUnchecked</span></a></span></span><span> </span><span id="local-6989586621679114635"><span class="annot"><span class="annottext">u :: UncheckedID
-</span><a href="#local-6989586621679114635"><span class="hs-identifier hs-var">u</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Unchecked.html#UncheckedID"><span class="hs-identifier hs-type">UncheckedID</span></a></span><span> </span><span id="local-6989586621679114636"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114636"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679114637"><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114637"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679114638"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114638"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679114639"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114639"><span class="hs-identifier hs-var">u3</span></a></span></span><span> </span><span id="local-6989586621679114640"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114640"><span class="hs-identifier hs-var">u4</span></a></span></span><span> </span><span id="local-6989586621679114641"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114641"><span class="hs-identifier hs-var">u5</span></a></span></span><span> </span><span id="local-6989586621679114642"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114642"><span class="hs-identifier hs-var">u6</span></a></span></span><span> </span><span id="local-6989586621679114643"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114643"><span class="hs-identifier hs-var">u7</span></a></span></span><span> </span><span id="local-6989586621679114644"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114644"><span class="hs-identifier hs-var">u8</span></a></span></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="ROC.ID.html#fromUnchecked"><span class="hs-identifier hs-var hs-var">fromUnchecked</span></a></span></span><span> </span><span id="local-6989586621679114634"><span class="annot"><span class="annottext">u :: UncheckedID
+</span><a href="#local-6989586621679114634"><span class="hs-identifier hs-var">u</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.Unchecked.html#UncheckedID"><span class="hs-identifier hs-type">UncheckedID</span></a></span><span> </span><span id="local-6989586621679114635"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679114635"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679114636"><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679114636"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679114637"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114637"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679114638"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114638"><span class="hs-identifier hs-var">u3</span></a></span></span><span> </span><span id="local-6989586621679114639"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114639"><span class="hs-identifier hs-var">u4</span></a></span></span><span> </span><span id="local-6989586621679114640"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114640"><span class="hs-identifier hs-var">u5</span></a></span></span><span> </span><span id="local-6989586621679114641"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114641"><span class="hs-identifier hs-var">u6</span></a></span></span><span> </span><span id="local-6989586621679114642"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114642"><span class="hs-identifier hs-var">u7</span></a></span></span><span> </span><span id="local-6989586621679114643"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114643"><span class="hs-identifier hs-var">u8</span></a></span></span><span> </span><span class="annot"><span class="annottext">Digit
 </span><span class="hs-identifier">_</span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-353"></span><span>    </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">UncheckedID -&gt; ChecksumValidity
 </span><a href="ROC.ID.Unchecked.html#checksumValidity"><span class="hs-identifier hs-var">U.checksumValidity</span></a></span><span> </span><span class="annot"><span class="annottext">UncheckedID
-</span><a href="#local-6989586621679114635"><span class="hs-identifier hs-var">u</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679114634"><span class="hs-identifier hs-var">u</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-354"></span><span>      </span><span class="annot"><span class="annottext">ChecksumValidity
 </span><a href="ROC.ID.Unchecked.html#ChecksumValid"><span class="hs-identifier hs-var">U.ChecksumValid</span></a></span><span>   </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">ID -&gt; Maybe ID
 forall a. a -&gt; Maybe a
 </span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114647"><span class="hs-identifier hs-var">i</span></a></span><span>
+</span><a href="#local-6989586621679114646"><span class="hs-identifier hs-var">i</span></a></span><span>
 </span><span id="line-355"></span><span>      </span><span class="annot"><span class="annottext">ChecksumValidity
 </span><a href="ROC.ID.Unchecked.html#ChecksumInvalid"><span class="hs-identifier hs-var">U.ChecksumInvalid</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Maybe ID
 forall a. Maybe a
 </span><span class="hs-identifier hs-var">Nothing</span></span><span>
 </span><span id="line-356"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-357"></span><span>    </span><span id="local-6989586621679114647"><span class="annot"><span class="annottext">i :: ID
-</span><a href="#local-6989586621679114647"><span class="hs-identifier hs-var hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter
+</span><span id="line-357"></span><span>    </span><span id="local-6989586621679114646"><span class="annot"><span class="annottext">i :: ID
+</span><a href="#local-6989586621679114646"><span class="hs-identifier hs-var hs-var">i</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Letter
 -&gt; Digit1289
 -&gt; Digit
 -&gt; Digit
@@ -768,29 +768,29 @@ forall a. Maybe a
 -&gt; Digit
 -&gt; ID
 </span><a href="ROC.ID.html#ID"><span class="hs-identifier hs-var">ID</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114636"><span class="hs-identifier hs-var">u0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114637"><span class="hs-identifier hs-var">u1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114638"><span class="hs-identifier hs-var">u2</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114639"><span class="hs-identifier hs-var">u3</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114640"><span class="hs-identifier hs-var">u4</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114641"><span class="hs-identifier hs-var">u5</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114642"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114643"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114644"><span class="hs-identifier hs-var">u8</span></a></span><span>
+</span><a href="#local-6989586621679114635"><span class="hs-identifier hs-var">u0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679114636"><span class="hs-identifier hs-var">u1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114637"><span class="hs-identifier hs-var">u2</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114638"><span class="hs-identifier hs-var">u3</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114639"><span class="hs-identifier hs-var">u4</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114640"><span class="hs-identifier hs-var">u5</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114641"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114642"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114643"><span class="hs-identifier hs-var">u8</span></a></span><span>
 </span><span id="line-358"></span><span>
 </span><span id="line-359"></span><span class="annot"><a href="ROC.ID.html#toUnchecked"><span class="hs-identifier hs-type">toUnchecked</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Unchecked.html#UncheckedID"><span class="hs-identifier hs-type">UncheckedID</span></a></span><span>
 </span><span id="line-360"></span><span id="toUnchecked"><span class="annot"><span class="annottext">toUnchecked :: ID -&gt; UncheckedID
-</span><a href="ROC.ID.html#toUnchecked"><span class="hs-identifier hs-var hs-var">toUnchecked</span></a></span></span><span> </span><span id="local-6989586621679114649"><span class="annot"><span class="annottext">i :: ID
-</span><a href="#local-6989586621679114649"><span class="hs-identifier hs-var">i</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span id="local-6989586621679114650"><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114650"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679114651"><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114651"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679114652"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114652"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679114653"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114653"><span class="hs-identifier hs-var">u3</span></a></span></span><span> </span><span id="local-6989586621679114654"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114654"><span class="hs-identifier hs-var">u4</span></a></span></span><span> </span><span id="local-6989586621679114655"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114655"><span class="hs-identifier hs-var">u5</span></a></span></span><span> </span><span id="local-6989586621679114656"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114656"><span class="hs-identifier hs-var">u6</span></a></span></span><span> </span><span id="local-6989586621679114657"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114657"><span class="hs-identifier hs-var">u7</span></a></span></span><span> </span><span id="local-6989586621679114658"><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114658"><span class="hs-identifier hs-var">u8</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="ROC.ID.html#toUnchecked"><span class="hs-identifier hs-var hs-var">toUnchecked</span></a></span></span><span> </span><span id="local-6989586621679114648"><span class="annot"><span class="annottext">i :: ID
+</span><a href="#local-6989586621679114648"><span class="hs-identifier hs-var">i</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span id="local-6989586621679114649"><span class="annot"><span class="annottext">Letter
+</span><a href="#local-6989586621679114649"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679114650"><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679114650"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679114651"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114651"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679114652"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114652"><span class="hs-identifier hs-var">u3</span></a></span></span><span> </span><span id="local-6989586621679114653"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114653"><span class="hs-identifier hs-var">u4</span></a></span></span><span> </span><span id="local-6989586621679114654"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114654"><span class="hs-identifier hs-var">u5</span></a></span></span><span> </span><span id="local-6989586621679114655"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114655"><span class="hs-identifier hs-var">u6</span></a></span></span><span> </span><span id="local-6989586621679114656"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114656"><span class="hs-identifier hs-var">u7</span></a></span></span><span> </span><span id="local-6989586621679114657"><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114657"><span class="hs-identifier hs-var">u8</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-361"></span><span>  </span><span class="annot"><span class="annottext">Letter
 -&gt; Digit1289
 -&gt; Digit
@@ -803,15 +803,15 @@ forall a. Maybe a
 -&gt; Digit
 -&gt; UncheckedID
 </span><a href="ROC.ID.Unchecked.html#UncheckedID"><span class="hs-identifier hs-var">UncheckedID</span></a></span><span> </span><span class="annot"><span class="annottext">Letter
-</span><a href="#local-6989586621679114650"><span class="hs-identifier hs-var">u0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
-</span><a href="#local-6989586621679114651"><span class="hs-identifier hs-var">u1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114652"><span class="hs-identifier hs-var">u2</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114653"><span class="hs-identifier hs-var">u3</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114654"><span class="hs-identifier hs-var">u4</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114655"><span class="hs-identifier hs-var">u5</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114656"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114657"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
-</span><a href="#local-6989586621679114658"><span class="hs-identifier hs-var">u8</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ID -&gt; Digit
+</span><a href="#local-6989586621679114649"><span class="hs-identifier hs-var">u0</span></a></span><span> </span><span class="annot"><span class="annottext">Digit1289
+</span><a href="#local-6989586621679114650"><span class="hs-identifier hs-var">u1</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114651"><span class="hs-identifier hs-var">u2</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114652"><span class="hs-identifier hs-var">u3</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114653"><span class="hs-identifier hs-var">u4</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114654"><span class="hs-identifier hs-var">u5</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114655"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114656"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
+</span><a href="#local-6989586621679114657"><span class="hs-identifier hs-var">u8</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ID -&gt; Digit
 </span><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-var">checksumDigit</span></a></span><span> </span><span class="annot"><span class="annottext">ID
-</span><a href="#local-6989586621679114649"><span class="hs-identifier hs-var">i</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679114648"><span class="hs-identifier hs-var">i</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-362"></span></pre></body></html>
