@@ -1,3 +1,7 @@
+# 0.3.0.1
+
+- Added support for GHC 9.14.
+
 # 0.3.0.0
 
 - Added support for ARC (Alien Residence Certificate) numbers.
