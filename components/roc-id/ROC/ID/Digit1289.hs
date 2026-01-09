@@ -31,10 +31,7 @@ import ROC.ID.Utilities
 --
 data Digit1289
   = D1289_1 | D1289_2 | D1289_8 | D1289_9
-  deriving (Bounded, Enum, Eq, Generic, Ord)
-
-instance Show Digit1289 where
-  show = (: []) . toChar
+  deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
 
 -- | Attempts to parse a 'Digit1289' from a character.
 --
