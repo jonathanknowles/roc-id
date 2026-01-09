@@ -1,5 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -45,6 +46,8 @@ import Data.Proxy
   ( Proxy (Proxy) )
 import Data.Text
   ( Text )
+import GHC.Generics
+  ( Generic )
 import GHC.TypeLits
   ( Symbol, symbolVal )
 import ROC.ID.CharIndex
@@ -112,7 +115,7 @@ data ID = ID
   , c7 :: !Digit
   , c8 :: !Digit
   }
-  deriving (Eq, Ord)
+  deriving (Eq, Ord, Generic)
 
 instance Read ID where
   readPrec = parens $ do
