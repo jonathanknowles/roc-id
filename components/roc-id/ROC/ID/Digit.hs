@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE PolyKinds #-}
@@ -17,6 +18,8 @@ module ROC.ID.Digit
 
 import Control.Monad.Random
   ( MonadRandom )
+import Data.Finitary
+  ( Finitary )
 import GHC.Generics
   ( Generic )
 import GHC.TypeNats
@@ -36,6 +39,7 @@ import qualified Prelude
 data Digit
   = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
   deriving stock (Bounded, Enum, Eq, Generic, Ord)
+  deriving anyclass Finitary
 
 -- | Arithmetic modulo 10.
 --
