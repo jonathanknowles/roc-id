@@ -43,6 +43,8 @@ common dependency-base
     build-depends:base                      >= 4.17.2.1     && < 4.22
 common dependency-doctest
     build-depends:doctest                   >= 0.24.2       && < 0.25
+common dependency-finitary
+    build-depends:finitary                  >= 2.2.0.0      && < 2.3
 common dependency-hspec
     build-depends:hspec                     >= 2.5.5        && < 2.12
 common dependency-MonadRandom
@@ -68,6 +70,7 @@ source-repository head
 library
   import:
     , dependency-base
+    , dependency-finitary
     , dependency-MonadRandom
     , dependency-nonempty-containers
     , dependency-text
