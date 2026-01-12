@@ -1,6 +1,7 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -115,7 +116,7 @@ data ID = ID
   , c7 :: !Digit
   , c8 :: !Digit
   }
-  deriving (Eq, Ord, Generic)
+  deriving stock (Eq, Ord, Generic)
 
 instance Read ID where
   readPrec = parens $ do
@@ -247,7 +248,7 @@ data FromTextError
   | InvalidChecksum
   -- ^ Indicates that the parsed identification number has an invalid checksum.
 
-  deriving (Eq, Ord, Show)
+  deriving stock (Eq, Ord, Show)
 
 --------------------------------------------------------------------------------
 -- Conversion

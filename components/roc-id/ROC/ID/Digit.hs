@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -34,7 +35,7 @@ import qualified Prelude
 --
 data Digit
   = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
-  deriving (Bounded, Enum, Eq, Generic, Ord)
+  deriving stock (Bounded, Enum, Eq, Generic, Ord)
 
 -- | Arithmetic modulo 10.
 --

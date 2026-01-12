@@ -162,7 +162,7 @@ checksumLetterToDigitPair = \case
 data ChecksumValidity
   = ChecksumValid
   | ChecksumInvalid
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 checksumValidity :: UncheckedID -> ChecksumValidity
 checksumValidity u =

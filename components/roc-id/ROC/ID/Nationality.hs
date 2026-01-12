@@ -1,3 +1,5 @@
+{-# LANGUAGE DerivingStrategies #-}
+
 module ROC.ID.Nationality
   ( Nationality (..)
   , generate
@@ -12,7 +14,7 @@ import ROC.ID.Utilities
 -- | Specifies a person's nationality.
 --
 data Nationality = National | NonNational
-  deriving (Bounded, Enum, Eq, Ord, Read, Show)
+  deriving stock (Bounded, Enum, Eq, Ord, Read, Show)
 
 -- | Generates a random 'Nationality'.
 --
