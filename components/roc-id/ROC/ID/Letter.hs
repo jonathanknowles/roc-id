@@ -1,5 +1,6 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
 
@@ -25,7 +26,7 @@ import Text.Read
 data Letter
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
-  deriving (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+  deriving stock (Bounded, Enum, Eq, Generic, Ord, Read, Show)
 
 -- | Attempts to parse a 'Letter' from a character.
 --
