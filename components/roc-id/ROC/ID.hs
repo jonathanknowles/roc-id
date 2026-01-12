@@ -25,6 +25,10 @@ module ROC.ID
   -- * Validity
   , checksumDigit
 
+  -- * Boundaries
+  , minBound
+  , maxBound
+
   -- * Generation
   , generate
 
@@ -39,6 +43,9 @@ module ROC.ID
   , setNationality
   )
   where
+
+import Prelude hiding
+  ( minBound, maxBound )
 
 import Control.Monad.Random.Class
   ( MonadRandom )
@@ -79,6 +86,7 @@ import ROC.ID.Utilities
 import Text.Read
   ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens )
 
+import qualified Data.Finitary as Finitary
 import qualified Data.Text as T
 import qualified ROC.ID.Digit as Digit
 import qualified ROC.ID.Digit1289 as Digit1289
@@ -280,6 +288,26 @@ toText = U.toText . toUnchecked
 checksumDigit :: ID -> Digit
 checksumDigit (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   negate $ U.checksum (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 0)
+
+--------------------------------------------------------------------------------
+-- Boundaries
+--------------------------------------------------------------------------------
+
+-- | The minimum 'ID' value.
+--
+-- >>> ID.minBound
+-- ID.fromSymbol @"A100000001"
+--
+minBound :: ID
+minBound = Finitary.start
+
+-- | The maximum 'ID' value.
+--
+-- >>> ID.maxBound
+-- ID.fromSymbol @"Z999999996"
+--
+maxBound :: ID
+maxBound = Finitary.end
 
 --------------------------------------------------------------------------------
 -- Generation
