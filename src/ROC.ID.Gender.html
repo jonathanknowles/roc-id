@@ -1,28 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span id="local-6989586621679113479"><span id="local-6989586621679113480"></span></span><span class="hs-pragma">{-# LANGUAGE DeriveGeneric #-}</span><span>
-</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE LambdaCase #-}</span><span>
-</span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
-</span><span id="line-4"></span><span>
-</span><span id="line-5"></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html"><span class="hs-identifier">ROC.ID.Gender</span></a></span><span>
-</span><span id="line-6"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier">Gender</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
-</span><span id="line-7"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#toText"><span class="hs-identifier">toText</span></a></span><span>
-</span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#generate"><span class="hs-identifier">generate</span></a></span><span>
-</span><span id="line-9"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
-</span><span id="line-10"></span><span>
-</span><span id="line-11"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Monad.Random.Class</span></span><span>
-</span><span id="line-12"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">MonadRandom</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-13"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span>
-</span><span id="line-14"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Text</span></span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-15"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>
-</span><span id="line-16"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Generic</span></span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-17"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Language.html"><span class="hs-identifier">ROC.ID.Language</span></a></span><span>
-</span><span id="line-18"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier">Language</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-19"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html"><span class="hs-identifier">ROC.ID.Utilities</span></a></span><span>
-</span><span id="line-20"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier">randomBoundedEnum</span></a></span><span> </span><span class="hs-special">)</span><span>
-</span><span id="line-21"></span><span>
-</span><span id="line-22"></span><span class="hs-comment">-- | A person's gender, encodable within an ROC identification number.</span><span>
-</span><span id="line-23"></span><span class="hs-comment">--</span><span>
-</span><span id="line-24"></span><span class="hs-keyword">data</span><span> </span><span id="Gender"><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-var">Gender</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Male"><span class="annot"><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Female"><span class="annot"><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span></span><span>
-</span><span id="line-25"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679113492"><span id="local-6989586621679113494"><span class="annot"><span class="annottext">Gender
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE DerivingStrategies #-}</span><span>
+</span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE LambdaCase #-}</span><span>
+</span><span id="line-4"></span><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
+</span><span id="line-5"></span><span>
+</span><span id="line-6"></span><span class="hs-keyword">module</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html"><span class="hs-identifier">ROC.ID.Gender</span></a></span><span>
+</span><span id="line-7"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier">Gender</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><span id="line-8"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#toText"><span class="hs-identifier">toText</span></a></span><span>
+</span><span id="line-9"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#generate"><span class="hs-identifier">generate</span></a></span><span>
+</span><span id="line-10"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-11"></span><span>
+</span><span id="line-12"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Monad.Random.Class</span></span><span>
+</span><span id="line-13"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">MonadRandom</span></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-14"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span>
+</span><span id="line-15"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Text</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-16"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.Generics</span></span><span>
+</span><span id="line-17"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><span class="hs-identifier">Generic</span></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-18"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Language.html"><span class="hs-identifier">ROC.ID.Language</span></a></span><span>
+</span><span id="line-19"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier">Language</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-20"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html"><span class="hs-identifier">ROC.ID.Utilities</span></a></span><span>
+</span><span id="line-21"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier">randomBoundedEnum</span></a></span><span> </span><span class="hs-special">)</span><span>
+</span><span id="line-22"></span><span>
+</span><span id="line-23"></span><span class="hs-comment">-- | A person's gender, encodable within an ROC identification number.</span><span>
+</span><span id="line-24"></span><span class="hs-comment">--</span><span>
+</span><span id="line-25"></span><span class="hs-keyword">data</span><span> </span><span id="Gender"><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-var">Gender</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="Male"><span class="annot"><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span id="Female"><span class="annot"><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span></span><span>
+</span><span id="line-26"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679113492"><span id="local-6989586621679113494"><span class="annot"><span class="annottext">Gender
 Gender -&gt; Gender -&gt; Bounded Gender
 forall a. a -&gt; a -&gt; Bounded a
 $cminBound :: Gender
@@ -159,44 +160,44 @@ show :: Gender -&gt; String
 $cshowList :: [Gender] -&gt; ShowS
 showList :: [Gender] -&gt; ShowS
 </span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">)</span><span>
-</span><span id="line-26"></span><span>
-</span><span id="line-27"></span><span class="hs-comment">-- | Prints the specified 'Gender'.</span><span>
-</span><span id="line-28"></span><span class="hs-comment">--</span><span>
-</span><span id="line-29"></span><span class="annot"><a href="ROC.ID.Gender.html#toText"><span class="hs-identifier hs-type">toText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier hs-type">Language</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-30"></span><span id="toText"><span class="annot"><span class="annottext">toText :: Language -&gt; Gender -&gt; Text
+</span><span id="line-27"></span><span>
+</span><span id="line-28"></span><span class="hs-comment">-- | Prints the specified 'Gender'.</span><span>
+</span><span id="line-29"></span><span class="hs-comment">--</span><span>
+</span><span id="line-30"></span><span class="annot"><a href="ROC.ID.Gender.html#toText"><span class="hs-identifier hs-type">toText</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Language.html#Language"><span class="hs-identifier hs-type">Language</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-31"></span><span id="toText"><span class="annot"><span class="annottext">toText :: Language -&gt; Gender -&gt; Text
 </span><a href="ROC.ID.Gender.html#toText"><span class="hs-identifier hs-var hs-var">toText</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-31"></span><span>  </span><span class="annot"><span class="annottext">Language
+</span><span id="line-32"></span><span>  </span><span class="annot"><span class="annottext">Language
 </span><a href="ROC.ID.Language.html#English"><span class="hs-identifier hs-var">English</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Gender -&gt; Text
 </span><a href="ROC.ID.Gender.html#toTextEnglish"><span class="hs-identifier hs-var">toTextEnglish</span></a></span><span>
-</span><span id="line-32"></span><span>  </span><span class="annot"><span class="annottext">Language
+</span><span id="line-33"></span><span>  </span><span class="annot"><span class="annottext">Language
 </span><a href="ROC.ID.Language.html#Chinese"><span class="hs-identifier hs-var">Chinese</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Gender -&gt; Text
 </span><a href="ROC.ID.Gender.html#toTextChinese"><span class="hs-identifier hs-var">toTextChinese</span></a></span><span>
-</span><span id="line-33"></span><span>
-</span><span id="line-34"></span><span class="annot"><a href="ROC.ID.Gender.html#toTextEnglish"><span class="hs-identifier hs-type">toTextEnglish</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-35"></span><span id="toTextEnglish"><span class="annot"><span class="annottext">toTextEnglish :: Gender -&gt; Text
+</span><span id="line-34"></span><span>
+</span><span id="line-35"></span><span class="annot"><a href="ROC.ID.Gender.html#toTextEnglish"><span class="hs-identifier hs-type">toTextEnglish</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-36"></span><span id="toTextEnglish"><span class="annot"><span class="annottext">toTextEnglish :: Gender -&gt; Text
 </span><a href="ROC.ID.Gender.html#toTextEnglish"><span class="hs-identifier hs-var hs-var">toTextEnglish</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-36"></span><span>  </span><span class="annot"><span class="annottext">Gender
+</span><span id="line-37"></span><span>  </span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span><span>   </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;Male&quot;</span></span><span>
-</span><span id="line-37"></span><span>  </span><span class="annot"><span class="annottext">Gender
+</span><span id="line-38"></span><span>  </span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;Female&quot;</span></span><span>
-</span><span id="line-38"></span><span>
-</span><span id="line-39"></span><span class="annot"><a href="ROC.ID.Gender.html#toTextChinese"><span class="hs-identifier hs-type">toTextChinese</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
-</span><span id="line-40"></span><span id="toTextChinese"><span class="annot"><span class="annottext">toTextChinese :: Gender -&gt; Text
+</span><span id="line-39"></span><span>
+</span><span id="line-40"></span><span class="annot"><a href="ROC.ID.Gender.html#toTextChinese"><span class="hs-identifier hs-type">toTextChinese</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-41"></span><span id="toTextChinese"><span class="annot"><span class="annottext">toTextChinese :: Gender -&gt; Text
 </span><a href="ROC.ID.Gender.html#toTextChinese"><span class="hs-identifier hs-var hs-var">toTextChinese</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span>
-</span><span id="line-41"></span><span>  </span><span class="annot"><span class="annottext">Gender
+</span><span id="line-42"></span><span>  </span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Male"><span class="hs-identifier hs-var">Male</span></a></span><span>   </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;&#30007;&#24615;&quot;</span></span><span>
-</span><span id="line-42"></span><span>  </span><span class="annot"><span class="annottext">Gender
+</span><span id="line-43"></span><span>  </span><span class="annot"><span class="annottext">Gender
 </span><a href="ROC.ID.Gender.html#Female"><span class="hs-identifier hs-var">Female</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;&#22899;&#24615;&quot;</span></span><span>
-</span><span id="line-43"></span><span>
-</span><span id="line-44"></span><span class="hs-comment">-- | Generates a random 'Gender'.</span><span>
-</span><span id="line-45"></span><span class="hs-comment">--</span><span>
-</span><span id="line-46"></span><span id="local-6989586621679113474"><span class="annot"><a href="ROC.ID.Gender.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679113474"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679113474"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span></span><span>
-</span><span id="line-47"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Gender
+</span><span id="line-44"></span><span>
+</span><span id="line-45"></span><span class="hs-comment">-- | Generates a random 'Gender'.</span><span>
+</span><span id="line-46"></span><span class="hs-comment">--</span><span>
+</span><span id="line-47"></span><span id="local-6989586621679113474"><span class="annot"><a href="ROC.ID.Gender.html#generate"><span class="hs-identifier hs-type">generate</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">MonadRandom</span></span><span> </span><span class="annot"><a href="#local-6989586621679113474"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679113474"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="annot"><a href="ROC.ID.Gender.html#Gender"><span class="hs-identifier hs-type">Gender</span></a></span></span><span>
+</span><span id="line-48"></span><span id="generate"><span class="annot"><span class="annottext">generate :: forall (m :: * -&gt; *). MonadRandom m =&gt; m Gender
 </span><a href="ROC.ID.Gender.html#generate"><span class="hs-identifier hs-var hs-var">generate</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">m Gender
 forall (m :: * -&gt; *) a. (MonadRandom m, Bounded a, Enum a) =&gt; m a
 </span><a href="ROC.ID.Utilities.html#randomBoundedEnum"><span class="hs-identifier hs-var">randomBoundedEnum</span></a></span><span>
-</span><span id="line-48"></span></pre></body></html>
+</span><span id="line-49"></span></pre></body></html>

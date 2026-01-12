@@ -564,7 +564,7 @@ forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span id="line-162"></span><span class="hs-keyword">data</span><span> </span><span id="ChecksumValidity"><span class="annot"><a href="ROC.ID.Unchecked.html#ChecksumValidity"><span class="hs-identifier hs-var">ChecksumValidity</span></a></span></span><span>
 </span><span id="line-163"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="ChecksumValid"><span class="annot"><a href="ROC.ID.Unchecked.html#ChecksumValid"><span class="hs-identifier hs-var">ChecksumValid</span></a></span></span><span>
 </span><span id="line-164"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="ChecksumInvalid"><span class="annot"><a href="ROC.ID.Unchecked.html#ChecksumInvalid"><span class="hs-identifier hs-var">ChecksumInvalid</span></a></span></span><span>
-</span><span id="line-165"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114676"><span id="local-6989586621679114680"><span class="annot"><span class="annottext">ChecksumValidity -&gt; ChecksumValidity -&gt; Bool
+</span><span id="line-165"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679114676"><span id="local-6989586621679114680"><span class="annot"><span class="annottext">ChecksumValidity -&gt; ChecksumValidity -&gt; Bool
 (ChecksumValidity -&gt; ChecksumValidity -&gt; Bool)
 -&gt; (ChecksumValidity -&gt; ChecksumValidity -&gt; Bool)
 -&gt; Eq ChecksumValidity
