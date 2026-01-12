@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
@@ -11,6 +12,8 @@ module ROC.ID.Gender
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import Data.Text
   ( Text )
 import GHC.Generics
@@ -24,6 +27,7 @@ import ROC.ID.Utilities
 --
 data Gender = Male | Female
   deriving stock (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+  deriving anyclass Finitary
 
 -- | Prints the specified 'Gender'.
 --

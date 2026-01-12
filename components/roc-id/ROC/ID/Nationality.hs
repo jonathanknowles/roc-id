@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 
@@ -9,6 +10,8 @@ module ROC.ID.Nationality
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
@@ -18,6 +21,7 @@ import ROC.ID.Utilities
 --
 data Nationality = National | NonNational
   deriving stock (Bounded, Enum, Eq, Ord, Generic, Read, Show)
+  deriving anyclass Finitary
 
 -- | Generates a random 'Nationality'.
 --

@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
@@ -19,6 +20,8 @@ module ROC.ID.Digit1289
 
 import Control.Monad.Random
   ( MonadRandom )
+import Data.Finitary
+  ( Finitary )
 import GHC.Generics
   ( Generic )
 import GHC.TypeNats
@@ -33,6 +36,7 @@ import ROC.ID.Utilities
 data Digit1289
   = D1289_1 | D1289_2 | D1289_8 | D1289_9
   deriving stock (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+  deriving anyclass Finitary
 
 -- | Attempts to parse a 'Digit1289' from a character.
 --

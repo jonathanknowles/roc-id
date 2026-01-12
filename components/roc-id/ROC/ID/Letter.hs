@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -14,6 +15,8 @@ module ROC.ID.Letter
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
@@ -27,6 +30,7 @@ data Letter
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
   deriving stock (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+  deriving anyclass Finitary
 
 -- | Attempts to parse a 'Letter' from a character.
 --

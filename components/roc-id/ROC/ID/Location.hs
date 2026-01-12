@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -14,6 +15,8 @@ module ROC.ID.Location
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import Data.Text
   ( Text )
 import GHC.Generics
@@ -102,6 +105,7 @@ import qualified ROC.ID.Letter as Letter
 newtype Location = Location Letter
   deriving stock (Eq, Generic, Ord)
   deriving newtype (Bounded, Enum)
+  deriving anyclass Finitary
 
 instance Read Location where
   readPrec = parens $ do
