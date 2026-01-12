@@ -1,5 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
@@ -43,6 +44,8 @@ import Control.Monad.Random.Class
   ( MonadRandom )
 import Data.Bifunctor
   ( Bifunctor (first) )
+import Data.Finitary
+  ( Finitary )
 import Data.Proxy
   ( Proxy (Proxy) )
 import Data.Text
@@ -117,6 +120,7 @@ data ID = ID
   , c8 :: !Digit
   }
   deriving stock (Eq, Ord, Generic)
+  deriving anyclass Finitary
 
 instance Read ID where
   readPrec = parens $ do
