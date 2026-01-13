@@ -15,7 +15,7 @@ import Data.Finitary
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
-  ( randomBoundedEnum )
+  ( randomFinitary )
 
 -- | Specifies a person's nationality.
 --
@@ -26,4 +26,4 @@ data Nationality = National | NonNational
 -- | Generates a random 'Nationality'.
 --
 generate :: MonadRandom m => m Nationality
-generate = randomBoundedEnum
+generate = randomFinitary

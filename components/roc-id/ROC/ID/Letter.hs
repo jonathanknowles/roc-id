@@ -20,7 +20,7 @@ import Data.Finitary
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
-  ( randomBoundedEnum )
+  ( randomFinitary )
 import Text.Read
   ( readMaybe )
 
@@ -50,7 +50,7 @@ toChar letter = case show letter of
 -- | Generates a random 'Letter'.
 --
 generate :: MonadRandom m => m Letter
-generate = randomBoundedEnum
+generate = randomFinitary
 
 type family FromChar (c :: Char) :: Maybe Letter where
   FromChar 'A' = Just A; FromChar 'N' = Just N

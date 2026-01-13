@@ -25,7 +25,7 @@ import GHC.Generics
 import GHC.TypeNats
   ( Nat )
 import ROC.ID.Utilities
-  ( maybeFinitary, randomBoundedEnum )
+  ( maybeFinitary, randomFinitary )
 import Text.Read
   ( Read (readPrec), readMaybe )
 
@@ -78,7 +78,7 @@ fromIntegral i = toEnum (Prelude.fromIntegral (i `mod` 10))
 -- | Generates a random digit.
 --
 generate :: MonadRandom m => m Digit
-generate = randomBoundedEnum
+generate = randomFinitary
 
 type family FromChar (c :: Char) :: Maybe Digit where
   FromChar '0' = Just D0

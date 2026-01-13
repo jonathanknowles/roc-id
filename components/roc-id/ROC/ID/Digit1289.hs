@@ -29,7 +29,7 @@ import GHC.TypeNats
 import ROC.ID.Digit
   ( Digit (..) )
 import ROC.ID.Utilities
-  ( randomBoundedEnum )
+  ( randomFinitary )
 
 -- | Represents a single decimal digit from the set {@1@, @2@, @8@, @9@}.
 --
@@ -71,7 +71,7 @@ toDigit = \case
 -- | Generates a random 'Digit1289'.
 --
 generate :: MonadRandom m => m Digit1289
-generate = randomBoundedEnum
+generate = randomFinitary
 
 type family FromChar (c :: Char) :: Maybe Digit1289 where
   FromChar '1' = Just D1289_1

@@ -21,7 +21,7 @@ import GHC.Generics
 import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Utilities
-  ( randomBoundedEnum )
+  ( randomFinitary )
 
 -- | A person's gender, encodable within an ROC identification number.
 --
@@ -49,4 +49,4 @@ toTextChinese = \case
 -- | Generates a random 'Gender'.
 --
 generate :: MonadRandom m => m Gender
-generate = randomBoundedEnum
+generate = randomFinitary
