@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -9,10 +10,16 @@ module ROC.ID.Utilities where
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary (fromFinite) )
+import Data.Finite
+  ( packFinite )
 import GHC.TypeLits
   ( Symbol, UnconsSymbol, ConsSymbol )
 import GHC.TypeNats
   ( Nat, type (-) )
+import Numeric.Natural
+  ( Natural )
 
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right
@@ -22,6 +29,9 @@ maybeBoundedEnum i
   | i < fromEnum (minBound :: a) = Nothing
   | i > fromEnum (maxBound :: a) = Nothing
   | otherwise                    = pure $ toEnum i
+
+maybeFinitary :: forall a. Finitary a => Natural -> Maybe a
+maybeFinitary = fmap fromFinite . packFinite . fromIntegral @Natural @Integer
 
 randomBoundedEnum :: forall m a. (MonadRandom m, Bounded a, Enum a) => m a
 randomBoundedEnum =
