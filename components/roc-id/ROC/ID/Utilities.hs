@@ -1,3 +1,4 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -11,15 +12,22 @@ module ROC.ID.Utilities where
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
 import Data.Finitary
-  ( Finitary (fromFinite) )
+  ( Finitary (fromFinite), Cardinality )
 import Data.Finite
   ( packFinite )
+import Data.Maybe
+  ( fromMaybe )
+import Data.Proxy
+  ( Proxy (Proxy) )
 import GHC.TypeLits
-  ( Symbol, UnconsSymbol, ConsSymbol )
+  ( Symbol, UnconsSymbol, ConsSymbol, type (<=) )
 import GHC.TypeNats
-  ( Nat, type (-) )
+  ( Nat, type (-), natVal )
 import Numeric.Natural
   ( Natural )
+
+cardinality :: forall a. Finitary a => Natural
+cardinality = natVal $ Proxy @(Cardinality a)
 
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right
@@ -36,6 +44,21 @@ maybeFinitary = fmap fromFinite . packFinite . fromIntegral @Natural @Integer
 randomBoundedEnum :: forall m a. (MonadRandom m, Bounded a, Enum a) => m a
 randomBoundedEnum =
   toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
+
+randomFinitary
+  :: forall m a. (MonadRandom m, Finitary a, 1 <= Cardinality a) => m a
+randomFinitary =
+    fromMaybe failure . maybeFinitary <$> randomNatural (0, cardinality @a - 1)
+  where
+    failure = error "randomFinitary: unexpected out-of-bounds value"
+
+randomNatural :: MonadRandom m => (Natural, Natural) -> m Natural
+randomNatural (lo, hi) =
+  fromIntegral @Integer @Natural <$>
+    getRandomR
+      ( fromIntegral @Natural @Integer lo
+      , fromIntegral @Natural @Integer hi
+      )
 
 type family FromJust (m :: Maybe a) e where
   FromJust Nothing e = e
