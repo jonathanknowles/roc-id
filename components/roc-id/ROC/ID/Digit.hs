@@ -25,7 +25,7 @@ import GHC.Generics
 import GHC.TypeNats
   ( Nat )
 import ROC.ID.Utilities
-  ( maybeBoundedEnum, randomBoundedEnum )
+  ( maybeFinitary, randomBoundedEnum )
 import Text.Read
   ( Read (readPrec), readMaybe )
 
@@ -61,7 +61,7 @@ instance Show Digit where show = show . fromEnum
 -- The 'Char' must be a decimal digit in the range @0@ to @9@.
 --
 fromChar :: Char -> Maybe Digit
-fromChar c = readMaybe [c] >>= maybeBoundedEnum
+fromChar c = readMaybe [c] >>= maybeFinitary
 
 -- | Converts a 'Digit' to a decimal digit character.
 --
