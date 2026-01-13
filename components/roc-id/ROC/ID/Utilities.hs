@@ -32,12 +32,6 @@ cardinality = natVal $ Proxy @(Cardinality a)
 guard :: x -> Maybe y -> Either x y
 guard x = maybe (Left x) Right
 
-maybeBoundedEnum :: forall a. (Bounded a, Enum a) => Int -> Maybe a
-maybeBoundedEnum i
-  | i < fromEnum (minBound :: a) = Nothing
-  | i > fromEnum (maxBound :: a) = Nothing
-  | otherwise                    = pure $ toEnum i
-
 maybeFinitary :: forall a. Finitary a => Natural -> Maybe a
 maybeFinitary = fmap fromFinite . packFinite . fromIntegral @Natural @Integer
 
