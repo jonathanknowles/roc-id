@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 
 module ROC.ID.Nationality
@@ -8,13 +9,15 @@ module ROC.ID.Nationality
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import GHC.Generics
+  ( Generic )
 import ROC.ID.Utilities
   ( randomBoundedEnum )
 
 -- | Specifies a person's nationality.
 --
 data Nationality = National | NonNational
-  deriving stock (Bounded, Enum, Eq, Ord, Read, Show)
+  deriving stock (Bounded, Enum, Eq, Ord, Generic, Read, Show)
 
 -- | Generates a random 'Nationality'.
 --
