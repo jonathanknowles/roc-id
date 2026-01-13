@@ -35,10 +35,6 @@ guard x = maybe (Left x) Right
 maybeFinitary :: forall a. Finitary a => Natural -> Maybe a
 maybeFinitary = fmap fromFinite . packFinite . fromIntegral @Natural @Integer
 
-randomBoundedEnum :: forall m a. (MonadRandom m, Bounded a, Enum a) => m a
-randomBoundedEnum =
-  toEnum <$> getRandomR (fromEnum (minBound :: a), fromEnum (maxBound :: a))
-
 randomFinitary
   :: forall m a. (MonadRandom m, Finitary a, 1 <= Cardinality a) => m a
 randomFinitary =
