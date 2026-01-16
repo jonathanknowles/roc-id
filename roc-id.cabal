@@ -99,6 +99,7 @@ library
 test-suite roc-id-test
   import:
     , dependency-base
+    , dependency-finitary
     , dependency-hspec
     , dependency-MonadRandom
     , dependency-nonempty-containers

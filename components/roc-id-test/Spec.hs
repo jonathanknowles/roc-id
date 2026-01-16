@@ -53,6 +53,7 @@ import Test.QuickCheck.Classes
 import Test.QuickCheck.Classes.Hspec
   ( testLawsMany )
 
+import qualified Data.Finitary as Finitary
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
 import qualified ROC.ID as ID
@@ -129,6 +130,39 @@ main = hspec $ do
         , showLaws
         , showReadLaws
         ]
+
+  describe "Finitary instances" $ do
+
+    describe "ID" $ do
+
+      let start    = Finitary.start    @ID
+          end      = Finitary.end      @ID
+          previous = Finitary.previous @ID
+          next     = Finitary.next     @ID
+
+      it "previous start" $
+          previous start
+            `shouldBe` Nothing
+
+      it "start" $
+          start
+            `shouldBe` ID.fromSymbol @"A100000001"
+
+      it "next start" $
+          next start
+            `shouldBe` Just (ID.fromSymbol @"A100000010")
+
+      it "previous end" $
+          previous end
+            `shouldBe` Just (ID.fromSymbol @"Z999999987")
+
+      it "end" $
+          end
+            `shouldBe` ID.fromSymbol @"Z999999996"
+
+      it "next end" $
+          next end
+            `shouldBe` Nothing
 
   describe "ID.fromText" $ do
 
