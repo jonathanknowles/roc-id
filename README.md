@@ -1,5 +1,11 @@
 # `roc-id`
-<a href="https://jonathanknowles.github.io/roc-id/"><img src="https://img.shields.io/badge/API-Documentation-227755" /></a>
+
+[![Latest Release](
+  https://img.shields.io/hackage/v/roc-id?label=Latest%20Release&color=227755
+)](https://hackage.haskell.org/package/roc-id)
+[![Development Branch](
+  https://img.shields.io/badge/Development%20Branch-API%20Documentation-225577
+)](https://jonathanknowles.github.io/roc-id/)
 
 This package provides a [Haskell](https://www.haskell.org/) implementation of
 the ROC (Taiwan) Uniform Identification Number (中華民國統一證號) format.
