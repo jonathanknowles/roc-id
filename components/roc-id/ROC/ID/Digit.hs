@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE PolyKinds #-}
@@ -17,12 +18,14 @@ module ROC.ID.Digit
 
 import Control.Monad.Random
   ( MonadRandom )
+import Data.Finitary
+  ( Finitary )
 import GHC.Generics
   ( Generic )
 import GHC.TypeNats
   ( Nat )
 import ROC.ID.Utilities
-  ( maybeBoundedEnum, randomBoundedEnum )
+  ( maybeFinitary, randomFinitary )
 import Text.Read
   ( Read (readPrec), readMaybe )
 
@@ -36,6 +39,7 @@ import qualified Prelude
 data Digit
   = D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | D8 | D9
   deriving stock (Bounded, Enum, Eq, Generic, Ord)
+  deriving anyclass Finitary
 
 -- | Arithmetic modulo 10.
 --
@@ -57,7 +61,7 @@ instance Show Digit where show = show . fromEnum
 -- The 'Char' must be a decimal digit in the range @0@ to @9@.
 --
 fromChar :: Char -> Maybe Digit
-fromChar c = readMaybe [c] >>= maybeBoundedEnum
+fromChar c = readMaybe [c] >>= maybeFinitary
 
 -- | Converts a 'Digit' to a decimal digit character.
 --
@@ -74,7 +78,7 @@ fromIntegral i = toEnum (Prelude.fromIntegral (i `mod` 10))
 -- | Generates a random digit.
 --
 generate :: MonadRandom m => m Digit
-generate = randomBoundedEnum
+generate = randomFinitary
 
 type family FromChar (c :: Char) :: Maybe Digit where
   FromChar '0' = Just D0

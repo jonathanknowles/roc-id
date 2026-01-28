@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -14,6 +15,8 @@ module ROC.ID.Location
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import Data.Text
   ( Text )
 import GHC.Generics
@@ -22,10 +25,10 @@ import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Letter
   ( Letter (..) )
+import ROC.ID.Utilities
+  ( randomFinitary )
 import Text.Read
   ( Lexeme (Ident, Symbol), Read (readPrec), lexP, parens )
-
-import qualified ROC.ID.Letter as Letter
 
 -- | Represents a location, encodable within an ROC identification number.
 --
@@ -102,6 +105,7 @@ import qualified ROC.ID.Letter as Letter
 newtype Location = Location Letter
   deriving stock (Eq, Generic, Ord)
   deriving newtype (Bounded, Enum)
+  deriving anyclass Finitary
 
 instance Read Location where
   readPrec = parens $ do
@@ -191,4 +195,4 @@ toTextEnglish (Location letter) = case letter of
 -- | Generates a random 'Location'.
 --
 generate :: MonadRandom m => m Location
-generate = Location <$> Letter.generate
+generate = randomFinitary

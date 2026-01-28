@@ -1,5 +1,6 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
@@ -43,6 +44,8 @@ import Control.Monad.Random.Class
   ( MonadRandom )
 import Data.Bifunctor
   ( Bifunctor (first) )
+import Data.Finitary
+  ( Finitary )
 import Data.Proxy
   ( Proxy (Proxy) )
 import Data.Text
@@ -68,18 +71,13 @@ import ROC.ID.Location
 import ROC.ID.Nationality
   ( Nationality (..) )
 import ROC.ID.Unchecked
-  ( UncheckedID (UncheckedID)
-  , ValidID
-  )
+  ( UncheckedID (UncheckedID), ValidID )
 import ROC.ID.Utilities
-  ( guard )
+  ( guard, randomFinitary )
 import Text.Read
   ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens )
 
 import qualified Data.Text as T
-import qualified ROC.ID.Digit as Digit
-import qualified ROC.ID.Digit1289 as Digit1289
-import qualified ROC.ID.Letter as Letter
 import qualified ROC.ID.Location as Location
 import qualified ROC.ID.Unchecked as U
 
@@ -117,6 +115,7 @@ data ID = ID
   , c8 :: !Digit
   }
   deriving stock (Eq, Ord, Generic)
+  deriving anyclass Finitary
 
 instance Read ID where
   readPrec = parens $ do
@@ -284,17 +283,7 @@ checksumDigit (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
 -- | Generates a random 'ID'.
 --
 generate :: MonadRandom m => m ID
-generate =
-  ID
-    <$> Letter.generate
-    <*> Digit1289.generate
-    <*> Digit.generate
-    <*> Digit.generate
-    <*> Digit.generate
-    <*> Digit.generate
-    <*> Digit.generate
-    <*> Digit.generate
-    <*> Digit.generate
+generate = randomFinitary
 
 --------------------------------------------------------------------------------
 -- Inspection
