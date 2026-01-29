@@ -1,6 +1,6 @@
 cabal-version:  3.0
 name:           roc-id
-version:        0.3.0.0
+version:        0.3.0.1
 synopsis:       Implementation of the ROC (Taiwan) Uniform ID Number format.
 category:       Identification
 homepage:       https://github.com/jonathanknowles/roc-id#readme
@@ -40,7 +40,7 @@ extra-doc-files:
   README.md
 
 common dependency-base
-    build-depends:base                      >= 4.17.2.1     && < 4.22
+    build-depends:base                      >= 4.17.2.1     && < 4.23
 common dependency-doctest
     build-depends:doctest                   >= 0.24.2       && < 0.25
 common dependency-hspec
@@ -58,7 +58,7 @@ common dependency-text
 
 custom-setup
   setup-depends:
-    , base                                  >= 4.17.2.1     && < 4.22
+    , base                                  >= 4.17.2.1     && < 4.23
     , cabal-doctest                         >= 1.0.12       && < 1.1
 
 source-repository head
