@@ -1,4 +1,5 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -14,10 +15,12 @@ module ROC.ID.Letter
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import GHC.Generics
   ( Generic )
 import ROC.ID.Utilities
-  ( randomBoundedEnum )
+  ( randomFinitary )
 import Text.Read
   ( readMaybe )
 
@@ -27,6 +30,7 @@ data Letter
   = A | B | C | D | E | F | G | H | I | J | K | L | M
   | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
   deriving stock (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+  deriving anyclass Finitary
 
 -- | Attempts to parse a 'Letter' from a character.
 --
@@ -46,7 +50,7 @@ toChar letter = case show letter of
 -- | Generates a random 'Letter'.
 --
 generate :: MonadRandom m => m Letter
-generate = randomBoundedEnum
+generate = randomFinitary
 
 type family FromChar (c :: Char) :: Maybe Letter where
   FromChar 'A' = Just A; FromChar 'N' = Just N

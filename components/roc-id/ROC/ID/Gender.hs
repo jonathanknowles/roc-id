@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
@@ -11,6 +12,8 @@ module ROC.ID.Gender
 
 import Control.Monad.Random.Class
   ( MonadRandom (..) )
+import Data.Finitary
+  ( Finitary )
 import Data.Text
   ( Text )
 import GHC.Generics
@@ -18,12 +21,13 @@ import GHC.Generics
 import ROC.ID.Language
   ( Language (..) )
 import ROC.ID.Utilities
-  ( randomBoundedEnum )
+  ( randomFinitary )
 
 -- | A person's gender, encodable within an ROC identification number.
 --
 data Gender = Male | Female
   deriving stock (Bounded, Enum, Eq, Generic, Ord, Read, Show)
+  deriving anyclass Finitary
 
 -- | Prints the specified 'Gender'.
 --
@@ -45,4 +49,4 @@ toTextChinese = \case
 -- | Generates a random 'Gender'.
 --
 generate :: MonadRandom m => m Gender
-generate = randomBoundedEnum
+generate = randomFinitary
