@@ -75,7 +75,7 @@ import ROC.ID.Unchecked
 import ROC.ID.Utilities
   ( guard, randomFinitary )
 import Text.Read
-  ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens )
+  ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens, prec )
 
 import qualified Data.Text as T
 import qualified ROC.ID.Location as Location
@@ -119,7 +119,7 @@ data ID = ID
   deriving anyclass Finitary
 
 instance Read ID where
-  readPrec = parens $ do
+  readPrec = parens $ prec 10 $ do
     Ident  "ID"         <- lexP
     Symbol "."          <- lexP
     Ident  "fromSymbol" <- lexP
@@ -127,8 +127,9 @@ instance Read ID where
     unsafeFromText <$> readPrec
 
 instance Show ID where
-  showsPrec _ s =
-    showString "ID.fromSymbol @" . shows (toText s)
+  showsPrec d s =
+    showParen (d > 10) $
+      showString "ID.fromSymbol @" . shows (toText s)
 
 --------------------------------------------------------------------------------
 -- Construction
