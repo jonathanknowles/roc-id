@@ -75,7 +75,7 @@ import ROC.ID.Unchecked
 import ROC.ID.Utilities
   ( guard, randomFinitary )
 import Text.Read
-  ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens )
+  ( Lexeme (Ident, Symbol, Punc), Read (readPrec), lexP, parens, prec )
 
 import qualified Data.Text as T
 import qualified ROC.ID.Location as Location
@@ -84,6 +84,7 @@ import qualified ROC.ID.Unchecked as U
 -- |
 -- $setup
 -- >>> :set -XDataKinds
+-- >>> :set -XOverloadedStrings
 -- >>> :set -XTypeApplications
 -- >>> import ROC.ID
 -- >>> import qualified ROC.ID as ID
@@ -118,7 +119,7 @@ data ID = ID
   deriving anyclass Finitary
 
 instance Read ID where
-  readPrec = parens $ do
+  readPrec = parens $ prec 10 $ do
     Ident  "ID"         <- lexP
     Symbol "."          <- lexP
     Ident  "fromSymbol" <- lexP
@@ -126,8 +127,9 @@ instance Read ID where
     unsafeFromText <$> readPrec
 
 instance Show ID where
-  showsPrec _ s =
-    showString "ID.fromSymbol @" . shows (toText s)
+  showsPrec d s =
+    showParen (d > 10) $
+      showString "ID.fromSymbol @" . shows (toText s)
 
 --------------------------------------------------------------------------------
 -- Construction
@@ -196,7 +198,10 @@ fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
 -- | Attempts to construct an 'ID' from 'Text'.
 --
 -- The input must be exactly 10 characters in length and of the form
--- __@A123456789@__.
+-- __@A123456789@__:
+--
+-- >>> ID.fromText "A123456789"
+-- Right (ID.fromSymbol @"A123456789")
 --
 -- More precisely, the input must match the regular expression
 -- __@^[A-Z][1289][0-9]{8}$@__, and the resultant ID must have a valid
