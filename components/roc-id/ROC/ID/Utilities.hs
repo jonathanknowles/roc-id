@@ -20,7 +20,7 @@ import Data.Maybe
 import Data.Proxy
   ( Proxy (Proxy) )
 import GHC.TypeLits
-  ( Symbol, UnconsSymbol, ConsSymbol, type (<=) )
+  ( Symbol, UnconsSymbol, ConsSymbol, type (<=), type (+) )
 import GHC.TypeNats
   ( Nat, type (-), natVal )
 import Numeric.Natural
@@ -59,6 +59,13 @@ type family Fst (t :: (a, a)) :: a where
 
 type family Snd (t :: (a, a)) :: a where
   Snd '(_, y) = y
+
+type family ListLength (as :: [a]) :: Nat where
+  ListLength as = ListLengthInner 0 as
+
+type family ListLengthInner (n :: Nat) (as :: [a]) :: Nat where
+  ListLengthInner n '[] = n
+  ListLengthInner n (a : as) = ListLengthInner (n + 1) as
 
 type family
     SymbolToCharList (s :: Symbol) :: [Char]
