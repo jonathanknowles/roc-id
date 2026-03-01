@@ -31,6 +31,8 @@ import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
 import Data.Text
   ( Text )
+import Data.Type.Bool
+  ( If )
 import Data.Type.Equality
   ( type (==) )
 import GHC.TypeError
@@ -38,7 +40,7 @@ import GHC.TypeError
 import GHC.TypeLits
   ( AppendSymbol, KnownSymbol, Symbol )
 import GHC.TypeNats
-  ( Mod, Nat, type (+) )
+  ( CmpNat, Mod, Nat, type (+) )
 import ROC.ID.CharIndex
   ( CharIndex (..) )
 import ROC.ID.CharSet
@@ -50,7 +52,7 @@ import ROC.ID.Digit1289
 import ROC.ID.Letter
   ( Letter (..) )
 import ROC.ID.Utilities
-  ( FromJust, Fst, ReplicateChar, Snd, SymbolToCharList, guard )
+  ( FromJust, Fst, ReplicateChar, Snd, SymbolLength, SymbolToCharList, guard )
 
 import qualified Data.Set.NonEmpty as NESet
 import qualified Data.Text as T
@@ -297,5 +299,18 @@ type family InvalidCharError
 
 type ValidID s =
   ( KnownSymbol s
-  , ChecksumValid (SymbolToId s)
+  , ChecksumValid (SymbolToId (ConcreteSymbol s))
   ) :: Constraint
+
+-- | Ensures the existence of a concrete symbol, or else raises a type error.
+--
+type family ConcreteSymbol (s :: Symbol) :: Symbol where
+  -- If we can compute the symbol's length, then we have a concrete symbol.
+  ConcreteSymbol s =
+    If
+      (CmpNat (SymbolLength s) 0 == GT)
+      s
+      (TypeError (TypeError.Text ConcreteSymbolError))
+
+type ConcreteSymbolError =
+  "Expected a type-level symbol of the form \"A123456789\"."
