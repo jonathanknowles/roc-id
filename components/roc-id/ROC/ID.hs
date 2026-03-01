@@ -23,7 +23,7 @@ module ROC.ID
   , toText
 
   -- * Validity
-  , checksumDigit
+  , checksum
 
   -- * Generation
   , generate
@@ -102,7 +102,7 @@ import qualified ROC.ID.Unchecked as U
 -- To guarantee correctness, an 'ID' value does __not__ store the terminal
 -- checksum digit of the identification number it represents.
 --
--- To compute the checksum digit, use 'checksumDigit'.
+-- To compute the checksum digit, use 'checksum'.
 --
 data ID = ID
   { c0 :: !Letter
@@ -284,8 +284,8 @@ toText = U.toText . toUnchecked
 
 -- | Computes the terminal checksum digit of an 'ID'.
 --
-checksumDigit :: ID -> Digit
-checksumDigit (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
+checksum :: ID -> Digit
+checksum (ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
   negate $ U.checksum (UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 0)
 
 --------------------------------------------------------------------------------
@@ -363,4 +363,4 @@ fromUnchecked u@(UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 _) =
 
 toUnchecked :: ID -> UncheckedID
 toUnchecked i@(ID u0 u1 u2 u3 u4 u5 u6 u7 u8) =
-  UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksumDigit i)
+  UncheckedID u0 u1 u2 u3 u4 u5 u6 u7 u8 (checksum i)
