@@ -23,7 +23,7 @@
 </span><span id="line-23"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.html#toText"><span class="hs-identifier">toText</span></a></span><span>
 </span><span id="line-24"></span><span>
 </span><span id="line-25"></span><span>  </span><span class="annot"><span class="hs-comment">-- * Validity</span></span><span>
-</span><span id="line-26"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier">checksumDigit</span></a></span><span>
+</span><span id="line-26"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.html#checksum"><span class="hs-identifier">checksum</span></a></span><span>
 </span><span id="line-27"></span><span>
 </span><span id="line-28"></span><span>  </span><span class="annot"><span class="hs-comment">-- * Generation</span></span><span>
 </span><span id="line-29"></span><span>  </span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ROC.ID.html#generate"><span class="hs-identifier">generate</span></a></span><span>
@@ -102,7 +102,7 @@
 </span><span id="line-102"></span><span class="hs-comment">-- To guarantee correctness, an 'ID' value does __not__ store the terminal</span><span>
 </span><span id="line-103"></span><span class="hs-comment">-- checksum digit of the identification number it represents.</span><span>
 </span><span id="line-104"></span><span class="hs-comment">--</span><span>
-</span><span id="line-105"></span><span class="hs-comment">-- To compute the checksum digit, use 'checksumDigit'.</span><span>
+</span><span id="line-105"></span><span class="hs-comment">-- To compute the checksum digit, use 'checksum'.</span><span>
 </span><span id="line-106"></span><span class="hs-comment">--</span><span>
 </span><span id="line-107"></span><span class="hs-keyword">data</span><span> </span><span id="ID"><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-var">ID</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span id="ID"><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-var">ID</span></a></span></span><span>
 </span><span id="line-108"></span><span>  </span><span class="hs-special">{</span><span> </span><span id="c0"><span class="annot"><span class="annottext">ID -&gt; Letter
@@ -526,9 +526,9 @@ forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span id="line-284"></span><span>
 </span><span id="line-285"></span><span class="hs-comment">-- | Computes the terminal checksum digit of an 'ID'.</span><span>
 </span><span id="line-286"></span><span class="hs-comment">--</span><span>
-</span><span id="line-287"></span><span class="annot"><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-type">checksumDigit</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
-</span><span id="line-288"></span><span id="checksumDigit"><span class="annot"><span class="annottext">checksumDigit :: ID -&gt; Digit
-</span><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-var hs-var">checksumDigit</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span id="local-6989586621679163352"><span class="annot"><span class="annottext">Letter
+</span><span id="line-287"></span><span class="annot"><a href="ROC.ID.html#checksum"><span class="hs-identifier hs-type">checksum</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ROC.ID.Digit.html#Digit"><span class="hs-identifier hs-type">Digit</span></a></span><span>
+</span><span id="line-288"></span><span id="checksum"><span class="annot"><span class="annottext">checksum :: ID -&gt; Digit
+</span><a href="ROC.ID.html#checksum"><span class="hs-identifier hs-var hs-var">checksum</span></a></span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ROC.ID.html#ID"><span class="hs-identifier hs-type">ID</span></a></span><span> </span><span id="local-6989586621679163352"><span class="annot"><span class="annottext">Letter
 </span><a href="#local-6989586621679163352"><span class="hs-identifier hs-var">u0</span></a></span></span><span> </span><span id="local-6989586621679163353"><span class="annot"><span class="annottext">Digit1289
 </span><a href="#local-6989586621679163353"><span class="hs-identifier hs-var">u1</span></a></span></span><span> </span><span id="local-6989586621679163354"><span class="annot"><span class="annottext">Digit
 </span><a href="#local-6989586621679163354"><span class="hs-identifier hs-var">u2</span></a></span></span><span> </span><span id="local-6989586621679163355"><span class="annot"><span class="annottext">Digit
@@ -785,6 +785,6 @@ forall a. Maybe a
 </span><a href="#local-6989586621679163411"><span class="hs-identifier hs-var">u6</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
 </span><a href="#local-6989586621679163412"><span class="hs-identifier hs-var">u7</span></a></span><span> </span><span class="annot"><span class="annottext">Digit
 </span><a href="#local-6989586621679163413"><span class="hs-identifier hs-var">u8</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">ID -&gt; Digit
-</span><a href="ROC.ID.html#checksumDigit"><span class="hs-identifier hs-var">checksumDigit</span></a></span><span> </span><span class="annot"><span class="annottext">ID
+</span><a href="ROC.ID.html#checksum"><span class="hs-identifier hs-var">checksum</span></a></span><span> </span><span class="annot"><span class="annottext">ID
 </span><a href="#local-6989586621679163404"><span class="hs-identifier hs-var">i</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-367"></span></pre></body></html>
