@@ -67,6 +67,9 @@ type family ListLengthInner (n :: Nat) (as :: [a]) :: Nat where
   ListLengthInner n '[] = n
   ListLengthInner n (a : as) = ListLengthInner (n + 1) as
 
+type family SymbolLength (s :: Symbol) :: Nat where
+  SymbolLength s = ListLength (SymbolToCharList s)
+
 type family
     SymbolToCharList (s :: Symbol) :: [Char]
   where
