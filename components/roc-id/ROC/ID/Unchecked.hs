@@ -90,16 +90,15 @@ type UncheckedIDTuple =
   )
 
 data FromTextError
-  = TextTooShort
-  | TextTooLong
-  | InvalidChar CharIndex CharSet
+  = InvalidChar CharIndex CharSet
+  | InvalidLength
   deriving stock (Eq, Ord, Read, Show)
 
 type Parser a = Text -> Either FromTextError (Text, a)
 
 fromText :: Text -> Either FromTextError UncheckedID
 fromText text0 = do
-    when (T.length text0 > 10) $ Left TextTooLong
+    when (T.length text0 > 10) $ Left InvalidLength
     (text1,  c0                             ) <- parseLetter    text0
     (text2,  c1                             ) <- parseDigit1289 text1
     (_____, (c2, c3, c4, c5, c6, c7, c8, c9)) <- parseDigits    text2
@@ -107,13 +106,13 @@ fromText text0 = do
   where
     parseLetter :: Parser Letter
     parseLetter text = do
-      (char, remainder) <- guard TextTooShort $ T.uncons text
+      (char, remainder) <- guard InvalidLength $ T.uncons text
       letter <- guard (InvalidChar 0 (CharRange 'A' 'Z')) (Letter.fromChar char)
       pure (remainder, letter)
 
     parseDigit1289 :: Parser Digit1289
     parseDigit1289 text = do
-      (char, remainder) <- guard TextTooShort $ T.uncons text
+      (char, remainder) <- guard InvalidLength $ T.uncons text
       digit1289 <- guard
         (InvalidChar 1 (CharSet $ NESet.fromList $ '1' :| ['2', '8', '9']))
         (Digit1289.fromChar char)
@@ -123,7 +122,7 @@ fromText text0 = do
     parseDigits text = do
         let (chars, remainder) = T.splitAt 8 text
         digitList <- traverse parseIndexedDigit (zip [2 ..] $ T.unpack chars)
-        digitTuple <- guard TextTooShort (listToTuple8 digitList)
+        digitTuple <- guard InvalidLength (listToTuple8 digitList)
         pure (remainder, digitTuple)
       where
         parseIndexedDigit (i, c) =

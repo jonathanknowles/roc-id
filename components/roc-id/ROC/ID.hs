@@ -232,12 +232,10 @@ fromText text = do
   where
     fromUncheckedError :: U.FromTextError -> FromTextError
     fromUncheckedError = \case
-      U.TextTooShort ->
-        TextTooShort
-      U.TextTooLong ->
-        TextTooLong
       U.InvalidChar i r ->
         InvalidChar i r
+      U.InvalidLength ->
+        InvalidLength
 
 unsafeFromText :: Text -> ID
 unsafeFromText t =
@@ -249,13 +247,7 @@ unsafeFromText t =
 --
 data FromTextError
 
-  = TextTooShort
-  -- ^ Indicates that the input text is too short.
-
-  | TextTooLong
-  -- ^ Indicates that the input text is too long.
-
-  | InvalidChar CharIndex CharSet
+  = InvalidChar CharIndex CharSet
   -- ^ Indicates that the input text contains a character that is not allowed.
   --
   --   - `CharIndex` specifies the position of the invalid character.
@@ -263,6 +255,9 @@ data FromTextError
 
   | InvalidChecksum
   -- ^ Indicates that the parsed identification number has an invalid checksum.
+
+  | InvalidLength
+  -- ^ Indicates that the input text has an invalid length.
 
   deriving stock (Eq, Ord, Show)
 
