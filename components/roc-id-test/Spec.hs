@@ -178,12 +178,12 @@ main = hspec $ do
       property $ \(i :: ID) n -> do
         let newLength = n `mod` 10
         let invalidID = T.take newLength $ ID.toText i
-        ID.fromText invalidID `shouldBe` Left ID.TextTooShort
+        ID.fromText invalidID `shouldBe` Left ID.InvalidLength
 
     it "does not parse identification numbers that are too long" $
       property $ \(i :: ID) (NonEmpty s) -> do
         let invalidID = ID.toText i <> T.pack s
-        ID.fromText invalidID `shouldBe` Left ID.TextTooLong
+        ID.fromText invalidID `shouldBe` Left ID.InvalidLength
 
     it "does not parse identification numbers with invalid location codes" $
       property $ \(i :: ID) (c :: Int) -> do
@@ -227,7 +227,7 @@ main = hspec $ do
               replaceCharAt invalidCharIndex 'x' (ID.toText i)
               <>
               T.pack trailingExcess
-        ID.fromText textInvalid `shouldBe` Left ID.TextTooLong
+        ID.fromText textInvalid `shouldBe` Left ID.InvalidLength
 
 -- | Replaces a character at a specific position.
 --
