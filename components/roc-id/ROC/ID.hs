@@ -192,6 +192,18 @@ instance Show ID where
 --       Character at this position must be a digit in the range [0 .. 9].
 -- ...
 --
+-- === Missing or empty symbols
+--
+-- >>> ID.fromSymbol
+-- ...
+-- ... Expected a type-level symbol of the form "A123456789".
+-- ...
+--
+-- >>> ID.fromSymbol @""
+-- ...
+-- ... Expected a type-level symbol of the form "A123456789".
+-- ...
+--
 fromSymbol :: forall (s :: Symbol). ValidID s => ID
 fromSymbol = unsafeFromText $ T.pack $ symbolVal $ Proxy @s
 
