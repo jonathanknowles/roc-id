@@ -49,6 +49,8 @@ common dependency-finite-typelits
     build-depends:finite-typelits           >= 0.2.1.0      && < 0.3
 common dependency-hspec
     build-depends:hspec                     >= 2.5.5        && < 2.12
+common dependency-microlens
+    build-depends:microlens                 >= 0.5.0.0      && < 0.6
 common dependency-MonadRandom
     build-depends:MonadRandom               >= 0.5.1.1      && < 0.7
 common dependency-nonempty-containers
@@ -102,6 +104,7 @@ test-suite roc-id-test
     , dependency-finitary
     , dependency-hspec
     , dependency-MonadRandom
+    , dependency-microlens
     , dependency-nonempty-containers
     , dependency-QuickCheck
     , dependency-quickcheck-classes

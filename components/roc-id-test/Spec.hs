@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
@@ -17,6 +18,10 @@ import Data.List.NonEmpty
   ( NonEmpty ((:|)) )
 import Data.Text
   ( Text )
+import Lens.Micro
+  ( Lens', lens, set )
+import Lens.Micro.Extras
+  ( view )
 import ROC.ID
   ( ID (..) )
 import ROC.ID.CharIndex
@@ -36,10 +41,11 @@ import ROC.ID.Location
 import ROC.ID.Nationality
   ( Nationality (..) )
 import Test.Hspec
-  ( describe, hspec, it, shouldBe, shouldSatisfy )
+  ( Spec, describe, hspec, it, shouldBe, shouldSatisfy )
 import Test.QuickCheck
   ( Arbitrary (..)
   , NonEmptyList (..)
+  , Property
   , arbitraryBoundedEnum
   , choose
   , elements
@@ -47,6 +53,7 @@ import Test.QuickCheck
   , property
   , shrinkBoundedEnum
   , shrinkMap
+  , (===)
   )
 import Test.QuickCheck.Classes
   ( boundedEnumLaws, eqLaws, numLaws, ordLaws, showLaws, showReadLaws )
@@ -164,6 +171,15 @@ main = hspec $ do
           next end
             `shouldBe` Nothing
 
+  describe "ID attribute getters and setters" $ do
+
+    describe "Gender" $
+      checkLensLaws gender
+    describe "Location" $
+      checkLensLaws location
+    describe "Nationality" $
+      checkLensLaws nationality
+
   describe "ID.fromText" $ do
 
     it "successfully parses known-valid identification numbers" $
@@ -228,6 +244,47 @@ main = hspec $ do
               <>
               T.pack trailingExcess
         ID.fromText textInvalid `shouldBe` Left ID.InvalidLength
+
+checkLensLaws
+  :: forall i v. (Arbitrary i, Arbitrary v, Eq i, Eq v, Show i, Show v)
+  => Lens' i v
+  -> Spec
+checkLensLaws l =
+  do
+    it "Finality"
+      $ property lensLawFinality
+    it "Idempotence"
+      $ property lensLawIdempotence
+    it "Invertibility"
+      $ property lensLawInvertibility
+    it "Reversibility"
+      $ property lensLawReversibility
+    it "Stability"
+      $ property lensLawStability
+  where
+    lensLawFinality :: i -> v -> v -> Property
+    lensLawFinality i v1 v2 = set l v2 (set l v1 i) === set l v2 i
+
+    lensLawIdempotence :: i -> v -> Property
+    lensLawIdempotence i v = set l v (set l v i) === set l v i
+
+    lensLawInvertibility :: i -> v -> Property
+    lensLawInvertibility i v = view l (set l v i) === v
+
+    lensLawReversibility :: i -> v -> Property
+    lensLawReversibility i v = set l (view l i) (set l v i) === i
+
+    lensLawStability :: i -> Property
+    lensLawStability i = set l (view l i) i === i
+
+gender :: Lens' ID Gender
+gender = lens ID.getGender (flip ID.setGender)
+
+location :: Lens' ID Location
+location = lens ID.getLocation (flip ID.setLocation)
+
+nationality :: Lens' ID Nationality
+nationality = lens ID.getNationality (flip ID.setNationality)
 
 -- | Replaces a character at a specific position.
 --
