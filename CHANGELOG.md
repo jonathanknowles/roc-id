@@ -1,3 +1,15 @@
+# 0.4.0.0
+
+- Revised the `Show` instance of `ID` to produce a valid Haskell expression
+  when applied to nested values of `ID`.
+- Revised the `ID.fromSymbol` function so that users are presented with a
+  helpful error if they forget to apply the function to a concrete type.
+- Simplified the error handling for `ID.fromText` by merging the `TextTooShort`
+  and `TextTooLong` errors into a unified `InvalidLength` error.
+- Renamed `ID.checksumDigit` to `ID.checksum`.
+- Made `ID` an instance of the `Finitary` type class.
+- Made `ID` an instance of the `Generic` type class.
+
 # 0.3.0.0
 
 - Added support for ARC (Alien Residence Certificate) numbers.
