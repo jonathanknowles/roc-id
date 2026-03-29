@@ -1,3 +1,14 @@
+> [!CAUTION]
+> This package has moved to [`taiwan-id`](https://github.com/jonathanknowles/taiwan-id).
+>
+> Please update your dependencies:
+> ```patch
+> -    roc-id
+> + taiwan-id
+> ```
+
+----
+
 # `roc-id`
 
 [![Latest Release](
